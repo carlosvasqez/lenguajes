@@ -1,6 +1,7 @@
 package vista;
 
 import com.formdev.flatlaf.FlatDarkLaf;
+import controlador.Cargador;
 import javax.swing.UIManager;
 
 /**
@@ -206,23 +207,25 @@ public class Gui extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void botonEjecutarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonEjecutarActionPerformed
-        // TODO add your handling code here:
+	// TODO add your handling code here:
     }//GEN-LAST:event_botonEjecutarActionPerformed
 
     private void botonGenerarReporteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonGenerarReporteActionPerformed
-        // TODO add your handling code here:
+	// TODO add your handling code here:
     }//GEN-LAST:event_botonGenerarReporteActionPerformed
 
     private void botonArchivoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonArchivoActionPerformed
-        // TODO add your handling code here:
+	// TODO add your handling code here:
+	Cargador cargadorArchivo = new Cargador(textPaneEditor);
+	cargadorArchivo.cargarArchivo();
     }//GEN-LAST:event_botonArchivoActionPerformed
 
     private void botonAyudaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonAyudaActionPerformed
-        // TODO add your handling code here:
+	// TODO add your handling code here:
     }//GEN-LAST:event_botonAyudaActionPerformed
 
     private void botonAcerdaDeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonAcerdaDeActionPerformed
-        // TODO add your handling code here:
+	// TODO add your handling code here:
     }//GEN-LAST:event_botonAcerdaDeActionPerformed
 
     /**
