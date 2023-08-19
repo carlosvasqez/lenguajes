@@ -2,22 +2,16 @@ package controlador;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JTextPane;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Element;
 import javax.swing.text.StyledDocument;
-import modelo.Especial;
 import modelo.Token;
 import modelo.TokenEnum;
-import modelo.token.identificadores.Identificador;
-import modelo.token.operadores.Aritmetico;
-import modelo.token.operadores.Comparacion;
 
 /**
  *
@@ -28,65 +22,35 @@ public class Analizador {
     private Map<String, TokenEnum> diccionario;
     private List<Token> listaTokens;
     private JTextPane textPaneEditor;
-    private Set<Character> alfabeto;
 
     public Analizador(JTextPane textPaneEditor) {
-	//alfabeto
-	alfabeto = new HashSet<>();
-	alfabeto.add('+');
-	alfabeto.add('-');
-	alfabeto.add('*');
-	alfabeto.add('/');
-	alfabeto.add('%');
-
-	alfabeto.add('>');
-	alfabeto.add('<');
-	alfabeto.add('=');
-	alfabeto.add('!');
-
-	alfabeto.add('\n');
-	alfabeto.add('\t');
-	alfabeto.add(' ');
-
-	alfabeto.add('\'');
-	alfabeto.add('\"');
-	alfabeto.add('#');
-
-	alfabeto.add('(');
-	alfabeto.add(')');
-	alfabeto.add('{');
-	alfabeto.add('}');
-	alfabeto.add('[');
-	alfabeto.add(']');
-
-	alfabeto.add(',');
-	alfabeto.add(';');
-	alfabeto.add(':');
-	alfabeto.add('.');
 
 	this.textPaneEditor = textPaneEditor;
 	this.diccionario = new HashMap<>();
 	this.listaTokens = new ArrayList<>();
 
-	///
 	diccionario.put("+", TokenEnum.ARITMETICO);
 	diccionario.put("-", TokenEnum.ARITMETICO);
+	diccionario.put("*", TokenEnum.ARITMETICO);
+	diccionario.put("%", TokenEnum.ARITMETICO);
 	diccionario.put("**", TokenEnum.ARITMETICO);
 	diccionario.put("/", TokenEnum.ARITMETICO);
 	diccionario.put("//", TokenEnum.ARITMETICO);
-	diccionario.put("%", TokenEnum.ARITMETICO);
-	diccionario.put("*", TokenEnum.ARITMETICO);
 
-	diccionario.put("==", TokenEnum.COMPARACION);
-	diccionario.put("!=", TokenEnum.COMPARACION);
 	diccionario.put(">", TokenEnum.COMPARACION);
 	diccionario.put("<", TokenEnum.COMPARACION);
+	diccionario.put("==", TokenEnum.COMPARACION);
+	diccionario.put("!=", TokenEnum.COMPARACION);
 	diccionario.put(">=", TokenEnum.COMPARACION);
 	diccionario.put("<=", TokenEnum.COMPARACION);
 
+	diccionario.put("and", TokenEnum.LOGICO);
+	diccionario.put("or", TokenEnum.LOGICO);
+	diccionario.put("not", TokenEnum.LOGICO);
+
 	diccionario.put("=", TokenEnum.ASIGNACION);
 
-	diccionario.put("and", TokenEnum.PALABRA_RESERVADA);
+	//diccionario.put("and", TokenEnum.PALABRA_RESERVADA);
 	diccionario.put("as", TokenEnum.PALABRA_RESERVADA);
 	diccionario.put("assert", TokenEnum.PALABRA_RESERVADA);
 	diccionario.put("break", TokenEnum.PALABRA_RESERVADA);
@@ -109,12 +73,12 @@ public class Analizador {
 	diccionario.put("lambda", TokenEnum.PALABRA_RESERVADA);
 	diccionario.put("None", TokenEnum.PALABRA_RESERVADA);
 	diccionario.put("nonlocal", TokenEnum.PALABRA_RESERVADA);
-	diccionario.put("not", TokenEnum.PALABRA_RESERVADA);
-	diccionario.put("or", TokenEnum.PALABRA_RESERVADA);
+	//diccionario.put("not", TokenEnum.PALABRA_RESERVADA);
+	//diccionario.put("or", TokenEnum.PALABRA_RESERVADA);
 	diccionario.put("pass", TokenEnum.PALABRA_RESERVADA);
 	diccionario.put("raise", TokenEnum.PALABRA_RESERVADA);
 	diccionario.put("return", TokenEnum.PALABRA_RESERVADA);
-	diccionario.put("True", TokenEnum.PALABRA_RESERVADA);
+	//diccionario.put("True", TokenEnum.PALABRA_RESERVADA);
 	diccionario.put("try", TokenEnum.PALABRA_RESERVADA);
 	diccionario.put("while", TokenEnum.PALABRA_RESERVADA);
 	diccionario.put("with", TokenEnum.PALABRA_RESERVADA);
@@ -122,6 +86,8 @@ public class Analizador {
 
 	diccionario.put("True", TokenEnum.CONSTANTE);
 	diccionario.put("False", TokenEnum.CONSTANTE);
+
+	diccionario.put("#", TokenEnum.COMENTARIO);
 
 	diccionario.put("(", TokenEnum.OTRO);
 	diccionario.put(")", TokenEnum.OTRO);
@@ -150,125 +116,104 @@ public class Analizador {
 	}
     }
 
-    private void verificarSuma(char c) {
-
-    }
-
-//    private void verificarAritmetico(char c, String temporal) {
-//	if (c == Aritmetico.SUMA.getSimbolo()
-//		|| c == Aritmetico.RESTA.getSimbolo()
-//		|| c == Aritmetico.MULTIPLICACION.getSimbolo()
-//		|| c == Aritmetico.MODULO.getSimbolo()) {
-//
-//	    temporal = temporal.concat(String.valueOf(c));
-//	    // crearToken(String.valueOf(c), fila, columna);
-//
-//	} else {
-//
-//	}
-//    }
-//
-//    private void verificarEspecial(char c, String temporal) {
-//	if (c == Especial.ESPACIO.getSimbolo()) {
-//
-//	    temporal = temporal.concat(" ");
-//
-//	} else if (c == Especial.SALTO_LINEA.getSimbolo()) {
-//
-//	} else if (c == Especial.TABULACION.getSimbolo()) {
-//
-//	}
-//    }
-//
-//    private boolean esSimboloCombinableDoble(char c) {
-//	return c == Aritmetico.SUMA.getSimbolo()
-//		|| c == Comparacion.IGUAL.getSimbolo()
-//		|| c == Aritmetico.RESTA.getSimbolo()
-//		|| c == Aritmetico.MULTIPLICACION.getSimbolo()
-//		|| c == Aritmetico.DIVISION.getSimbolo()
-//		|| c == Comparacion.MAYOR_QUE.getSimbolo()
-//		|| c == Comparacion.MENOR_QUE.getSimbolo()
-//		|| c == Comparacion.ADMIRACION.getSimbolo();
-//    }
-//
-//    private boolean sePuedeCombinarDoble(char c, String temporal) {
-//	return temporal.length() == 1
-//		&& esSimboloCombinableDoble(temporal.charAt(0));
-//    }
-//
-//    private boolean esIdentificador(char caracter, String str) {
-//	return str.length() >= 0
-//		&& (Character.isAlphabetic(caracter) || caracter == Identificador.GUION_BAJO.getSimbolo())
-//		&& str.contains(new StringBuilder(" "));
-//    }
-//
-//    private boolean esEspecial(char c) {
-//	return c == Especial.ESPACIO.getSimbolo()
-//		|| c == Especial.SALTO_LINEA.getSimbolo()
-//		|| c == Especial.TABULACION.getSimbolo();
-//    }
     private boolean esEspacio(char caracter) {
-	return caracter == Especial.ESPACIO.getSimbolo();
-    }
-
-    private boolean esToken(String str) {
-	return !str.isBlank();
+	return caracter == Alfabeto.ESPACIO.getSimbolo();
     }
 
     private boolean esSaltoDeLinea(char caracter) {
-	return caracter == Especial.SALTO_LINEA.getSimbolo();
+	return caracter == Alfabeto.SALTO_LINEA.getSimbolo();
     }
 
+    private boolean esTabulacion(char caracter) {
+	return caracter == Alfabeto.TABULACION.getSimbolo();
+    }
+
+    private void validarStr(int fila, int columna) {
+	if (!str.isBlank()) {
+	    if (diccionario.containsKey(str)) {
+		crearTokenC(fila, columna);//operadores y palabras reservadas.
+	    } else {
+		crearTokenV(fila, columna);//identificadores, numero.
+	    }
+	} else {
+	    crearEspacio();
+	}
+	//despues de validar si el str es token o no, se vuelve a dejar vacio
+	str = "";
+    }
+
+    private String str = "";
+
     private void buscarTokensEn(int fila, String contenido) {
-	String str = "";
 	int columna = 1;
 	char[] caracteres = contenido.toCharArray();
 	for (char caracter : caracteres) {
 	    //
 	    //
 	    if (esEspacio(caracter)) {
-		if (esToken(str)) {
-		    crearToken(str, fila, columna);
-		} else {
-		    generarError();
-		}
+		validarStr(fila, columna);
+	    } else if (esTabulacion(caracter)) {
+		validarStr(fila, columna);
 	    } else if (esSaltoDeLinea(caracter)) {
-		
+		validarStr(fila, columna);
+		fila++;
+	    } else {
+		str += caracter;
+		columna++;
 	    }
-
-//	    if (esIdentificador(caracter, str)) {
-//		str += caracter;
-//		//el identificador token se crea cuando
-//		//se obtiene un espacio, salto de liea etc.
-//	    } else if (esEspecial(caracter)) {
-//
-//	    } else if (esSimboloCombinableDoble(caracter)) {
-//		if (str.isEmpty()) {
-//		    str += caracter;
-//		} else {
-//
-//		}
-//		if (sePuedeCombinarDoble(caracter, str)) {
-//		    str += caracter;
-//		} else {
-//
-//		}
-//		str = str.concat(String.valueOf(caracter));
-//	    }
 	}
     }
 
-    private void crearToken(String str, int fila, int columna) {
-	//verificar si coicide con algun elemento del lenguaje
-	if (diccionario.containsKey(str)) {//key:int value=PALABRA_RESERVADA
-	    Token token = new Token(diccionario.get(str), str, fila, columna);
+    private void crearEspacio() {
+
+    }
+
+    private void crearTokenC(int fila, int columna) {
+	Token token = new Token(diccionario.get(str), str, fila, columna);
+	listaTokens.add(token);
+    }
+
+    private boolean esEntero() {
+	try {
+	    Integer.valueOf(str);
+	    if (str.startsWith("+")) {
+		return false;
+	    }
+	    return true;
+	} catch (NumberFormatException e) {
+	    return false;
+	}
+    }
+
+    private boolean esDecimal() {
+	try {
+	    Double.valueOf(str);
+	    if (str.startsWith("+") || str.startsWith("-.") || str.startsWith(".")) {
+		return false;
+	    }
+	    return true;
+	} catch (NumberFormatException e) {
+	    return false;
+	}
+    }
+
+    private boolean esCadena() {
+	return (str.charAt(0) == '\'' && str.charAt(str.length() - 1) == '\'')
+		|| (str.charAt(0) == '\"' && str.charAt(str.length() - 1) == '\"');
+    }
+
+    private void crearTokenV(int fila, int columna) {
+	if (esEntero()) {
+	    Token token = new Token(TokenEnum.CONSTANTE, str, fila, columna);
 	    listaTokens.add(token);
-	} else {
-	    generarError();
+	} else if (esDecimal()) {
+
+	} else if (esCadena()) {
+
 	}
     }
 
-    private void generarError() {
+    private void generarError(int fila, int columna) {
 
     }
 

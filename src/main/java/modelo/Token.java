@@ -16,8 +16,7 @@ public class Token {
 	this.lexena = lexena;
 	this.fila = fila;
 	this.columna = columna;
+
     }
-
-
 
 }
