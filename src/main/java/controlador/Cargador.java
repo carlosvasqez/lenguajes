@@ -12,6 +12,7 @@ import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import javax.swing.JTextPane;
 import javax.swing.text.BadLocationException;
+import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
 import vista.SelectorDeArchivo;
 

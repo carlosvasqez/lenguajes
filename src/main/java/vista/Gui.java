@@ -1,6 +1,7 @@
 package vista;
 
 import com.formdev.flatlaf.FlatDarkLaf;
+import controlador.Analizador;
 import controlador.Cargador;
 import javax.swing.UIManager;
 
@@ -35,7 +36,7 @@ public class Gui extends javax.swing.JFrame {
         botonAcerdaDe = new javax.swing.JButton();
         javax.swing.JToolBar jToolBar2 = new javax.swing.JToolBar();
         javax.swing.Box.Filler filler1 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 0), new java.awt.Dimension(32767, 0));
-        botonEjecutar = new javax.swing.JButton();
+        botonAnalizar = new javax.swing.JButton();
         javax.swing.JToolBar.Separator jSeparator4 = new javax.swing.JToolBar.Separator();
         botonGenerarReporte = new javax.swing.JButton();
         javax.swing.JScrollPane jScrollPane1 = new javax.swing.JScrollPane();
@@ -97,17 +98,17 @@ public class Gui extends javax.swing.JFrame {
         jToolBar2.setRollover(true);
         jToolBar2.add(filler1);
 
-        botonEjecutar.setText("Ejecutar");
-        botonEjecutar.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        botonEjecutar.setFocusable(false);
-        botonEjecutar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        botonEjecutar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        botonEjecutar.addActionListener(new java.awt.event.ActionListener() {
+        botonAnalizar.setText("Analizar");
+        botonAnalizar.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        botonAnalizar.setFocusable(false);
+        botonAnalizar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        botonAnalizar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        botonAnalizar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                botonEjecutarActionPerformed(evt);
+                botonAnalizarActionPerformed(evt);
             }
         });
-        jToolBar2.add(botonEjecutar);
+        jToolBar2.add(botonAnalizar);
         jToolBar2.add(jSeparator4);
 
         botonGenerarReporte.setText("Generar Reporte");
@@ -206,9 +207,11 @@ public class Gui extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void botonEjecutarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonEjecutarActionPerformed
+    private void botonAnalizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonAnalizarActionPerformed
 	// TODO add your handling code here:
-    }//GEN-LAST:event_botonEjecutarActionPerformed
+	Analizador analizador = new Analizador(textPaneEditor);
+	analizador.analizar();
+    }//GEN-LAST:event_botonAnalizarActionPerformed
 
     private void botonGenerarReporteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonGenerarReporteActionPerformed
 	// TODO add your handling code here:
@@ -272,9 +275,9 @@ public class Gui extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton botonAcerdaDe;
+    private javax.swing.JButton botonAnalizar;
     private javax.swing.JButton botonArchivo;
     private javax.swing.JButton botonAyuda;
-    private javax.swing.JButton botonEjecutar;
     private javax.swing.JButton botonGenerarReporte;
     private javax.swing.JLabel labelFilaColumna;
     private javax.swing.JPanel panelLineaEditor;
@@ -282,4 +285,5 @@ public class Gui extends javax.swing.JFrame {
     private javax.swing.JTextPane textPaneEditor;
     private javax.swing.JTextPane textPaneError;
     // End of variables declaration//GEN-END:variables
+
 }
