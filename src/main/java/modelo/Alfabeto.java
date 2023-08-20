@@ -30,7 +30,8 @@ public enum Alfabeto {
     TABULACION('\t'),
     SALTO_LINEA('\n'),
     COMILLA('\''),
-    DOBLE_COMILLA('\"');
+    DOBLE_COMILLA('\"'),
+    NUMERAL('#');
 
     private final char simbolo;
 
