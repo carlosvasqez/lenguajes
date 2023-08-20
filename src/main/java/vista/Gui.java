@@ -21,6 +21,7 @@ public class Gui extends javax.swing.JFrame {
      */
     public Gui() {
 	initComponents();
+	tabulacionPersonalizada();
     }
 
     /**
@@ -291,4 +292,34 @@ public class Gui extends javax.swing.JFrame {
     private javax.swing.JTextPane textPaneError;
     // End of variables declaration//GEN-END:variables
 
+    private void tabulacionPersonalizada() {
+	textPaneEditor.addKeyListener(new KeyListener() {
+	    @Override
+	    public void keyTyped(KeyEvent e) {
+		// No se necesita implementar esto
+	    }
+
+	    @Override
+	    public void keyPressed(KeyEvent e) {
+		if (e.getKeyCode() == KeyEvent.VK_TAB) {
+		    e.consume(); // Evita que el JTextPane maneje la tabulación por defecto
+		    insertarTabulacion(textPaneEditor, 8); // Inserta una tabulación de 8 espacios
+		}
+	    }
+
+	    @Override
+	    public void keyReleased(KeyEvent e) {
+		// No se necesita implementar esto
+	    }
+	});
+    }
+
+    private void insertarTabulacion(JTextPane textPane, int espacios) {
+	Document document = textPane.getDocument();
+	try {
+	    document.insertString(textPane.getCaretPosition(), " ".repeat(espacios), null);
+	} catch (BadLocationException e) {
+	    e.printStackTrace();
+	}
+    }
 }
