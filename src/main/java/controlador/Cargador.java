@@ -11,9 +11,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import javax.swing.JTextPane;
-import javax.swing.text.BadLocationException;
-import javax.swing.text.StyleConstants;
-import javax.swing.text.StyledDocument;
 import vista.SelectorDeArchivo;
 
 /**
@@ -21,27 +18,21 @@ import vista.SelectorDeArchivo;
  * @author usuario
  */
 public class Cargador {
-    
-    private final SelectorDeArchivo selector = new SelectorDeArchivo();
-    private final JTextPane textPaneEditor;
-    
-    public Cargador(JTextPane textPaneEditor) {
-	this.textPaneEditor = textPaneEditor;
-    }
-    
-    public void cargarArchivo() {
+
+    public void cargarArchivoEn(JTextPane textPane, SelectorDeArchivo selector) {
+	Escritor escritor = new Escritor(textPane);
 	int eleccion = selector.showOpenDialog(null);
 	if (eleccion == JFileChooser.APPROVE_OPTION) {
 	    File file = selector.getSelectedFile();
 	    try (FileInputStream fis = new FileInputStream(file);
 		 InputStreamReader isr = new InputStreamReader(fis, Charset.forName("UTF-8"));
 		 BufferedReader br = new BufferedReader(isr)) {
-		
-		limpiar();
-		
-		String line;
-		while ((line = br.readLine()) != null) {
-		    escribir(line);
+
+		escritor.limpiar();
+
+		String linea;
+		while ((linea = br.readLine()) != null) {
+		    escritor.escribir(linea);
 		}
 	    } catch (FileNotFoundException ex) {
 		Logger.getLogger(Cargador.class.getName()).log(Level.SEVERE, null, ex);
@@ -49,28 +40,8 @@ public class Cargador {
 		Logger.getLogger(Cargador.class.getName()).log(Level.SEVERE, null, ex);
 	    }
 	}
-	
+
     }
     
-    private boolean esPrimeraLinea = true;
-    
-    private void limpiar() {
-	textPaneEditor.setText("");
-    }
-    
-    private void escribir(String line) {
-	StyledDocument doc = textPaneEditor.getStyledDocument();
-	try {
-	    if (esPrimeraLinea) {
-		doc.insertString(0, line, null);
-		esPrimeraLinea = false;
-	    } else {
-		doc.insertString(doc.getLength(), "\n" + line, null);
-	    }
-	} catch (BadLocationException ex) {
-	    Logger.getLogger(Cargador.class.getName()).log(Level.SEVERE, null, ex);
-	}
-	
-    }
-    
+
 }

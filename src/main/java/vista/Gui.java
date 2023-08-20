@@ -50,8 +50,8 @@ public class Gui extends javax.swing.JFrame {
         panelLineaEditor = new javax.swing.JPanel();
         panelLineaError = new javax.swing.JPanel();
         javax.swing.JScrollPane jScrollPane2 = new javax.swing.JScrollPane();
-        textPaneError = new javax.swing.JTextPane();
-        javax.swing.JLabel labelError = new javax.swing.JLabel();
+        textPaneOutput = new javax.swing.JTextPane();
+        javax.swing.JLabel labelOutput = new javax.swing.JLabel();
         javax.swing.JToolBar jToolBar3 = new javax.swing.JToolBar();
         javax.swing.Box.Filler filler2 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 0), new java.awt.Dimension(32767, 0));
         labelFilaColumna = new javax.swing.JLabel();
@@ -157,9 +157,9 @@ public class Gui extends javax.swing.JFrame {
             .addGap(0, 0, Short.MAX_VALUE)
         );
 
-        jScrollPane2.setViewportView(textPaneError);
+        jScrollPane2.setViewportView(textPaneOutput);
 
-        labelError.setText("ERROR:");
+        labelOutput.setText("OUTPUT:");
 
         jToolBar3.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         jToolBar3.setRollover(true);
@@ -181,7 +181,7 @@ public class Gui extends javax.swing.JFrame {
                     .addComponent(panelLineaEditor, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(labelError)
+                    .addComponent(labelOutput)
                     .addComponent(jToolBar2, javax.swing.GroupLayout.DEFAULT_SIZE, 468, Short.MAX_VALUE)
                     .addComponent(jScrollPane1)
                     .addComponent(jScrollPane2)
@@ -201,7 +201,7 @@ public class Gui extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jToolBar3, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 27, Short.MAX_VALUE)
-                .addComponent(labelError)
+                .addComponent(labelOutput)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(panelLineaError, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -215,7 +215,7 @@ public class Gui extends javax.swing.JFrame {
 
     private void botonAnalizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonAnalizarActionPerformed
 	// TODO add your handling code here:
-	Analizador analizador = new Analizador(textPaneEditor);
+	Analizador analizador = new Analizador(textPaneEditor, textPaneOutput);
 	analizador.analizar();
     }//GEN-LAST:event_botonAnalizarActionPerformed
 
@@ -225,8 +225,8 @@ public class Gui extends javax.swing.JFrame {
 
     private void botonArchivoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonArchivoActionPerformed
 	// TODO add your handling code here:
-	Cargador cargadorArchivo = new Cargador(textPaneEditor);
-	cargadorArchivo.cargarArchivo();
+	Cargador cargadorArchivo = new Cargador();
+	cargadorArchivo.cargarArchivoEn(textPaneEditor, new SelectorDeArchivo());
     }//GEN-LAST:event_botonArchivoActionPerformed
 
     private void botonAyudaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonAyudaActionPerformed
@@ -289,7 +289,7 @@ public class Gui extends javax.swing.JFrame {
     private javax.swing.JPanel panelLineaEditor;
     private javax.swing.JPanel panelLineaError;
     private javax.swing.JTextPane textPaneEditor;
-    private javax.swing.JTextPane textPaneError;
+    private javax.swing.JTextPane textPaneOutput;
     // End of variables declaration//GEN-END:variables
 
     private void tabulacionPersonalizada() {
