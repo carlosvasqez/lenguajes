@@ -6,22 +6,21 @@ package modelo;
  */
 public class Token {
 
-    private TokenEnum tokenEnum;
-    private String lexena;
-    private int fila;
-    private int columna;
+    private final TokenEnum tokenEnum;
+    private final String lexena;
+    private final int fila;
+    private final int columna;
 
     public Token(TokenEnum tokenEnum, String lexena, int fila, int columna) {
 	this.tokenEnum = tokenEnum;
 	this.lexena = lexena;
 	this.fila = fila;
 	this.columna = columna;
-
     }
 
     @Override
     public String toString() {
-	return "lexena=" + lexena + ", fila=" + fila + ", columna=" + columna + '}';
+	return "Token{" + "token=" + tokenEnum + ", lexena=" + lexena + ", fila=" + fila + ", columna=" + columna + '}';
     }
 
 }
