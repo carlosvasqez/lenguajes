@@ -161,9 +161,10 @@ public class Analizador {
 			//se compara el caracter de cierre con el de inicio
 			crearTokenCadena(fila, columna);
 			columna++;
+			str = "";
 		    } else {
 			//signo de inicio diferente al de cierre
-			generarError(fila, columna);
+			generarError("string con diferentes agrupadores", fila, columna);
 			columna++;
 		    }
 		    str = "";
@@ -192,10 +193,28 @@ public class Analizador {
 	return caracter == str.charAt(0);
     }
 
+    //validar solo se aplica en los 3 especiales
     private void validarStr(char caracter, int fila, int columna) {
 	if (!str.isBlank()) {
 	    if (str.charAt(0) == '\"' || str.charAt(0) == '\'') {
-		str += caracter;
+		if (caracter == Alfabeto.ESPACIO.getSimbolo()) {
+		    str += caracter;
+		} else if (caracter == Alfabeto.TABULACION.getSimbolo()) {
+		    str += caracter;
+		} else if (caracter == Alfabeto.SALTO_LINEA.getSimbolo()) {
+		    //verificar si se ha cerrado la cadena sino generar un error
+
+		    //generar un error
+		    generarError("cadena no completada", fila, columna);
+
+//		    if ((str.charAt(0) == str.charAt(str.length() - 1))
+//			    || (str.charAt(0) == str.charAt(str.length() - 1))) {
+//			//si se cumplio es porque el token ya fue generado entonces se debe aplicar el salto de linea
+//			crearTokenSalto(fila, columna);
+//		    } else {
+//			//
+//		    }
+		}
 	    } else if (str.charAt(0) == '#') {
 		if (caracter == Alfabeto.ESPACIO.getSimbolo()) {
 		    str += caracter;
@@ -222,6 +241,15 @@ public class Analizador {
 		    crearTokenSalto(fila, columna);
 		}
 	    }
+	} else {//se ejecuta cuando se ha encontrado una cadena anteriormente y ahora hay un especial
+	    if (caracter == Alfabeto.ESPACIO.getSimbolo()) {
+		crearTokenEspacio(fila, columna);
+	    } else if (caracter == Alfabeto.TABULACION.getSimbolo()) {
+		crearTokenTab(fila, columna);
+	    } else if (caracter == Alfabeto.SALTO_LINEA.getSimbolo()) {
+		crearTokenSalto(fila, columna);
+	    }
+	    str = "";
 	}
 
     }
@@ -262,15 +290,15 @@ public class Analizador {
 	    Token token = new Token(TokenEnum.CONSTANTE, str, fila, columna);
 	    listaTokens.add(token);
 	} else if (esComentario()) {
-	    System.out.println("comentario");
 	    Token token = new Token(TokenEnum.CONSTANTE, str, fila, columna);
 	    listaTokens.add(token);
 	} else if (esIdentificador()) {
 	    Token token = new Token(TokenEnum.CONSTANTE, str, fila, columna);
 	    listaTokens.add(token);
 	} else {
-	    generarError(fila, columna);
+	    generarError("no es entero, ni decimal, ni cadena, ni comentario, ni identificador", fila, columna);
 	}
+	
     }
 
     private void crearTokenEntero(int fila, int columna) {
@@ -283,8 +311,8 @@ public class Analizador {
 	listaTokens.add(token);
     }
 
-    private void generarError(int fila, int columna) {
-	System.out.println("error " + fila + " : " + (columna - str.length()));
+    private void generarError(String mensaje, int fila, int columna) {
+	System.out.println(mensaje + "\t[" + fila + " : " + (columna - str.length())+"]");
     }
 
     private boolean esEspacio(char caracter) {
