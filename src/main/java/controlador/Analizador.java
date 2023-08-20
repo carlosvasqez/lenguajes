@@ -98,6 +98,11 @@ public class Analizador {
 	diccionario.put(",", TokenEnum.OTRO);
 	diccionario.put(";", TokenEnum.OTRO);
 	diccionario.put(":", TokenEnum.OTRO);
+
+	diccionario.putIfAbsent(" ", TokenEnum.ESPECIAL);
+	diccionario.putIfAbsent("\n", TokenEnum.ESPECIAL);
+	diccionario.putIfAbsent("\t", TokenEnum.ESPECIAL);
+
     }
 
     public void analizar() {
@@ -114,49 +119,40 @@ public class Analizador {
 		Logger.getLogger(Analizador.class.getName()).log(Level.SEVERE, null, ex);
 	    }
 	}
+	mostrarEnPantalla();
     }
 
-    private boolean esEspacio(char caracter) {
-	return caracter == Alfabeto.ESPACIO.getSimbolo();
-    }
-
-    private boolean esSaltoDeLinea(char caracter) {
-	return caracter == Alfabeto.SALTO_LINEA.getSimbolo();
-    }
-
-    private boolean esTabulacion(char caracter) {
-	return caracter == Alfabeto.TABULACION.getSimbolo();
-    }
-
-    private void validarStr(int fila, int columna) {
-	if (!str.isBlank()) {
-	    if (diccionario.containsKey(str)) {
-		crearTokenC(fila, columna);//operadores y palabras reservadas.
-	    } else {
-		crearTokenV(fila, columna);//identificadores, numero.
-	    }
-	} else {
-	    crearEspacio();
+    private void mostrarEnPantalla() {
+	textPaneEditor.setText("");
+	for (Token listaToken : listaTokens) {
+	    System.out.println(listaToken);
 	}
-	//despues de validar si el str es token o no, se vuelve a dejar vacio
-	str = "";
     }
 
     private String str = "";
 
     private void buscarTokensEn(int fila, String contenido) {
+	str = "";
 	int columna = 1;
 	char[] caracteres = contenido.toCharArray();
 	for (char caracter : caracteres) {
 	    //
 	    //
 	    if (esEspacio(caracter)) {
+		str += caracter;
 		validarStr(fila, columna);
+		columna++;
 	    } else if (esTabulacion(caracter)) {
+		str += caracter;
 		validarStr(fila, columna);
+		columna++;
 	    } else if (esSaltoDeLinea(caracter)) {
+		str += caracter;
 		validarStr(fila, columna);
-		fila++;
+		columna++;
+	    } else if (esInicioCadena(caracter)) {
+		str += caracter;
+		columna++;
 	    } else {
 		str += caracter;
 		columna++;
@@ -164,7 +160,33 @@ public class Analizador {
 	}
     }
 
-    private void crearEspacio() {
+    private void validarStr(int fila, int columna) {
+	if (!str.isBlank()) {
+	    if (diccionario.containsKey(str)) {
+		//operadores y palabras reservadas.(hashmap)
+		crearTokenC(fila, columna);
+	    } else {
+		//identificadores, numero.(metodos)
+		crearTokenV(fila, columna);
+	    }
+	} else if (str.isBlank()) {//tiene \t o \n o espacios
+	    if (diccionario.containsKey(str)) {
+		crearTokenEspecial(fila, columna);
+	    }
+	}
+    }
+
+    private boolean esInicioCadena(char caracter) {
+	return caracter == Alfabeto.COMILLA.getSimbolo()
+		|| caracter == Alfabeto.DOBLE_COMILLA.getSimbolo();
+    }
+
+    private void crearTokenEspecial(int fila, int columna) {
+	Token token = new Token(TokenEnum.ESPECIAL, str, fila, columna);
+	listaTokens.add(token);
+    }
+
+    private void crearSaltoDeLinea() {
 
     }
 
@@ -207,14 +229,28 @@ public class Analizador {
 	    Token token = new Token(TokenEnum.CONSTANTE, str, fila, columna);
 	    listaTokens.add(token);
 	} else if (esDecimal()) {
-
+	    Token token = new Token(TokenEnum.CONSTANTE, str, fila, columna);
+	    listaTokens.add(token);
 	} else if (esCadena()) {
-
+	    Token token = new Token(TokenEnum.CONSTANTE, str, fila, columna);
+	    listaTokens.add(token);
 	}
     }
 
     private void generarError(int fila, int columna) {
 
+    }
+
+    private boolean esEspacio(char caracter) {
+	return caracter == Alfabeto.ESPACIO.getSimbolo();
+    }
+
+    private boolean esSaltoDeLinea(char caracter) {
+	return caracter == Alfabeto.SALTO_LINEA.getSimbolo();
+    }
+
+    private boolean esTabulacion(char caracter) {
+	return caracter == Alfabeto.TABULACION.getSimbolo();
     }
 
 }

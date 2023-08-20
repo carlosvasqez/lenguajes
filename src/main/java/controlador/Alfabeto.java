@@ -28,7 +28,9 @@ public enum Alfabeto {
     PUNTO('.'),
     ESPACIO(' '),
     TABULACION('\t'),
-    SALTO_LINEA('\n');
+    SALTO_LINEA('\n'),
+    COMILLA('\''),
+    DOBLE_COMILLA('\"');
 
     private final char simbolo;
 

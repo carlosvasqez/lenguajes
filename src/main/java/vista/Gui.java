@@ -3,7 +3,12 @@ package vista;
 import com.formdev.flatlaf.FlatDarkLaf;
 import controlador.Analizador;
 import controlador.Cargador;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import javax.swing.JTextPane;
 import javax.swing.UIManager;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.Document;
 
 /**
  *

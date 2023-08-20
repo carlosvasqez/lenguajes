@@ -7,6 +7,7 @@ import java.awt.Color;
  * @author usuario
  */
 public enum TokenEnum {
+    ESPECIAL(Color.PINK),
     IDENTIFICADOR(Color.WHITE),
     ARITMETICO(Color.CYAN),
     COMPARACION(Color.CYAN),
