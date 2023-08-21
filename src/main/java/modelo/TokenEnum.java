@@ -7,7 +7,6 @@ import java.awt.Color;
  * @author usuario
  */
 public enum TokenEnum {
-    ESPECIAL(Color.PINK),
     IDENTIFICADOR(Color.WHITE),
     ARITMETICO(Color.CYAN),
     COMPARACION(Color.CYAN),
@@ -16,7 +15,8 @@ public enum TokenEnum {
     PALABRA_RESERVADA(new Color(102, 0, 153)),//morado
     CONSTANTE(Color.ORANGE),
     COMENTARIO(Color.GRAY),
-    OTRO(Color.GREEN);
+    OTRO(Color.GREEN),
+    ESPECIAL(Color.PINK);
 
     private final Color color;
 

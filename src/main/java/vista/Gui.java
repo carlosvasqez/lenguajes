@@ -7,8 +7,12 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import javax.swing.JTextPane;
 import javax.swing.UIManager;
+import javax.swing.event.CaretEvent;
+import javax.swing.event.CaretListener;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
+import javax.swing.text.Element;
+import javax.swing.text.StyledDocument;
 
 /**
  *
@@ -22,6 +26,7 @@ public class Gui extends javax.swing.JFrame {
     public Gui() {
 	initComponents();
 	tabulacionPersonalizada();
+	posicionCursor();
     }
 
     /**
@@ -54,7 +59,10 @@ public class Gui extends javax.swing.JFrame {
         javax.swing.JLabel labelOutput = new javax.swing.JLabel();
         javax.swing.JToolBar jToolBar3 = new javax.swing.JToolBar();
         javax.swing.Box.Filler filler2 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 0), new java.awt.Dimension(32767, 0));
-        labelFilaColumna = new javax.swing.JLabel();
+        labelFila = new javax.swing.JLabel();
+        javax.swing.JToolBar.Separator jSeparator5 = new javax.swing.JToolBar.Separator();
+        javax.swing.JToolBar.Separator jSeparator6 = new javax.swing.JToolBar.Separator();
+        labelColumna = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -157,6 +165,8 @@ public class Gui extends javax.swing.JFrame {
             .addGap(0, 0, Short.MAX_VALUE)
         );
 
+        textPaneOutput.setEditable(false);
+        textPaneOutput.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
         jScrollPane2.setViewportView(textPaneOutput);
 
         labelOutput.setText("OUTPUT:");
@@ -165,9 +175,13 @@ public class Gui extends javax.swing.JFrame {
         jToolBar3.setRollover(true);
         jToolBar3.add(filler2);
 
-        labelFilaColumna.setText("fila:columna");
-        labelFilaColumna.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-        jToolBar3.add(labelFilaColumna);
+        labelFila.setText("fila");
+        jToolBar3.add(labelFila);
+        jToolBar3.add(jSeparator5);
+        jToolBar3.add(jSeparator6);
+
+        labelColumna.setText("columna");
+        jToolBar3.add(labelColumna);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -180,13 +194,14 @@ public class Gui extends javax.swing.JFrame {
                     .addComponent(panelLineaError, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(panelLineaEditor, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(labelOutput)
-                    .addComponent(jToolBar2, javax.swing.GroupLayout.DEFAULT_SIZE, 468, Short.MAX_VALUE)
-                    .addComponent(jScrollPane1)
-                    .addComponent(jScrollPane2)
-                    .addComponent(jToolBar3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(39, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 479, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addComponent(labelOutput, javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(jToolBar2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 468, Short.MAX_VALUE)
+                        .addComponent(jToolBar3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 457, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(28, 28, 28))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -197,15 +212,15 @@ public class Gui extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(panelLineaEditor, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 257, Short.MAX_VALUE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 257, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jToolBar3, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 27, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(labelOutput)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(panelLineaError, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 147, Short.MAX_VALUE))
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(16, 16, 16))
         );
 
@@ -285,7 +300,8 @@ public class Gui extends javax.swing.JFrame {
     private javax.swing.JButton botonArchivo;
     private javax.swing.JButton botonAyuda;
     private javax.swing.JButton botonGenerarReporte;
-    private javax.swing.JLabel labelFilaColumna;
+    private javax.swing.JLabel labelColumna;
+    private javax.swing.JLabel labelFila;
     private javax.swing.JPanel panelLineaEditor;
     private javax.swing.JPanel panelLineaError;
     private javax.swing.JTextPane textPaneEditor;
@@ -321,5 +337,23 @@ public class Gui extends javax.swing.JFrame {
 	} catch (BadLocationException e) {
 	    e.printStackTrace();
 	}
+    }
+
+    private void posicionCursor() {
+	textPaneEditor.addCaretListener(new CaretListener() {
+	    @Override
+	    public void caretUpdate(CaretEvent e) {
+		int dot = e.getDot(); // Posición actual del cursor
+		int fila, columna;
+		StyledDocument doc = textPaneEditor.getStyledDocument();
+		Element root = doc.getDefaultRootElement();
+
+		fila = root.getElementIndex(dot) + 1; // Filas comienzan en 0
+		Element lineElem = root.getElement(fila - 1);
+		columna = dot - lineElem.getStartOffset() + 1; // Columnas comienzan en 0
+		labelFila.setText("Fila: " + fila);
+		labelColumna.setText("Columna: " + columna);
+	    }
+	});
     }
 }

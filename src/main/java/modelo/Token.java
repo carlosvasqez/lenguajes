@@ -18,6 +18,14 @@ public class Token {
 	this.columna = columna;
     }
 
+    public TokenEnum getTokenEnum() {
+	return tokenEnum;
+    }
+
+    public String getLexena() {
+	return lexena;
+    }
+
     @Override
     public String toString() {
 	return "Token{" + "token=" + tokenEnum + ", lexena=" + lexena + ", fila=" + fila + ", columna=" + columna + '}';

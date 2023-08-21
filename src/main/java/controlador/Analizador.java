@@ -125,6 +125,7 @@ public class Analizador {
 	    }
 	}
 	mostrarAnalisis();
+	colorear();
     }
 
     private void mostrarAnalisis() {
@@ -132,6 +133,11 @@ public class Analizador {
 	for (Token listaToken : listaTokens) {
 	    escritor.escribir(listaToken.toString());
 	}
+    }
+
+    private void colorear() {
+	StyledDocument doc = textPaneEditor.getStyledDocument();
+
     }
 
     private void buscarTokensEn(int fila, String contenido) {
@@ -255,17 +261,17 @@ public class Analizador {
     }
 
     private void crearToken(int fila, int columna) {
-	Token token = new Token(diccionario.get(str), str, fila, columna);
+	Token token = new Token(diccionario.get(str), str, fila, columna - str.length());
 	listaTokens.add(token);
     }
 
     private void crearTokenEspacio(int fila, int columna) {
-	Token token = new Token(diccionario.get(" "), "espacio", fila, columna);
+	Token token = new Token(diccionario.get(" "), "espacio", fila, columna - 1);
 	listaTokens.add(token);
     }
 
     private void crearTokenTab(int fila, int columna) {
-	Token token = new Token(diccionario.get("\t"), "tabulacion", fila, columna);
+	Token token = new Token(diccionario.get("\t"), "tabulacion", fila, columna - String.valueOf("\t").length());
 	listaTokens.add(token);
     }
 
@@ -275,44 +281,34 @@ public class Analizador {
     }
 
     private void crearTokenCadena(int fila, int columna) {
-	Token token = new Token(TokenEnum.CONSTANTE, str, fila, columna);
+	Token token = new Token(TokenEnum.CONSTANTE, str, fila, columna - str.length());
 	listaTokens.add(token);
     }
 
     private void crearTokenV(int fila, int columna) {
 	if (esEntero()) {
-	    Token token = new Token(TokenEnum.CONSTANTE, str, fila, columna);
+	    Token token = new Token(TokenEnum.CONSTANTE, str, fila, columna - str.length());
 	    listaTokens.add(token);
 	} else if (esDecimal()) {
-	    Token token = new Token(TokenEnum.CONSTANTE, str, fila, columna);
+	    Token token = new Token(TokenEnum.CONSTANTE, str, fila, columna - str.length());
 	    listaTokens.add(token);
 	} else if (esCadena()) {
-	    Token token = new Token(TokenEnum.CONSTANTE, str, fila, columna);
+	    Token token = new Token(TokenEnum.CONSTANTE, str, fila, columna - str.length());
 	    listaTokens.add(token);
 	} else if (esComentario()) {
-	    Token token = new Token(TokenEnum.CONSTANTE, str, fila, columna);
+	    Token token = new Token(TokenEnum.CONSTANTE, str, fila, columna - str.length());
 	    listaTokens.add(token);
 	} else if (esIdentificador()) {
-	    Token token = new Token(TokenEnum.CONSTANTE, str, fila, columna);
+	    Token token = new Token(TokenEnum.CONSTANTE, str, fila, columna - str.length());
 	    listaTokens.add(token);
 	} else {
 	    generarError("no es entero, ni decimal, ni cadena, ni comentario, ni identificador", fila, columna);
 	}
-	
-    }
 
-    private void crearTokenEntero(int fila, int columna) {
-	Token token = new Token(TokenEnum.CONSTANTE, str, fila, columna);
-	listaTokens.add(token);
-    }
-
-    private void crearTokenDecimal(int fila, int columna) {
-	Token token = new Token(TokenEnum.CONSTANTE, str, fila, columna);
-	listaTokens.add(token);
     }
 
     private void generarError(String mensaje, int fila, int columna) {
-	System.out.println(mensaje + "\t[" + fila + " : " + (columna - str.length())+"]");
+	System.out.println(mensaje + "\t[" + fila + " : " + (columna - str.length()) + "]");
     }
 
     private boolean esEspacio(char caracter) {
