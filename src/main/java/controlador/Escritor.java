@@ -61,11 +61,8 @@ public class Escritor {
 	StyledDocument doc = textPane.getStyledDocument();
 	for (Token listaToken : listaTokens) {
 	    String lexema = listaToken.getLexena();
-	    
-	    if (!lexema.equalsIgnoreCase(" ")
-		    || !lexema.equalsIgnoreCase("\t")
-		    || !lexema.equalsIgnoreCase("\n")) {
 
+	    if (!lexema.isBlank()) {
 		//si no es espacio, tab, o salto de linea, entonces aplicar color
 		SimpleAttributeSet estilo = new SimpleAttributeSet();
 
@@ -83,7 +80,6 @@ public class Escritor {
 		}
 
 	    } else {
-
 		try {
 		    //es espacio o tab o cadena entonces no se le agrega color
 		    doc.insertString(doc.getLength(), lexema, null);

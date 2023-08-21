@@ -121,6 +121,7 @@ public class Analizador implements Ejecutable {
 	escritor.limpiar();
 	StyledDocument doc = textPaneEditor.getStyledDocument();
 	Element element = doc.getDefaultRootElement();
+
 	for (int i = 0; i < element.getElementCount(); i++) {
 	    Element linea = element.getElement(i);
 	    int inicioLinea = linea.getStartOffset();
@@ -138,9 +139,7 @@ public class Analizador implements Ejecutable {
 	int contadorLogs = 0;
 	Escritor escritor = new Escritor(textPaneOutput);
 	for (Token listaToken : listaTokens) {
-	    if (!listaToken.getLexena().equalsIgnoreCase(" ")
-		    || !listaToken.getLexena().equalsIgnoreCase("\t")
-		    || !listaToken.getLexena().equalsIgnoreCase("\n")) {
+	    if (!listaToken.getLexena().isBlank()) {
 		contadorLogs++;
 		escritor.escribirLinea(contadorLogs + " . " + listaToken.toString());
 	    }
