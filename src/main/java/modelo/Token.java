@@ -8,8 +8,8 @@ public class Token {
 
     private final TokenEnum tokenEnum;
     private final String lexena;
-    private final int fila;
-    private final int columna;
+    protected final int fila;
+    protected final int columna;
 
     public Token(TokenEnum tokenEnum, String lexena, int fila, int columna) {
 	this.tokenEnum = tokenEnum;
@@ -28,7 +28,15 @@ public class Token {
 
     @Override
     public String toString() {
-	return "Token{" + "token=" + tokenEnum + ", lexena=" + lexena + ", fila=" + fila + ", columna=" + columna + '}';
+	if (" ".equalsIgnoreCase(lexena)) {
+	    return "ESPACIO {" + " fila=" + fila + ", columna=" + columna + '}';
+	} else if ("\t".equalsIgnoreCase(lexena)) {
+	    return "TABULACION {" + " fila=" + fila + ", columna=" + columna + '}';
+	} else if ("\n".equalsIgnoreCase(lexena)) {
+	    return "SALTO_LINEA {" + " fila=" + fila + ", columna=" + columna + '}';
+	} else {
+	    return "TOKEN {" + " tipo=" + tokenEnum + ", lexena=" + lexena + ", fila=" + fila + ", columna=" + columna + '}';
+	}
     }
 
 }

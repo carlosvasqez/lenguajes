@@ -1,6 +1,6 @@
 package controlador;
 
-import modelo.Alfabeto;
+import modelo.AlfabetoChar;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -13,6 +13,7 @@ import javax.swing.text.Element;
 import javax.swing.text.StyledDocument;
 import modelo.Token;
 import modelo.TokenEnum;
+import modelo.TokenError;
 
 /**
  *
@@ -103,12 +104,18 @@ public class Analizador {
 	diccionario.put(":", TokenEnum.OTRO);
 
 	diccionario.put(" ", TokenEnum.ESPECIAL);
-	diccionario.putIfAbsent("\n", TokenEnum.ESPECIAL);
+	diccionario.put("\n", TokenEnum.ESPECIAL);
 	diccionario.put("\t", TokenEnum.ESPECIAL);
 
     }
 
     public void analizar() {
+	generarAnalisis();
+	mostrarAnalisis();
+	colorear();
+    }
+
+    private void generarAnalisis() {
 	Escritor escritor = new Escritor(textPaneOutput);
 	escritor.limpiar();
 	StyledDocument doc = textPaneEditor.getStyledDocument();
@@ -124,20 +131,23 @@ public class Analizador {
 		Logger.getLogger(Analizador.class.getName()).log(Level.SEVERE, null, ex);
 	    }
 	}
-	mostrarAnalisis();
-	colorear();
     }
 
     private void mostrarAnalisis() {
 	Escritor escritor = new Escritor(textPaneOutput);
 	for (Token listaToken : listaTokens) {
-	    escritor.escribir(listaToken.toString());
+	    if (!listaToken.getLexena().equalsIgnoreCase(" ")
+		    || !listaToken.getLexena().equalsIgnoreCase("\t")
+		    || !listaToken.getLexena().equalsIgnoreCase("\n")) {
+		escritor.escribirLinea(listaToken.toString());
+	    }
 	}
     }
 
     private void colorear() {
-	StyledDocument doc = textPaneEditor.getStyledDocument();
-
+	Escritor escritor = new Escritor(textPaneEditor);
+	escritor.limpiar();
+	escritor.colorear(listaTokens);
     }
 
     private void buscarTokensEn(int fila, String contenido) {
@@ -203,30 +213,21 @@ public class Analizador {
     private void validarStr(char caracter, int fila, int columna) {
 	if (!str.isBlank()) {
 	    if (str.charAt(0) == '\"' || str.charAt(0) == '\'') {
-		if (caracter == Alfabeto.ESPACIO.getSimbolo()) {
+		if (caracter == AlfabetoChar.ESPACIO.getSimbolo()) {
 		    str += caracter;
-		} else if (caracter == Alfabeto.TABULACION.getSimbolo()) {
+		} else if (caracter == AlfabetoChar.TABULACION.getSimbolo()) {
 		    str += caracter;
-		} else if (caracter == Alfabeto.SALTO_LINEA.getSimbolo()) {
-		    //verificar si se ha cerrado la cadena sino generar un error
-
-		    //generar un error
-		    generarError("cadena no completada", fila, columna);
-
-//		    if ((str.charAt(0) == str.charAt(str.length() - 1))
-//			    || (str.charAt(0) == str.charAt(str.length() - 1))) {
-//			//si se cumplio es porque el token ya fue generado entonces se debe aplicar el salto de linea
-//			crearTokenSalto(fila, columna);
-//		    } else {
-//			//
-//		    }
+		} else if (caracter == AlfabetoChar.SALTO_LINEA.getSimbolo()) {
+		    //verificar si se ha cerrado la cadena cuando hay salto de linea,sino generar un error
+		    //("cadena no cerrada", fila, columna);
+		    crearTokenV(fila, columna);
 		}
 	    } else if (str.charAt(0) == '#') {
-		if (caracter == Alfabeto.ESPACIO.getSimbolo()) {
+		if (caracter == AlfabetoChar.ESPACIO.getSimbolo()) {
 		    str += caracter;
-		} else if (caracter == Alfabeto.TABULACION.getSimbolo()) {
+		} else if (caracter == AlfabetoChar.TABULACION.getSimbolo()) {
 		    str += caracter;
-		} else if (caracter == Alfabeto.SALTO_LINEA.getSimbolo()) {
+		} else if (caracter == AlfabetoChar.SALTO_LINEA.getSimbolo()) {
 		    crearTokenV(fila, columna);//crear token comentario
 		    crearTokenSalto(fila, columna);//crear seguidamente el token salto de linea
 		}
@@ -238,21 +239,21 @@ public class Analizador {
 		    //identificadores, numero.(metodos), comentarios
 		    crearTokenV(fila, columna);
 		}
-		if (caracter == Alfabeto.ESPACIO.getSimbolo()) {
+		if (caracter == AlfabetoChar.ESPACIO.getSimbolo()) {
 		    crearTokenEspacio(fila, columna);
 		    str = "";
-		} else if (caracter == Alfabeto.TABULACION.getSimbolo()) {
+		} else if (caracter == AlfabetoChar.TABULACION.getSimbolo()) {
 		    crearTokenTab(fila, columna);
-		} else if (caracter == Alfabeto.SALTO_LINEA.getSimbolo()) {
+		} else if (caracter == AlfabetoChar.SALTO_LINEA.getSimbolo()) {
 		    crearTokenSalto(fila, columna);
 		}
 	    }
 	} else {//se ejecuta cuando se ha encontrado una cadena anteriormente y ahora hay un especial
-	    if (caracter == Alfabeto.ESPACIO.getSimbolo()) {
+	    if (caracter == AlfabetoChar.ESPACIO.getSimbolo()) {
 		crearTokenEspacio(fila, columna);
-	    } else if (caracter == Alfabeto.TABULACION.getSimbolo()) {
+	    } else if (caracter == AlfabetoChar.TABULACION.getSimbolo()) {
 		crearTokenTab(fila, columna);
-	    } else if (caracter == Alfabeto.SALTO_LINEA.getSimbolo()) {
+	    } else if (caracter == AlfabetoChar.SALTO_LINEA.getSimbolo()) {
 		crearTokenSalto(fila, columna);
 	    }
 	    str = "";
@@ -266,23 +267,27 @@ public class Analizador {
     }
 
     private void crearTokenEspacio(int fila, int columna) {
-	Token token = new Token(diccionario.get(" "), "espacio", fila, columna - 1);
+	Token token = new Token(diccionario.get(" "), " ", fila, columna - 1);
 	listaTokens.add(token);
     }
 
     private void crearTokenTab(int fila, int columna) {
-	Token token = new Token(diccionario.get("\t"), "tabulacion", fila, columna - String.valueOf("\t").length());
+	Token token = new Token(diccionario.get("\t"), "\t", fila, columna - String.valueOf("\t").length());
 	listaTokens.add(token);
     }
 
     private void crearTokenSalto(int fila, int columna) {
-	Token token = new Token(diccionario.get("\n"), "salto de linea", fila, columna);
+	Token token = new Token(diccionario.get("\n"), "\n", fila, columna);
 	listaTokens.add(token);
     }
 
     private void crearTokenCadena(int fila, int columna) {
 	Token token = new Token(TokenEnum.CONSTANTE, str, fila, columna - str.length());
 	listaTokens.add(token);
+    }
+
+    private void crearTokenError(int fila, int columna) {
+
     }
 
     private void crearTokenV(int fila, int columna) {
@@ -296,10 +301,10 @@ public class Analizador {
 	    Token token = new Token(TokenEnum.CONSTANTE, str, fila, columna - str.length());
 	    listaTokens.add(token);
 	} else if (esComentario()) {
-	    Token token = new Token(TokenEnum.CONSTANTE, str, fila, columna - str.length());
+	    Token token = new Token(TokenEnum.COMENTARIO, str, fila, columna - str.length());
 	    listaTokens.add(token);
 	} else if (esIdentificador()) {
-	    Token token = new Token(TokenEnum.CONSTANTE, str, fila, columna - str.length());
+	    Token token = new Token(TokenEnum.IDENTIFICADOR, str, fila, columna - str.length());
 	    listaTokens.add(token);
 	} else {
 	    generarError("no es entero, ni decimal, ni cadena, ni comentario, ni identificador", fila, columna);
@@ -308,28 +313,30 @@ public class Analizador {
     }
 
     private void generarError(String mensaje, int fila, int columna) {
-	System.out.println(mensaje + "\t[" + fila + " : " + (columna - str.length()) + "]");
+	Token tokenError = new TokenError(TokenEnum.ERROR, str, fila, columna - str.length());
+	listaTokens.add(tokenError);
+	((TokenError) tokenError).setMensaje(mensaje);
     }
 
     private boolean esEspacio(char caracter) {
-	return caracter == Alfabeto.ESPACIO.getSimbolo();
+	return caracter == AlfabetoChar.ESPACIO.getSimbolo();
     }
 
     private boolean esSaltoDeLinea(char caracter) {
-	return caracter == Alfabeto.SALTO_LINEA.getSimbolo();
+	return caracter == AlfabetoChar.SALTO_LINEA.getSimbolo();
     }
 
     private boolean esTabulacion(char caracter) {
-	return caracter == Alfabeto.TABULACION.getSimbolo();
+	return caracter == AlfabetoChar.TABULACION.getSimbolo();
     }
 
     private boolean esSimboloCadena(char caracter) {
-	return caracter == Alfabeto.COMILLA.getSimbolo()
-		|| caracter == Alfabeto.DOBLE_COMILLA.getSimbolo();
+	return caracter == AlfabetoChar.COMILLA.getSimbolo()
+		|| caracter == AlfabetoChar.DOBLE_COMILLA.getSimbolo();
     }
 
     private boolean esSimboloNumeral(char caracter) {
-	return caracter == Alfabeto.NUMERAL.getSimbolo();
+	return caracter == AlfabetoChar.NUMERAL.getSimbolo();
     }
 
     private boolean esEntero() {

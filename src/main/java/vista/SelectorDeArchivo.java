@@ -11,7 +11,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 public class SelectorDeArchivo extends JFileChooser {
 
     public SelectorDeArchivo() {
-	FileNameExtensionFilter filtro = new FileNameExtensionFilter("archivo .txt", "txt");
+	FileNameExtensionFilter filtro = new FileNameExtensionFilter("archivo .txt o .py", "txt", "py");
 	File directorioActual = new File(".");
 	super.setCurrentDirectory(directorioActual);
 	super.setAcceptAllFileFilterUsed(false);

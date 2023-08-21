@@ -12,11 +12,12 @@ public enum TokenEnum {
     COMPARACION(Color.CYAN),
     LOGICO(Color.CYAN),
     ASIGNACION(Color.CYAN),
-    PALABRA_RESERVADA(new Color(102, 0, 153)),//morado
+    PALABRA_RESERVADA(new Color(128, 0, 128)),//morado
     CONSTANTE(Color.ORANGE),
     COMENTARIO(Color.GRAY),
     OTRO(Color.GREEN),
-    ESPECIAL(Color.PINK);
+    ESPECIAL(Color.PINK),
+    ERROR(new Color(255, 51, 255));
 
     private final Color color;
 

@@ -6,10 +6,12 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JTextPane;
 import javax.swing.text.BadLocationException;
+import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.Style;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
 import modelo.Token;
+import modelo.TokenEnum;
 
 /**
  *
@@ -28,43 +30,72 @@ public class Escritor {
 	textPane.setText("");
     }
 
-    public void escribir(String line) {
+    public void escribirLinea(String linea) {
+	if (esPrimeraLinea) {
+	    escribirAlInicio(linea);
+	    esPrimeraLinea = false;
+	} else {
+	    escribirAlFinal(linea);
+	}
+
+    }
+
+    public void escribirAlInicio(String linea) {
 	StyledDocument doc = textPane.getStyledDocument();
 	try {
-	    if (esPrimeraLinea) {
-		doc.insertString(0, line, null);
-		esPrimeraLinea = false;
-	    } else {
-		doc.insertString(doc.getLength(), "\n" + line, null);
-	    }
+	    doc.insertString(0, linea, null);
 	} catch (BadLocationException ex) {
-	    Logger.getLogger(Cargador.class.getName()).log(Level.SEVERE, null, ex);
+	    Logger.getLogger(Escritor.class.getName()).log(Level.SEVERE, null, ex);
+	}
+    }
+
+    public void escribirAlFinal(String linea) {
+	StyledDocument doc = textPane.getStyledDocument();
+	try {
+	    doc.insertString(doc.getLength(), "\n" + linea, null);
+	} catch (BadLocationException ex) {
+	    Logger.getLogger(Escritor.class.getName()).log(Level.SEVERE, null, ex);
 	}
 
     }
 
     public void colorear(List<Token> listaTokens) {
 	StyledDocument doc = textPane.getStyledDocument();
-	String text = textPane.getText();
-	Style estilo = textPane.addStyle("", null);
-	
-	
-	
 	for (Token listaToken : listaTokens) {
+	    String lexema = listaToken.getLexena();
 
-	    StyleConstants.setForeground(estilo, listaToken.getTokenEnum().getColor());
-	    //StyleConstants.setBackground(estilo, Color.white);
+	    if (!lexema.equalsIgnoreCase(" ")
+		    || !lexema.equalsIgnoreCase("\t")
+		    || !lexema.equalsIgnoreCase("\n")) {
 
-	    try {
-		doc.insertString(doc.getLength(), listaToken.getLexena(), null);
-	    } catch (BadLocationException ex) {
-		Logger.getLogger(Cargador.class.getName()).log(Level.SEVERE, null, ex);
+		//si no es espacio, tab, o salto de linea, entonces aplicar color
+		SimpleAttributeSet estilo = new SimpleAttributeSet();
+
+		//StyleConstants.setFontSize(estilo, 16);
+		StyleConstants.setBold(estilo, true);
+		if (listaToken.getTokenEnum() == TokenEnum.ERROR) {
+		    StyleConstants.setUnderline(estilo, true);
+		}
+		StyleConstants.setForeground(estilo, listaToken.getTokenEnum().getColor());
+
+		try {
+		    doc.insertString(doc.getLength(), lexema, estilo);
+		} catch (BadLocationException ex) {
+		    Logger.getLogger(Escritor.class.getName()).log(Level.SEVERE, null, ex);
+		}
+
+	    } else {
+
+		try {
+		    //es espacio o tab o cadena entonces no se le agrega color
+		    doc.insertString(doc.getLength(), lexema, null);
+		} catch (BadLocationException ex) {
+		    Logger.getLogger(Escritor.class.getName()).log(Level.SEVERE, null, ex);
+		}
+
 	    }
-
-	    //doc.insertString(doc.getLength(), "Game of Thrones ", style);
-	    StyleConstants.setForeground(estilo, Color.yellow);
-	    StyleConstants.setBackground(estilo, Color.gray);
-	    //doc.insertString(doc.getLength(), "Season 8", style);
 	}
+
     }
+
 }

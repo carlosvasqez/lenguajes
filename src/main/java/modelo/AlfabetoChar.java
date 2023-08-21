@@ -4,7 +4,7 @@ package modelo;
  *
  * @author usuario
  */
-public enum Alfabeto {
+public enum AlfabetoChar {
 
     GUION_BAJO('_'),
     SUMA('+'),
@@ -35,7 +35,7 @@ public enum Alfabeto {
 
     private final char simbolo;
 
-    private Alfabeto(char simbolo) {
+    private AlfabetoChar(char simbolo) {
 	this.simbolo = simbolo;
     }
 

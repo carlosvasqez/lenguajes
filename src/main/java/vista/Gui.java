@@ -1,18 +1,13 @@
 package vista;
 
+import com.formdev.flatlaf.FlatDarculaLaf;
 import com.formdev.flatlaf.FlatDarkLaf;
 import controlador.Analizador;
 import controlador.Cargador;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import javax.swing.JTextPane;
+import controlador.CursorListener;
+import controlador.TabuladorListener;
+import javax.swing.JOptionPane;
 import javax.swing.UIManager;
-import javax.swing.event.CaretEvent;
-import javax.swing.event.CaretListener;
-import javax.swing.text.BadLocationException;
-import javax.swing.text.Document;
-import javax.swing.text.Element;
-import javax.swing.text.StyledDocument;
 
 /**
  *
@@ -25,8 +20,8 @@ public class Gui extends javax.swing.JFrame {
      */
     public Gui() {
 	initComponents();
-	tabulacionPersonalizada();
-	posicionCursor();
+	textPaneEditor.addCaretListener(new CursorListener(textPaneEditor, labelFila, labelColumna));
+	textPaneEditor.addKeyListener(new TabuladorListener(textPaneEditor, 8));
     }
 
     /**
@@ -230,8 +225,14 @@ public class Gui extends javax.swing.JFrame {
 
     private void botonAnalizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonAnalizarActionPerformed
 	// TODO add your handling code here:
-	Analizador analizador = new Analizador(textPaneEditor, textPaneOutput);
-	analizador.analizar();
+	if (!textPaneEditor.getText().isBlank()) {
+	    Analizador analizador = new Analizador(textPaneEditor, textPaneOutput);
+	    analizador.analizar();
+	} else {
+	    textPaneEditor.setText("");
+	    textPaneOutput.setText("");
+	    JOptionPane.showMessageDialog(this, "el editor esta vacio. abra un archivo o ingrese texto");
+	}
     }//GEN-LAST:event_botonAnalizarActionPerformed
 
     private void botonGenerarReporteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonGenerarReporteActionPerformed
@@ -308,52 +309,4 @@ public class Gui extends javax.swing.JFrame {
     private javax.swing.JTextPane textPaneOutput;
     // End of variables declaration//GEN-END:variables
 
-    private void tabulacionPersonalizada() {
-	textPaneEditor.addKeyListener(new KeyListener() {
-	    @Override
-	    public void keyTyped(KeyEvent e) {
-		// No se necesita implementar esto
-	    }
-
-	    @Override
-	    public void keyPressed(KeyEvent e) {
-		if (e.getKeyCode() == KeyEvent.VK_TAB) {
-		    e.consume(); // Evita que el JTextPane maneje la tabulación por defecto
-		    insertarTabulacion(textPaneEditor, 8); // Inserta una tabulación de 8 espacios
-		}
-	    }
-
-	    @Override
-	    public void keyReleased(KeyEvent e) {
-		// No se necesita implementar esto
-	    }
-	});
-    }
-
-    private void insertarTabulacion(JTextPane textPane, int espacios) {
-	Document document = textPane.getDocument();
-	try {
-	    document.insertString(textPane.getCaretPosition(), " ".repeat(espacios), null);
-	} catch (BadLocationException e) {
-	    e.printStackTrace();
-	}
-    }
-
-    private void posicionCursor() {
-	textPaneEditor.addCaretListener(new CaretListener() {
-	    @Override
-	    public void caretUpdate(CaretEvent e) {
-		int dot = e.getDot(); // Posición actual del cursor
-		int fila, columna;
-		StyledDocument doc = textPaneEditor.getStyledDocument();
-		Element root = doc.getDefaultRootElement();
-
-		fila = root.getElementIndex(dot) + 1; // Filas comienzan en 0
-		Element lineElem = root.getElement(fila - 1);
-		columna = dot - lineElem.getStartOffset() + 1; // Columnas comienzan en 0
-		labelFila.setText("Fila: " + fila);
-		labelColumna.setText("Columna: " + columna);
-	    }
-	});
-    }
 }
