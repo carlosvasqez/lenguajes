@@ -29,13 +29,14 @@ public class Token {
     @Override
     public String toString() {
 	if (" ".equalsIgnoreCase(lexena)) {
-	    return "ESPACIO {" + " fila=" + fila + ", columna=" + columna + '}';
+	    System.out.println("ddddddddddddddd");
+	    return "ESPACIO {" + " fila=" + fila + " , columna=" + columna + '}';
 	} else if ("\t".equalsIgnoreCase(lexena)) {
-	    return "TABULACION {" + " fila=" + fila + ", columna=" + columna + '}';
+	    return "TABULACION {" + " fila=" + fila + " , columna=" + columna + '}';
 	} else if ("\n".equalsIgnoreCase(lexena)) {
-	    return "SALTO_LINEA {" + " fila=" + fila + ", columna=" + columna + '}';
+	    return "SALTO_LINEA {" + " fila=" + fila + " , columna=" + columna + '}';
 	} else {
-	    return "TOKEN {" + " tipo=" + tokenEnum + ", lexena=" + lexena + ", fila=" + fila + ", columna=" + columna + '}';
+	    return "TOKEN {" + " tipo=" + tokenEnum + " , lexema=" + lexena + " , fila=" + fila + " , columna=" + columna + '}';
 	}
     }
 

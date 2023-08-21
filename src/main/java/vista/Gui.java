@@ -22,7 +22,7 @@ public class Gui extends javax.swing.JFrame {
     public Gui() {
 	initComponents();
 	textPaneEditor.addCaretListener(new CursorListener(textPaneEditor, labelFila, labelColumna));
-	textPaneEditor.addKeyListener(new TabuladorListener(textPaneEditor, 8));
+	//textPaneEditor.addKeyListener(new TabuladorListener(textPaneEditor, 8));
     }
 
     /**
