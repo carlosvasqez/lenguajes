@@ -1,13 +1,11 @@
 package controlador;
 
-import java.awt.Color;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JTextPane;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.SimpleAttributeSet;
-import javax.swing.text.Style;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
 import modelo.Token;
@@ -63,7 +61,7 @@ public class Escritor {
 	StyledDocument doc = textPane.getStyledDocument();
 	for (Token listaToken : listaTokens) {
 	    String lexema = listaToken.getLexena();
-
+	    
 	    if (!lexema.equalsIgnoreCase(" ")
 		    || !lexema.equalsIgnoreCase("\t")
 		    || !lexema.equalsIgnoreCase("\n")) {

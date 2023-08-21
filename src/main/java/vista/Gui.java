@@ -1,10 +1,11 @@
 package vista;
 
-import com.formdev.flatlaf.FlatDarculaLaf;
 import com.formdev.flatlaf.FlatDarkLaf;
 import controlador.Analizador;
 import controlador.Cargador;
 import controlador.CursorListener;
+import controlador.Ejecutable;
+import controlador.GeneradorReporte;
 import controlador.TabuladorListener;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
@@ -194,9 +195,9 @@ public class Gui extends javax.swing.JFrame {
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                         .addComponent(labelOutput, javax.swing.GroupLayout.Alignment.LEADING)
                         .addComponent(jToolBar2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 468, Short.MAX_VALUE)
-                        .addComponent(jToolBar3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 457, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(28, 28, 28))
+                        .addComponent(jToolBar3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 543, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -225,18 +226,15 @@ public class Gui extends javax.swing.JFrame {
 
     private void botonAnalizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonAnalizarActionPerformed
 	// TODO add your handling code here:
-	if (!textPaneEditor.getText().isBlank()) {
-	    Analizador analizador = new Analizador(textPaneEditor, textPaneOutput);
-	    analizador.analizar();
-	} else {
-	    textPaneEditor.setText("");
-	    textPaneOutput.setText("");
-	    JOptionPane.showMessageDialog(this, "el editor esta vacio. abra un archivo o ingrese texto");
-	}
+	Analizador analizador = new Analizador(textPaneEditor, textPaneOutput);
+	presionar(analizador, "el editor esta vacio. abra un archivo o ingrese texto");
     }//GEN-LAST:event_botonAnalizarActionPerformed
+
 
     private void botonGenerarReporteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonGenerarReporteActionPerformed
 	// TODO add your handling code here:
+	GeneradorReporte generadorReporte = new GeneradorReporte(textPaneEditor, textPaneOutput);
+	presionar(generadorReporte, "el editor esta vacion. no se puede generar reporte");
     }//GEN-LAST:event_botonGenerarReporteActionPerformed
 
     private void botonArchivoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonArchivoActionPerformed
@@ -251,6 +249,7 @@ public class Gui extends javax.swing.JFrame {
 
     private void botonAcerdaDeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonAcerdaDeActionPerformed
 	// TODO add your handling code here:
+	JOptionPane.showMessageDialog(this, "Practica 1 Lab. Lenguajes Formales y de Programacion\n Analizador Lexico.\n Elaborado por Carlos Vasquez");
     }//GEN-LAST:event_botonAcerdaDeActionPerformed
 
     /**
@@ -309,4 +308,13 @@ public class Gui extends javax.swing.JFrame {
     private javax.swing.JTextPane textPaneOutput;
     // End of variables declaration//GEN-END:variables
 
+    private void presionar(Ejecutable ejecutable, String msg) {
+	if (!textPaneEditor.getText().isBlank()) {
+	    ejecutable.realizar();
+	} else {
+	    textPaneEditor.setText("");
+	    textPaneOutput.setText("");
+	    JOptionPane.showMessageDialog(this, msg);
+	}
+    }
 }

@@ -19,7 +19,7 @@ import modelo.TokenError;
  *
  * @author usuario
  */
-public class Analizador {
+public class Analizador implements Ejecutable {
 
     private final Map<String, TokenEnum> diccionario;
     private final List<Token> listaTokens;
@@ -109,7 +109,8 @@ public class Analizador {
 
     }
 
-    public void analizar() {
+    @Override
+    public void realizar() {
 	generarAnalisis();
 	mostrarAnalisis();
 	colorear();
@@ -134,12 +135,14 @@ public class Analizador {
     }
 
     private void mostrarAnalisis() {
+	int contadorLogs = 0;
 	Escritor escritor = new Escritor(textPaneOutput);
 	for (Token listaToken : listaTokens) {
 	    if (!listaToken.getLexena().equalsIgnoreCase(" ")
 		    || !listaToken.getLexena().equalsIgnoreCase("\t")
 		    || !listaToken.getLexena().equalsIgnoreCase("\n")) {
-		escritor.escribirLinea(listaToken.toString());
+		contadorLogs++;
+		escritor.escribirLinea(contadorLogs + " . " + listaToken.toString());
 	    }
 	}
     }
@@ -197,6 +200,7 @@ public class Analizador {
 	    } else {
 		//si no es numero ni letra, ni cadena, ni espacio, ni tab ni salto
 		str += caracter;
+		columna++;
 	    }
 	}
     }
@@ -267,7 +271,7 @@ public class Analizador {
     }
 
     private void crearTokenEspacio(int fila, int columna) {
-	Token token = new Token(diccionario.get(" "), " ", fila, columna - 1);
+	Token token = new Token(diccionario.get(" "), " ", fila, columna);
 	listaTokens.add(token);
     }
 
@@ -284,10 +288,6 @@ public class Analizador {
     private void crearTokenCadena(int fila, int columna) {
 	Token token = new Token(TokenEnum.CONSTANTE, str, fila, columna - str.length());
 	listaTokens.add(token);
-    }
-
-    private void crearTokenError(int fila, int columna) {
-
     }
 
     private void crearTokenV(int fila, int columna) {
