@@ -29,7 +29,6 @@ public class Token {
     @Override
     public String toString() {
 	if (" ".equalsIgnoreCase(lexena)) {
-	    System.out.println("ddddddddddddddd");
 	    return "ESPACIO {" + " fila=" + fila + " , columna=" + columna + '}';
 	} else if ("\t".equalsIgnoreCase(lexena)) {
 	    return "TABULACION {" + " fila=" + fila + " , columna=" + columna + '}';

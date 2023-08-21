@@ -66,7 +66,7 @@ public class Escritor {
 		//si no es espacio, tab, o salto de linea, entonces aplicar color
 		SimpleAttributeSet estilo = new SimpleAttributeSet();
 
-		//StyleConstants.setFontSize(estilo, 16);
+		StyleConstants.setFontSize(estilo, 13);
 		StyleConstants.setBold(estilo, true);
 		if (listaToken.getTokenEnum() == TokenEnum.ERROR) {
 		    StyleConstants.setUnderline(estilo, true);

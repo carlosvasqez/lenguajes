@@ -1,14 +1,17 @@
 package vista;
 
-import com.formdev.flatlaf.FlatDarkLaf;
 import controlador.Analizador;
 import controlador.Cargador;
 import controlador.CursorListener;
 import controlador.Ejecutable;
 import controlador.GeneradorReporte;
-import controlador.TabuladorListener;
+import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
+import javax.swing.AbstractAction;
+import javax.swing.Action;
 import javax.swing.JOptionPane;
-import javax.swing.UIManager;
+import javax.swing.KeyStroke;
+import javax.swing.text.MutableAttributeSet;
 
 /**
  *
@@ -23,6 +26,7 @@ public class Gui extends javax.swing.JFrame {
 	initComponents();
 	textPaneEditor.addCaretListener(new CursorListener(textPaneEditor, labelFila, labelColumna));
 	//textPaneEditor.addKeyListener(new TabuladorListener(textPaneEditor, 8));
+	usarEspacio();
     }
 
     /**
@@ -45,6 +49,8 @@ public class Gui extends javax.swing.JFrame {
         javax.swing.Box.Filler filler1 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 0), new java.awt.Dimension(32767, 0));
         botonAnalizar = new javax.swing.JButton();
         javax.swing.JToolBar.Separator jSeparator4 = new javax.swing.JToolBar.Separator();
+        botonLimpiar = new javax.swing.JButton();
+        jSeparator7 = new javax.swing.JToolBar.Separator();
         botonGenerarReporte = new javax.swing.JButton();
         javax.swing.JScrollPane jScrollPane1 = new javax.swing.JScrollPane();
         textPaneEditor = new javax.swing.JTextPane();
@@ -120,6 +126,19 @@ public class Gui extends javax.swing.JFrame {
         });
         jToolBar2.add(botonAnalizar);
         jToolBar2.add(jSeparator4);
+
+        botonLimpiar.setText("Limpiar Pantalla");
+        botonLimpiar.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        botonLimpiar.setFocusable(false);
+        botonLimpiar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        botonLimpiar.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        botonLimpiar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botonLimpiarActionPerformed(evt);
+            }
+        });
+        jToolBar2.add(botonLimpiar);
+        jToolBar2.add(jSeparator7);
 
         botonGenerarReporte.setText("Generar Reporte");
         botonGenerarReporte.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
@@ -252,6 +271,14 @@ public class Gui extends javax.swing.JFrame {
 	JOptionPane.showMessageDialog(this, "Practica 1 Lab. Lenguajes Formales y de Programacion\n Analizador Lexico.\n Elaborado por Carlos Vasquez");
     }//GEN-LAST:event_botonAcerdaDeActionPerformed
 
+    private void botonLimpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonLimpiarActionPerformed
+	// TODO add your handling code here:
+	textPaneEditor.setText("");
+	textPaneOutput.setText("");
+	MutableAttributeSet mas = textPaneEditor.getInputAttributes();
+	mas.removeAttributes(mas);
+    }//GEN-LAST:event_botonLimpiarActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -262,11 +289,11 @@ public class Gui extends javax.swing.JFrame {
          * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
 	
 	 */
-	try {
-	    UIManager.setLookAndFeel(new FlatDarkLaf());
-	} catch (Exception ex) {
-	    System.err.println("Failed to initialize LaF");
-	}
+//	try {
+//	    UIManager.setLookAndFeel(new NimbusLookAndFeel());
+//	} catch (Exception ex) {
+//	    System.err.println("Failed to initialize LaF");
+//	}
 
 //	try {
 //	    for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
@@ -300,6 +327,8 @@ public class Gui extends javax.swing.JFrame {
     private javax.swing.JButton botonArchivo;
     private javax.swing.JButton botonAyuda;
     private javax.swing.JButton botonGenerarReporte;
+    private javax.swing.JButton botonLimpiar;
+    private javax.swing.JToolBar.Separator jSeparator7;
     private javax.swing.JLabel labelColumna;
     private javax.swing.JLabel labelFila;
     private javax.swing.JPanel panelLineaEditor;
@@ -316,5 +345,22 @@ public class Gui extends javax.swing.JFrame {
 	    textPaneOutput.setText("");
 	    JOptionPane.showMessageDialog(this, msg);
 	}
+    }
+
+    private void usarEspacio() {
+	Action spaceAction = new AbstractAction() {
+	    @Override
+	    public void actionPerformed(ActionEvent e) {
+		// Coloca aquí el código que deseas ejecutar cuando se presiona Espacio
+		// Por ejemplo, puedes insertar un espacio en el JTextPane
+		MutableAttributeSet mas = textPaneEditor.getInputAttributes();
+		mas.removeAttributes(mas);
+	    }
+	};
+
+	// Asociar la tecla Espacio al Action
+	KeyStroke spaceKeyStroke = KeyStroke.getKeyStroke(KeyEvent.VK_SPACE, 0);
+	textPaneEditor.getInputMap().put(spaceKeyStroke, "doSpaceAction");
+	textPaneEditor.getActionMap().put("doSpaceAction", spaceAction);
     }
 }
