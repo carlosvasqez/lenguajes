@@ -130,8 +130,8 @@ public class Analizador {
 	//antes de colorear se debe limpiar ya que al colorear se escribe basado en los tokens
 	limpiador.limpiarTodo();
 	//antes de colorear se borra el ultimo token que es el del bug \n antes de mostrar el output
-	int ultimoIndice = listaTokens.size() - 1;
-	listaTokens.remove(ultimoIndice);
+//	int ultimoIndice = listaTokens.size() - 1;
+//	listaTokens.remove(ultimoIndice);
 	mostrarColoreado();
 
 	mostrarOutput();
@@ -315,19 +315,15 @@ public class Analizador {
 
     private void crearTokenV(int fila, int columna) {
 	if (esEntero()) {
-	    System.out.println("1");
 	    Token token = new Token(TokenEnum.CONSTANTE, str, fila, columna - str.length());
 	    listaTokens.add(token);
 	} else if (esDecimal()) {
-	    System.out.println("2");
 	    Token token = new Token(TokenEnum.CONSTANTE, str, fila, columna - str.length());
 	    listaTokens.add(token);
 	} else if (esCadena()) {
-	    System.out.println("3");
 	    Token token = new Token(TokenEnum.CONSTANTE, str, fila, columna - str.length());
 	    listaTokens.add(token);
 	} else if (esComentario()) {
-	    System.out.println("4");
 	    Token token = new Token(TokenEnum.COMENTARIO, str, fila, columna - str.length());
 	    listaTokens.add(token);
 	} else if (esIdentificador()) {
