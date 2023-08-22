@@ -200,8 +200,8 @@ public class Analizador {
 		    str += caracter;
 		    if (esCadenaValida(caracter)) {
 			//se compara el caracter de cierre con el de inicio
-			crearTokenCadena(fila, columna);
 			columna++;
+			crearTokenCadena(fila, columna);
 			str = "";
 		    } else {
 			//signo de inicio diferente al de cierre
