@@ -7,7 +7,7 @@ import java.awt.Color;
  * @author usuario
  */
 public enum Asignacion implements Tkn {
-    IGUAL("+", new Color(135, 206, 235)),
+    IGUAL("=", new Color(135, 206, 235)),
     MAS_IGUAL(" ", new Color(135, 206, 235)),
     MENOS_IGUAL(" ", new Color(135, 206, 235)),
     POR_IGUAL(" ", new Color(135, 206, 235)),

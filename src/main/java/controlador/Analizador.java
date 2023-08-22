@@ -528,7 +528,13 @@ public class Analizador {
 	    }
 	}
 
+	// Verificar si la cadena no consiste solo en un guión bajo
+	boolean noEsSoloGuionBajo = !str.equals("_");
+
 	// Retornar true si cumple todas las condiciones
-	return contieneLetraOGuionBajo && noNumerosAlInicio && noContieneCaracteresEspeciales;
+	return contieneLetraOGuionBajo
+		&& noNumerosAlInicio
+		&& noContieneCaracteresEspeciales
+		&& noEsSoloGuionBajo;
     }
 }
