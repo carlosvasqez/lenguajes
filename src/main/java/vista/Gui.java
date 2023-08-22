@@ -3,18 +3,22 @@ package vista;
 import controlador.Analizador;
 import controlador.Cargador;
 import controlador.CursorListener;
-import controlador.GeneradorGrafico;
 import controlador.GeneradorReporte;
 import controlador.Limpiador;
+import java.awt.Color;
+import java.awt.Cursor;
+import java.awt.Desktop;
+import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.net.URI;
+import java.net.URISyntaxException;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.JTextPane;
 import javax.swing.KeyStroke;
 import javax.swing.text.MutableAttributeSet;
@@ -286,7 +290,7 @@ public class Gui extends javax.swing.JFrame {
 
     private void botonAyudaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonAyudaActionPerformed
 	// TODO add your handling code here:
-
+	mostrarAyuda();
     }//GEN-LAST:event_botonAyudaActionPerformed
 
     private void botonAcerdaDeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonAcerdaDeActionPerformed
@@ -389,6 +393,34 @@ public class Gui extends javax.swing.JFrame {
 	KeyStroke spaceKeyStroke = KeyStroke.getKeyStroke(KeyEvent.VK_SPACE, 0);
 	textPaneEditor.getInputMap().put(spaceKeyStroke, "doSpaceAction");
 	textPaneEditor.getActionMap().put("doSpaceAction", spaceAction);
+    }
+
+    private void mostrarAyuda() {
+	String mensaje = "Manual de usuario en el siguiente enlace: ";
+	String linkTexto = "Visitar el sitio web";
+	String url = "https://docs.google.com/document/d/11UL6opZ3IwReX9KJ-TsVGoUbUgC24Pz9aFqEe9ePhcI/edit?usp=sharing";
+
+	JLabel label = new JLabel(mensaje);
+	JLabel linkLabel = new JLabel(linkTexto);
+	linkLabel.setForeground(Color.BLUE.darker());
+
+	linkLabel.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+	linkLabel.addMouseListener(new java.awt.event.MouseAdapter() {
+	    public void mouseClicked(java.awt.event.MouseEvent evt) {
+		try {
+		    Desktop.getDesktop().browse(new URI(url));
+		} catch (IOException | URISyntaxException e) {
+		    e.printStackTrace();
+		}
+	    }
+	});
+
+	JPanel panel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+	panel.add(label);
+	panel.add(linkLabel);
+
+	JOptionPane.showMessageDialog(null, panel, "Enlace Web", JOptionPane.PLAIN_MESSAGE);
+
     }
 
 }
