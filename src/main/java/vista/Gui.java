@@ -3,10 +3,15 @@ package vista;
 import controlador.Analizador;
 import controlador.Cargador;
 import controlador.CursorListener;
+import controlador.GeneradorGrafico;
 import controlador.GeneradorReporte;
 import controlador.Limpiador;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.JOptionPane;
@@ -33,6 +38,7 @@ public class Gui extends javax.swing.JFrame {
 	limpiador = new Limpiador(this);
 	reporteGUI = new ReporteGUI(this, false);
 	generadorReporte = new GeneradorReporte(this);
+
 	analizador = new Analizador(textPaneEditor, textPaneOutput, generadorReporte, limpiador);
 	textPaneEditor.addCaretListener(new CursorListener(textPaneEditor, labelFila, labelColumna));
 	//textPaneEditor.addKeyListener(new TabuladorListener(textPaneEditor, 8));
@@ -375,16 +381,14 @@ public class Gui extends javax.swing.JFrame {
 	Action spaceAction = new AbstractAction() {
 	    @Override
 	    public void actionPerformed(ActionEvent e) {
-		// Coloca aquí el código que deseas ejecutar cuando se presiona Espacio
-		// Por ejemplo, puedes insertar un espacio en el JTextPane
 		MutableAttributeSet mas = textPaneEditor.getInputAttributes();
 		mas.removeAttributes(mas);
 	    }
 	};
 
-	// Asociar la tecla Espacio al Action
 	KeyStroke spaceKeyStroke = KeyStroke.getKeyStroke(KeyEvent.VK_SPACE, 0);
 	textPaneEditor.getInputMap().put(spaceKeyStroke, "doSpaceAction");
 	textPaneEditor.getActionMap().put("doSpaceAction", spaceAction);
     }
+
 }

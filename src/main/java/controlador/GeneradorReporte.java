@@ -26,18 +26,8 @@ public class GeneradorReporte {
 		if (!(listaToken instanceof TokenError)) {
 
 		    contadorLogs++;
+		    gui.getReporteGUI().getModeloTabla().agregarFila(listaToken);
 
-		    //crear fila
-		    String token = listaToken.getTokenEnum().toString();
-		    String patron = listaToken.getPatron();
-		    String lexema = listaToken.getLexena();
-		    String fila = String.valueOf(listaToken.getFila());
-		    String columna = String.valueOf(listaToken.getColumna());
-		    String boton = "Ver";
-		    String[] filaTabla = {token, patron, lexema, fila, columna, boton};
-
-		    //agregar fila a la tabla
-		    gui.getReporteGUI().getModeloTabla().agregarFila(filaTabla);
 		}
 
 	    }

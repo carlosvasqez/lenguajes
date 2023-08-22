@@ -134,86 +134,8 @@ public class Analizador {
 	diccionario.put("\n", Especial.SALTO_LINEA);
 	diccionario.put("\t", Especial.TABULACION);
 
-	////////////////////////////////////////////////
-//	diccionario.put("+", TokenEnum.ARITMETICO);
-//	diccionario.put("-", TokenEnum.ARITMETICO);
-//	diccionario.put("*", TokenEnum.ARITMETICO);
-//	diccionario.put("%", TokenEnum.ARITMETICO);
-//	diccionario.put("**", TokenEnum.ARITMETICO);
-//	diccionario.put("/", TokenEnum.ARITMETICO);
-//	diccionario.put("//", TokenEnum.ARITMETICO);
-//
-//	diccionario.put(">", TokenEnum.COMPARACION);
-//	diccionario.put("<", TokenEnum.COMPARACION);
-//	diccionario.put("==", TokenEnum.COMPARACION);
-//	diccionario.put("!=", TokenEnum.COMPARACION);
-//	diccionario.put(">=", TokenEnum.COMPARACION);
-//	diccionario.put("<=", TokenEnum.COMPARACION);
-//
-//	diccionario.put("and", TokenEnum.LOGICO);
-//	diccionario.put("or", TokenEnum.LOGICO);
-//	diccionario.put("not", TokenEnum.LOGICO);
-//
-//	diccionario.put("=", TokenEnum.ASIGNACION);
-//	diccionario.put("+=", TokenEnum.ASIGNACION);
-//	diccionario.put("-=", TokenEnum.ASIGNACION);
-//	diccionario.put("*=", TokenEnum.ASIGNACION);
-//	diccionario.put("%=", TokenEnum.ASIGNACION);
-//	diccionario.put("**=", TokenEnum.ASIGNACION);
-//	diccionario.put("/=", TokenEnum.ASIGNACION);
-//	diccionario.put("//=", TokenEnum.ASIGNACION);
-//
-//	//diccionario.put("and", TokenEnum.PALABRA_RESERVADA);
-//	diccionario.put("as", TokenEnum.PALABRA_RESERVADA);
-//	diccionario.put("assert", TokenEnum.PALABRA_RESERVADA);
-//	diccionario.put("break", TokenEnum.PALABRA_RESERVADA);
-//	diccionario.put("class", TokenEnum.PALABRA_RESERVADA);
-//	diccionario.put("continue", TokenEnum.PALABRA_RESERVADA);
-//	diccionario.put("def", TokenEnum.PALABRA_RESERVADA);
-//	diccionario.put("del", TokenEnum.PALABRA_RESERVADA);
-//	diccionario.put("elif", TokenEnum.PALABRA_RESERVADA);
-//	diccionario.put("else", TokenEnum.PALABRA_RESERVADA);
-//	diccionario.put("except", TokenEnum.PALABRA_RESERVADA);
-//	//diccionario.put("False", TokenEnum.PALABRA_RESERVADA);
-//	diccionario.put("finally", TokenEnum.PALABRA_RESERVADA);
-//	diccionario.put("for", TokenEnum.PALABRA_RESERVADA);
-//	diccionario.put("from", TokenEnum.PALABRA_RESERVADA);
-//	diccionario.put("global", TokenEnum.PALABRA_RESERVADA);
-//	diccionario.put("if", TokenEnum.PALABRA_RESERVADA);
-//	diccionario.put("import", TokenEnum.PALABRA_RESERVADA);
-//	diccionario.put("in", TokenEnum.PALABRA_RESERVADA);
-//	diccionario.put("is", TokenEnum.PALABRA_RESERVADA);
-//	diccionario.put("lambda", TokenEnum.PALABRA_RESERVADA);
-//	diccionario.put("None", TokenEnum.PALABRA_RESERVADA);
-//	diccionario.put("nonlocal", TokenEnum.PALABRA_RESERVADA);
-//	//diccionario.put("not", TokenEnum.PALABRA_RESERVADA);
-//	//diccionario.put("or", TokenEnum.PALABRA_RESERVADA);
-//	diccionario.put("pass", TokenEnum.PALABRA_RESERVADA);
-//	diccionario.put("raise", TokenEnum.PALABRA_RESERVADA);
-//	diccionario.put("return", TokenEnum.PALABRA_RESERVADA);
-//	//diccionario.put("True", TokenEnum.PALABRA_RESERVADA);
-//	diccionario.put("try", TokenEnum.PALABRA_RESERVADA);
-//	diccionario.put("while", TokenEnum.PALABRA_RESERVADA);
-//	diccionario.put("with", TokenEnum.PALABRA_RESERVADA);
-//	diccionario.put("yield", TokenEnum.PALABRA_RESERVADA);
-//
-//	diccionario.put("True", TokenEnum.CONSTANTE);
-//	diccionario.put("False", TokenEnum.CONSTANTE);
-//
-//	//diccionario.put("#", TokenEnum.COMENTARIO);
-//	diccionario.put("(", TokenEnum.OTRO);
-//	diccionario.put(")", TokenEnum.OTRO);
-//	diccionario.put("{", TokenEnum.OTRO);
-//	diccionario.put("}", TokenEnum.OTRO);
-//	diccionario.put("[", TokenEnum.OTRO);
-//	diccionario.put("]", TokenEnum.OTRO);
-//	diccionario.put(",", TokenEnum.OTRO);
-//	diccionario.put(";", TokenEnum.OTRO);
-//	diccionario.put(":", TokenEnum.OTRO);
-//
-//	diccionario.put(" ", TokenEnum.ESPECIAL);
-//	diccionario.put("\n", TokenEnum.ESPECIAL);
-//	diccionario.put("\t", TokenEnum.ESPECIAL);
+
+
     }
 
     public void realizar() {

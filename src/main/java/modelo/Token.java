@@ -1,5 +1,6 @@
 package modelo;
 
+import controlador.GeneradorGrafico;
 import modelo.tokens.Tkn;
 
 /**
@@ -13,6 +14,7 @@ public class Token {
     protected final int fila;
     protected final int columna;
     private final String patron;
+    private String pathGrafico;
 
     public Token(Tkn tokenEnum, String lexena, int fila, int columna) {
 	this.tokenEnum = tokenEnum;
@@ -20,6 +22,20 @@ public class Token {
 	this.fila = fila;
 	this.columna = columna;
 	this.patron = tokenEnum.getPatron();
+	if (" ".equalsIgnoreCase(lexena)) {
+
+	} else if ("\t".equalsIgnoreCase(lexena)) {
+
+	} else if ("\n".equalsIgnoreCase(lexena)) {
+
+	} else {
+	    crearGrafico();
+	}
+    }
+
+    private void crearGrafico() {
+	GeneradorGrafico generadorGrafico = new GeneradorGrafico();
+	generadorGrafico.ejecutar(this);
     }
 
     public Tkn getTokenEnum() {
@@ -40,6 +56,14 @@ public class Token {
 
     public String getPatron() {
 	return patron;
+    }
+
+    public void setPathGrafico(String pathGrafico) {
+	this.pathGrafico = pathGrafico;
+    }
+
+    public String getPathGrafico() {
+	return pathGrafico;
     }
 
     @Override

@@ -37,7 +37,7 @@ public class ReporteGUI extends javax.swing.JDialog {
 	super(parent, modal);
 	initComponents();
 	modeloTabla = new ModeloTabla();
-	botonEditor = new BotonEditor(new JCheckBox());
+	botonEditor = new BotonEditor(new JCheckBox(), tabla);
 	tabla.setModel(modeloTabla);
 
 	// Personalizar el renderizado y la edición de la última columna
@@ -78,11 +78,11 @@ public class ReporteGUI extends javax.swing.JDialog {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 555, Short.MAX_VALUE)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 669, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 336, Short.MAX_VALUE)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 365, Short.MAX_VALUE)
         );
 
         pack();

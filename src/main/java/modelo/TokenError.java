@@ -11,7 +11,7 @@ public class TokenError extends Token {
     private String mensaje;
 
     public TokenError(Tkn tokenEnum, String lexena, int fila, int columna) {
-	super(tokenEnum, lexena, fila, columna);
+	super(tokenEnum, "ERROR", fila, columna);
     }
 
     public void setMensaje(String mensaje) {
