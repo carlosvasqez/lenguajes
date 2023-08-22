@@ -10,6 +10,7 @@ import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
 import modelo.Token;
 import modelo.TokenEnum;
+import modelo.TokenError;
 
 /**
  *
@@ -23,7 +24,6 @@ public class Escritor {
     public Escritor(JTextPane textPane) {
 	this.textPane = textPane;
     }
-
 
     public void escribirLinea(String linea) {
 	if (esPrimeraLinea) {
@@ -65,7 +65,7 @@ public class Escritor {
 
 		StyleConstants.setFontSize(estilo, 13);
 		StyleConstants.setBold(estilo, true);
-		if (listaToken.getTokenEnum() == TokenEnum.ERROR) {
+		if (listaToken instanceof TokenError) {
 		    StyleConstants.setUnderline(estilo, true);
 		}
 		StyleConstants.setForeground(estilo, listaToken.getTokenEnum().getColor());

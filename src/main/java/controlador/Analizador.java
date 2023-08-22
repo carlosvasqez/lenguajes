@@ -14,6 +14,18 @@ import javax.swing.text.StyledDocument;
 import modelo.Token;
 import modelo.TokenEnum;
 import modelo.TokenError;
+import modelo.tokens.Aritmetico;
+import modelo.tokens.Asignacion;
+import modelo.tokens.Comentario;
+import modelo.tokens.Comparacion;
+import modelo.tokens.Constante;
+import modelo.tokens.Errorr;
+import modelo.tokens.Especial;
+import modelo.tokens.Identificador;
+import modelo.tokens.Logico;
+import modelo.tokens.Otros;
+import modelo.tokens.PalabraReservada;
+import modelo.tokens.Tkn;
 
 /**
  *
@@ -23,7 +35,7 @@ public class Analizador {
 
     private List<Token> listaTokens;
 
-    private final Map<String, TokenEnum> diccionario;
+    private final Map<String, Tkn> diccionario;
     private final JTextPane textPaneEditor;
     private final JTextPane textPaneOutput;
     private final GeneradorReporte generadorReporte;
@@ -40,86 +52,167 @@ public class Analizador {
 	this.limpiador = limpiador;
 	this.diccionario = new HashMap<>();
 
-	diccionario.put("+", TokenEnum.ARITMETICO);
-	diccionario.put("-", TokenEnum.ARITMETICO);
-	diccionario.put("*", TokenEnum.ARITMETICO);
-	diccionario.put("%", TokenEnum.ARITMETICO);
-	diccionario.put("**", TokenEnum.ARITMETICO);
-	diccionario.put("/", TokenEnum.ARITMETICO);
-	diccionario.put("//", TokenEnum.ARITMETICO);
+	diccionario.put("+", Aritmetico.SUMA);
+	diccionario.put("-", Aritmetico.RESTA);
+	diccionario.put("**", Aritmetico.EXPONENTE);
+	diccionario.put("/", Aritmetico.DIVISON);
+	diccionario.put("//", Aritmetico.DIVISON);
+	diccionario.put("%", Aritmetico.MODULO);
+	diccionario.put("*", Aritmetico.MULTIPLICACION);
 
-	diccionario.put(">", TokenEnum.COMPARACION);
-	diccionario.put("<", TokenEnum.COMPARACION);
-	diccionario.put("==", TokenEnum.COMPARACION);
-	diccionario.put("!=", TokenEnum.COMPARACION);
-	diccionario.put(">=", TokenEnum.COMPARACION);
-	diccionario.put("<=", TokenEnum.COMPARACION);
+	diccionario.put("==", Comparacion.DOBLE_IGUAL);
+	diccionario.put("!=", Comparacion.DIFERENTE);
+	diccionario.put(">", Comparacion.MAYOR_QUE);
+	diccionario.put("<", Comparacion.MENOR_QUE);
+	diccionario.put(">=", Comparacion.MAYOR_IGUAL_QUE);
+	diccionario.put("<=", Comparacion.MENOR_IGUAL_QUE);
 
-	diccionario.put("and", TokenEnum.LOGICO);
-	diccionario.put("or", TokenEnum.LOGICO);
-	diccionario.put("not", TokenEnum.LOGICO);
+	diccionario.put("and", Logico.Y);
+	diccionario.put("or", Logico.O);
+	diccionario.put("not", Logico.NEGACION);
 
-	diccionario.put("=", TokenEnum.ASIGNACION);
-	diccionario.put("+=", TokenEnum.ASIGNACION);
-	diccionario.put("-=", TokenEnum.ASIGNACION);
-	diccionario.put("*=", TokenEnum.ASIGNACION);
-	diccionario.put("%=", TokenEnum.ASIGNACION);
-	diccionario.put("**=", TokenEnum.ASIGNACION);
-	diccionario.put("/=", TokenEnum.ASIGNACION);
-	diccionario.put("//=", TokenEnum.ASIGNACION);
+	diccionario.put("=", Asignacion.IGUAL);
+	diccionario.put("+=", Asignacion.MAS_IGUAL);
+	diccionario.put("-=", Asignacion.MENOS_IGUAL);
+	diccionario.put("*=", Asignacion.POR_IGUAL);
+	diccionario.put("%=", Asignacion.MODULO_IGUAL);
+	diccionario.put("**=", Asignacion.POTENCIA_IGUAL);
+	diccionario.put("/=", Asignacion.DIVISION_IGUAL);
+	diccionario.put("//=", Asignacion.DOBLE_DIVISION_IGUAL);
 
 	//diccionario.put("and", TokenEnum.PALABRA_RESERVADA);
-	diccionario.put("as", TokenEnum.PALABRA_RESERVADA);
-	diccionario.put("assert", TokenEnum.PALABRA_RESERVADA);
-	diccionario.put("break", TokenEnum.PALABRA_RESERVADA);
-	diccionario.put("class", TokenEnum.PALABRA_RESERVADA);
-	diccionario.put("continue", TokenEnum.PALABRA_RESERVADA);
-	diccionario.put("def", TokenEnum.PALABRA_RESERVADA);
-	diccionario.put("del", TokenEnum.PALABRA_RESERVADA);
-	diccionario.put("elif", TokenEnum.PALABRA_RESERVADA);
-	diccionario.put("else", TokenEnum.PALABRA_RESERVADA);
-	diccionario.put("except", TokenEnum.PALABRA_RESERVADA);
+	diccionario.put("as", PalabraReservada.AS);
+	diccionario.put("assert", PalabraReservada.ASSET);
+	diccionario.put("break", PalabraReservada.BREAK);
+	diccionario.put("class", PalabraReservada.CLASS);
+	diccionario.put("continue", PalabraReservada.CONTINUE);
+	diccionario.put("def", PalabraReservada.DEF);
+	diccionario.put("del", PalabraReservada.DEL);
+	diccionario.put("elif", PalabraReservada.ELIF);
+	diccionario.put("else", PalabraReservada.ELSE);
+	diccionario.put("except", PalabraReservada.EXCEPT);
 	//diccionario.put("False", TokenEnum.PALABRA_RESERVADA);
-	diccionario.put("finally", TokenEnum.PALABRA_RESERVADA);
-	diccionario.put("for", TokenEnum.PALABRA_RESERVADA);
-	diccionario.put("from", TokenEnum.PALABRA_RESERVADA);
-	diccionario.put("global", TokenEnum.PALABRA_RESERVADA);
-	diccionario.put("if", TokenEnum.PALABRA_RESERVADA);
-	diccionario.put("import", TokenEnum.PALABRA_RESERVADA);
-	diccionario.put("in", TokenEnum.PALABRA_RESERVADA);
-	diccionario.put("is", TokenEnum.PALABRA_RESERVADA);
-	diccionario.put("lambda", TokenEnum.PALABRA_RESERVADA);
-	diccionario.put("None", TokenEnum.PALABRA_RESERVADA);
-	diccionario.put("nonlocal", TokenEnum.PALABRA_RESERVADA);
+	diccionario.put("finally", PalabraReservada.FINALLY);
+	diccionario.put("for", PalabraReservada.FOR);
+	diccionario.put("from", PalabraReservada.FROM);
+	diccionario.put("global", PalabraReservada.GLOBAL);
+	diccionario.put("if", PalabraReservada.IF);
+	diccionario.put("import", PalabraReservada.IMPORT);
+	diccionario.put("in", PalabraReservada.IN);
+	diccionario.put("is", PalabraReservada.IS);
+	diccionario.put("lambda", PalabraReservada.LAMBDA);
+	diccionario.put("None", PalabraReservada.NONE);
+	diccionario.put("nonlocal", PalabraReservada.NONLOCAL);
 	//diccionario.put("not", TokenEnum.PALABRA_RESERVADA);
 	//diccionario.put("or", TokenEnum.PALABRA_RESERVADA);
-	diccionario.put("pass", TokenEnum.PALABRA_RESERVADA);
-	diccionario.put("raise", TokenEnum.PALABRA_RESERVADA);
-	diccionario.put("return", TokenEnum.PALABRA_RESERVADA);
+	diccionario.put("pass", PalabraReservada.PASS);
+	diccionario.put("raise", PalabraReservada.RAISE);
+	diccionario.put("return", PalabraReservada.RETURN);
 	//diccionario.put("True", TokenEnum.PALABRA_RESERVADA);
-	diccionario.put("try", TokenEnum.PALABRA_RESERVADA);
-	diccionario.put("while", TokenEnum.PALABRA_RESERVADA);
-	diccionario.put("with", TokenEnum.PALABRA_RESERVADA);
-	diccionario.put("yield", TokenEnum.PALABRA_RESERVADA);
+	diccionario.put("try", PalabraReservada.TRY);
+	diccionario.put("while", PalabraReservada.WHILE);
+	diccionario.put("with", PalabraReservada.WITH);
+	diccionario.put("yield", PalabraReservada.YIELD);
 
-	diccionario.put("True", TokenEnum.CONSTANTE);
-	diccionario.put("False", TokenEnum.CONSTANTE);
+	diccionario.put("True", Constante.TRUE);
+	diccionario.put("False", Constante.FALSE);
 
-	//diccionario.put("#", TokenEnum.COMENTARIO);
-	diccionario.put("(", TokenEnum.OTRO);
-	diccionario.put(")", TokenEnum.OTRO);
-	diccionario.put("{", TokenEnum.OTRO);
-	diccionario.put("}", TokenEnum.OTRO);
-	diccionario.put("[", TokenEnum.OTRO);
-	diccionario.put("]", TokenEnum.OTRO);
-	diccionario.put(",", TokenEnum.OTRO);
-	diccionario.put(";", TokenEnum.OTRO);
-	diccionario.put(":", TokenEnum.OTRO);
+	diccionario.put("#", Comentario.COMENTARIO);
 
-	diccionario.put(" ", TokenEnum.ESPECIAL);
-	diccionario.put("\n", TokenEnum.ESPECIAL);
-	diccionario.put("\t", TokenEnum.ESPECIAL);
+	diccionario.put("(", Otros.PARENTESIS_A);
+	diccionario.put(")", Otros.PARENTESIS_C);
+	diccionario.put("{", Otros.LLAVE_A);
+	diccionario.put("}", Otros.LLAVE_C);
+	diccionario.put("[", Otros.CORCHETES_A);
+	diccionario.put("]", Otros.CORCHETES_C);
+	diccionario.put(",", Otros.COMA);
+	diccionario.put(";", Otros.PUNTO_Y_COMA);
+	diccionario.put(":", Otros.DOS_PUNTOS);
 
+	diccionario.put(" ", Especial.ESPACIO);
+	diccionario.put("\n", Especial.SALTO_LINEA);
+	diccionario.put("\t", Especial.TABULACION);
+
+	////////////////////////////////////////////////
+//	diccionario.put("+", TokenEnum.ARITMETICO);
+//	diccionario.put("-", TokenEnum.ARITMETICO);
+//	diccionario.put("*", TokenEnum.ARITMETICO);
+//	diccionario.put("%", TokenEnum.ARITMETICO);
+//	diccionario.put("**", TokenEnum.ARITMETICO);
+//	diccionario.put("/", TokenEnum.ARITMETICO);
+//	diccionario.put("//", TokenEnum.ARITMETICO);
+//
+//	diccionario.put(">", TokenEnum.COMPARACION);
+//	diccionario.put("<", TokenEnum.COMPARACION);
+//	diccionario.put("==", TokenEnum.COMPARACION);
+//	diccionario.put("!=", TokenEnum.COMPARACION);
+//	diccionario.put(">=", TokenEnum.COMPARACION);
+//	diccionario.put("<=", TokenEnum.COMPARACION);
+//
+//	diccionario.put("and", TokenEnum.LOGICO);
+//	diccionario.put("or", TokenEnum.LOGICO);
+//	diccionario.put("not", TokenEnum.LOGICO);
+//
+//	diccionario.put("=", TokenEnum.ASIGNACION);
+//	diccionario.put("+=", TokenEnum.ASIGNACION);
+//	diccionario.put("-=", TokenEnum.ASIGNACION);
+//	diccionario.put("*=", TokenEnum.ASIGNACION);
+//	diccionario.put("%=", TokenEnum.ASIGNACION);
+//	diccionario.put("**=", TokenEnum.ASIGNACION);
+//	diccionario.put("/=", TokenEnum.ASIGNACION);
+//	diccionario.put("//=", TokenEnum.ASIGNACION);
+//
+//	//diccionario.put("and", TokenEnum.PALABRA_RESERVADA);
+//	diccionario.put("as", TokenEnum.PALABRA_RESERVADA);
+//	diccionario.put("assert", TokenEnum.PALABRA_RESERVADA);
+//	diccionario.put("break", TokenEnum.PALABRA_RESERVADA);
+//	diccionario.put("class", TokenEnum.PALABRA_RESERVADA);
+//	diccionario.put("continue", TokenEnum.PALABRA_RESERVADA);
+//	diccionario.put("def", TokenEnum.PALABRA_RESERVADA);
+//	diccionario.put("del", TokenEnum.PALABRA_RESERVADA);
+//	diccionario.put("elif", TokenEnum.PALABRA_RESERVADA);
+//	diccionario.put("else", TokenEnum.PALABRA_RESERVADA);
+//	diccionario.put("except", TokenEnum.PALABRA_RESERVADA);
+//	//diccionario.put("False", TokenEnum.PALABRA_RESERVADA);
+//	diccionario.put("finally", TokenEnum.PALABRA_RESERVADA);
+//	diccionario.put("for", TokenEnum.PALABRA_RESERVADA);
+//	diccionario.put("from", TokenEnum.PALABRA_RESERVADA);
+//	diccionario.put("global", TokenEnum.PALABRA_RESERVADA);
+//	diccionario.put("if", TokenEnum.PALABRA_RESERVADA);
+//	diccionario.put("import", TokenEnum.PALABRA_RESERVADA);
+//	diccionario.put("in", TokenEnum.PALABRA_RESERVADA);
+//	diccionario.put("is", TokenEnum.PALABRA_RESERVADA);
+//	diccionario.put("lambda", TokenEnum.PALABRA_RESERVADA);
+//	diccionario.put("None", TokenEnum.PALABRA_RESERVADA);
+//	diccionario.put("nonlocal", TokenEnum.PALABRA_RESERVADA);
+//	//diccionario.put("not", TokenEnum.PALABRA_RESERVADA);
+//	//diccionario.put("or", TokenEnum.PALABRA_RESERVADA);
+//	diccionario.put("pass", TokenEnum.PALABRA_RESERVADA);
+//	diccionario.put("raise", TokenEnum.PALABRA_RESERVADA);
+//	diccionario.put("return", TokenEnum.PALABRA_RESERVADA);
+//	//diccionario.put("True", TokenEnum.PALABRA_RESERVADA);
+//	diccionario.put("try", TokenEnum.PALABRA_RESERVADA);
+//	diccionario.put("while", TokenEnum.PALABRA_RESERVADA);
+//	diccionario.put("with", TokenEnum.PALABRA_RESERVADA);
+//	diccionario.put("yield", TokenEnum.PALABRA_RESERVADA);
+//
+//	diccionario.put("True", TokenEnum.CONSTANTE);
+//	diccionario.put("False", TokenEnum.CONSTANTE);
+//
+//	//diccionario.put("#", TokenEnum.COMENTARIO);
+//	diccionario.put("(", TokenEnum.OTRO);
+//	diccionario.put(")", TokenEnum.OTRO);
+//	diccionario.put("{", TokenEnum.OTRO);
+//	diccionario.put("}", TokenEnum.OTRO);
+//	diccionario.put("[", TokenEnum.OTRO);
+//	diccionario.put("]", TokenEnum.OTRO);
+//	diccionario.put(",", TokenEnum.OTRO);
+//	diccionario.put(";", TokenEnum.OTRO);
+//	diccionario.put(":", TokenEnum.OTRO);
+//
+//	diccionario.put(" ", TokenEnum.ESPECIAL);
+//	diccionario.put("\n", TokenEnum.ESPECIAL);
+//	diccionario.put("\t", TokenEnum.ESPECIAL);
     }
 
     public void realizar() {
@@ -309,25 +402,25 @@ public class Analizador {
     }
 
     private void crearTokenCadena(int fila, int columna) {
-	Token token = new Token(TokenEnum.CONSTANTE, str, fila, columna - str.length());
+	Token token = new Token(Constante.CADENA, str, fila, columna - str.length());
 	listaTokens.add(token);
     }
 
     private void crearTokenV(int fila, int columna) {
 	if (esEntero()) {
-	    Token token = new Token(TokenEnum.CONSTANTE, str, fila, columna - str.length());
+	    Token token = new Token(Constante.ENTERO, str, fila, columna - str.length());
 	    listaTokens.add(token);
 	} else if (esDecimal()) {
-	    Token token = new Token(TokenEnum.CONSTANTE, str, fila, columna - str.length());
+	    Token token = new Token(Constante.DECIMAL, str, fila, columna - str.length());
 	    listaTokens.add(token);
 	} else if (esCadena()) {
-	    Token token = new Token(TokenEnum.CONSTANTE, str, fila, columna - str.length());
+	    Token token = new Token(Constante.CADENA, str, fila, columna - str.length());
 	    listaTokens.add(token);
 	} else if (esComentario()) {
-	    Token token = new Token(TokenEnum.COMENTARIO, str, fila, columna - str.length());
+	    Token token = new Token(Comentario.COMENTARIO, str, fila, columna - str.length());
 	    listaTokens.add(token);
 	} else if (esIdentificador()) {
-	    Token token = new Token(TokenEnum.IDENTIFICADOR, str, fila, columna - str.length());
+	    Token token = new Token(Identificador.IDENTIFICADOR, str, fila, columna - str.length());
 	    listaTokens.add(token);
 	} else {
 	    generarError("no es entero, ni decimal, ni cadena, ni comentario, ni identificador", fila, columna);
@@ -336,7 +429,7 @@ public class Analizador {
     }
 
     private void generarError(String mensaje, int fila, int columna) {
-	Token tokenError = new TokenError(TokenEnum.ERROR, str, fila, columna - str.length());
+	Token tokenError = new TokenError(Errorr.ERROR, str, fila, columna - str.length());
 	listaTokens.add(tokenError);
 	((TokenError) tokenError).setMensaje(mensaje);
     }

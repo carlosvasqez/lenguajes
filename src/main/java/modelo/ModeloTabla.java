@@ -9,7 +9,7 @@ import javax.swing.table.AbstractTableModel;
  */
 public class ModeloTabla extends AbstractTableModel {
 
-    private String[] columnas = {"TOKEN", "PATRON", "LEXEMA", "LINEA", "COLUMNA", "GENERAR GRAFICO"};
+    private String[] columnas = {"TOKEN", "PATRON", "LEXEMA", "FILAS", "COLUMNA", "GRAFICO"};
     private Object[][] dato = {};
 
     @Override

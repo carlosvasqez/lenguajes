@@ -2,7 +2,7 @@ package controlador;
 
 import java.util.List;
 import modelo.Token;
-import modelo.TokenEnum;
+import modelo.TokenError;
 import vista.Gui;
 
 /**
@@ -23,7 +23,7 @@ public class GeneradorReporte {
 	List<Token> listaTokens = gui.getAnalizador().getListaTokens();
 	for (Token listaToken : listaTokens) {
 	    if (!listaToken.getLexena().isBlank()) {
-		if (listaToken.getTokenEnum() != TokenEnum.ERROR) {
+		if (!(listaToken instanceof TokenError)) {
 
 		    contadorLogs++;
 
@@ -33,7 +33,7 @@ public class GeneradorReporte {
 		    String lexema = listaToken.getLexena();
 		    String fila = String.valueOf(listaToken.getFila());
 		    String columna = String.valueOf(listaToken.getColumna());
-		    String boton = "Mostrar Grafico";
+		    String boton = "Ver";
 		    String[] filaTabla = {token, patron, lexema, fila, columna, boton};
 
 		    //agregar fila a la tabla
