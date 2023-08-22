@@ -215,6 +215,7 @@ public class Analizador {
 		columna++;
 	    } else if (Character.isAlphabetic(caracter)) {
 		str += caracter;
+		//aqui modificar
 		columna++;
 	    } else if (Character.isDigit(caracter)) {
 		str += caracter;
