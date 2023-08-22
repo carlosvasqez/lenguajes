@@ -19,21 +19,27 @@ import modelo.TokenError;
  *
  * @author usuario
  */
-public class Analizador implements Ejecutable {
-    
+public class Analizador {
+
+    private List<Token> listaTokens;
+
     private final Map<String, TokenEnum> diccionario;
-    private final List<Token> listaTokens;
     private final JTextPane textPaneEditor;
     private final JTextPane textPaneOutput;
+    private final GeneradorReporte generadorReporte;
+    private final Limpiador limpiador;
     private String str = "";
-    
-    public Analizador(JTextPane textPaneEditor, JTextPane textPaneOutput) {
-	
+
+    public Analizador(JTextPane textPaneEditor, JTextPane textPaneOutput, GeneradorReporte generadorReporte, Limpiador limpiador) {
+
+	this.listaTokens = new ArrayList<>();
+
 	this.textPaneEditor = textPaneEditor;
 	this.textPaneOutput = textPaneOutput;
+	this.generadorReporte = generadorReporte;
+	this.limpiador = limpiador;
 	this.diccionario = new HashMap<>();
-	this.listaTokens = new ArrayList<>();
-	
+
 	diccionario.put("+", TokenEnum.ARITMETICO);
 	diccionario.put("-", TokenEnum.ARITMETICO);
 	diccionario.put("*", TokenEnum.ARITMETICO);
@@ -41,18 +47,18 @@ public class Analizador implements Ejecutable {
 	diccionario.put("**", TokenEnum.ARITMETICO);
 	diccionario.put("/", TokenEnum.ARITMETICO);
 	diccionario.put("//", TokenEnum.ARITMETICO);
-	
+
 	diccionario.put(">", TokenEnum.COMPARACION);
 	diccionario.put("<", TokenEnum.COMPARACION);
 	diccionario.put("==", TokenEnum.COMPARACION);
 	diccionario.put("!=", TokenEnum.COMPARACION);
 	diccionario.put(">=", TokenEnum.COMPARACION);
 	diccionario.put("<=", TokenEnum.COMPARACION);
-	
+
 	diccionario.put("and", TokenEnum.LOGICO);
 	diccionario.put("or", TokenEnum.LOGICO);
 	diccionario.put("not", TokenEnum.LOGICO);
-	
+
 	diccionario.put("=", TokenEnum.ASIGNACION);
 	diccionario.put("+=", TokenEnum.ASIGNACION);
 	diccionario.put("-=", TokenEnum.ASIGNACION);
@@ -95,7 +101,7 @@ public class Analizador implements Ejecutable {
 	diccionario.put("while", TokenEnum.PALABRA_RESERVADA);
 	diccionario.put("with", TokenEnum.PALABRA_RESERVADA);
 	diccionario.put("yield", TokenEnum.PALABRA_RESERVADA);
-	
+
 	diccionario.put("True", TokenEnum.CONSTANTE);
 	diccionario.put("False", TokenEnum.CONSTANTE);
 
@@ -109,26 +115,37 @@ public class Analizador implements Ejecutable {
 	diccionario.put(",", TokenEnum.OTRO);
 	diccionario.put(";", TokenEnum.OTRO);
 	diccionario.put(":", TokenEnum.OTRO);
-	
+
 	diccionario.put(" ", TokenEnum.ESPECIAL);
 	diccionario.put("\n", TokenEnum.ESPECIAL);
 	diccionario.put("\t", TokenEnum.ESPECIAL);
-	
+
     }
-    
-    @Override
+
     public void realizar() {
+	//reiniciar los tokens porque al ser el mismo objeto analizador para
+	//todo el programa entonces los tokens solo se acumulan aunque se limpie la pantalla
+	listaTokens = new ArrayList<>();
 	generarAnalisis();
-	mostrarAnalisis();
-	colorear();
+	//antes de colorear se debe limpiar ya que al colorear se escribe basado en los tokens
+	limpiador.limpiarTodo();
+	//antes de colorear se borra el ultimo token que es el del bug \n antes de mostrar el output
+	int ultimoIndice = listaTokens.size() - 1;
+	listaTokens.remove(ultimoIndice);
+	mostrarColoreado();
+
+	mostrarOutput();
+	generadorReporte.generarReporte();
     }
-    
+
+    public List<Token> getListaTokens() {
+	return listaTokens;
+    }
+
     private void generarAnalisis() {
-	Escritor escritor = new Escritor(textPaneOutput);
-	escritor.limpiar();
 	StyledDocument doc = textPaneEditor.getStyledDocument();
 	Element element = doc.getDefaultRootElement();
-	
+
 	for (int i = 0; i < element.getElementCount(); i++) {
 	    Element linea = element.getElement(i);
 	    int inicioLinea = linea.getStartOffset();
@@ -141,8 +158,8 @@ public class Analizador implements Ejecutable {
 	    }
 	}
     }
-    
-    private void mostrarAnalisis() {
+
+    private void mostrarOutput() {
 	int contadorLogs = 0;
 	Escritor escritor = new Escritor(textPaneOutput);
 	for (Token listaToken : listaTokens) {
@@ -152,13 +169,12 @@ public class Analizador implements Ejecutable {
 	    }
 	}
     }
-    
-    private void colorear() {
+
+    private void mostrarColoreado() {
 	Escritor escritor = new Escritor(textPaneEditor);
-	escritor.limpiar();
 	escritor.colorear(listaTokens);
     }
-    
+
     private void buscarTokensEn(int fila, String contenido) {
 	str = "";
 	int columna = 1;
@@ -210,11 +226,11 @@ public class Analizador implements Ejecutable {
 	    }
 	}
     }
-    
+
     private boolean estaComenzando() {
 	return str.isEmpty();
     }
-    
+
     private boolean esCadenaValida(char caracter) {
 	return caracter == str.charAt(0);
     }
@@ -268,34 +284,34 @@ public class Analizador implements Ejecutable {
 	    }
 	    str = "";
 	}
-	
+
     }
-    
+
     private void crearToken(int fila, int columna) {
 	Token token = new Token(diccionario.get(str), str, fila, columna - str.length());
 	listaTokens.add(token);
     }
-    
+
     private void crearTokenEspacio(int fila, int columna) {
 	Token token = new Token(diccionario.get(" "), " ", fila, columna);
 	listaTokens.add(token);
     }
-    
+
     private void crearTokenTab(int fila, int columna) {
 	Token token = new Token(diccionario.get("\t"), "\t", fila, columna - String.valueOf("\t").length());
 	listaTokens.add(token);
     }
-    
+
     private void crearTokenSalto(int fila, int columna) {
 	Token token = new Token(diccionario.get("\n"), "\n", fila, columna);
 	listaTokens.add(token);
     }
-    
+
     private void crearTokenCadena(int fila, int columna) {
 	Token token = new Token(TokenEnum.CONSTANTE, str, fila, columna - str.length());
 	listaTokens.add(token);
     }
-    
+
     private void crearTokenV(int fila, int columna) {
 	if (esEntero()) {
 	    System.out.println("1");
@@ -319,36 +335,36 @@ public class Analizador implements Ejecutable {
 	} else {
 	    generarError("no es entero, ni decimal, ni cadena, ni comentario, ni identificador", fila, columna);
 	}
-	
+
     }
-    
+
     private void generarError(String mensaje, int fila, int columna) {
 	Token tokenError = new TokenError(TokenEnum.ERROR, str, fila, columna - str.length());
 	listaTokens.add(tokenError);
 	((TokenError) tokenError).setMensaje(mensaje);
     }
-    
+
     private boolean esEspacio(char caracter) {
 	return caracter == AlfabetoChar.ESPACIO.getSimbolo();
     }
-    
+
     private boolean esSaltoDeLinea(char caracter) {
 	return caracter == AlfabetoChar.SALTO_LINEA.getSimbolo();
     }
-    
+
     private boolean esTabulacion(char caracter) {
 	return caracter == AlfabetoChar.TABULACION.getSimbolo();
     }
-    
+
     private boolean esSimboloCadena(char caracter) {
 	return caracter == AlfabetoChar.COMILLA.getSimbolo()
 		|| caracter == AlfabetoChar.DOBLE_COMILLA.getSimbolo();
     }
-    
+
     private boolean esSimboloNumeral(char caracter) {
 	return caracter == AlfabetoChar.NUMERAL.getSimbolo();
     }
-    
+
     private boolean esEntero() {
 	try {
 	    Integer.valueOf(str);
@@ -360,7 +376,7 @@ public class Analizador implements Ejecutable {
 	    return false;
 	}
     }
-    
+
     private boolean esDecimal() {
 	try {
 	    Double.valueOf(str);
@@ -375,16 +391,16 @@ public class Analizador implements Ejecutable {
 	    return false;
 	}
     }
-    
+
     private boolean esCadena() {
 	return (str.charAt(0) == '\'' && str.charAt(str.length() - 1) == '\'')
 		|| (str.charAt(0) == '\"' && str.charAt(str.length() - 1) == '\"');
     }
-    
+
     private boolean esComentario() {
 	return str.charAt(0) == '#';
     }
-    
+
     private boolean esIdentificador() {
 	return Character.isAlphabetic(str.charAt(0)) || str.charAt(0) == '_';
     }

@@ -1,6 +1,7 @@
 package vista;
 
 import javax.swing.JCheckBox;
+import javax.swing.JTable;
 import modelo.BotonEditor;
 import modelo.BotonRenderer;
 import modelo.ModeloTabla;
@@ -12,10 +13,18 @@ import modelo.ModeloTabla;
 public class ReporteGUI extends javax.swing.JDialog {
 
     private final ModeloTabla modeloTabla;
-    private BotonEditor botonEditor;
+    private final BotonEditor botonEditor;
+
+    public JTable getTabla() {
+	return tabla;
+    }
 
     public ModeloTabla getModeloTabla() {
 	return modeloTabla;
+    }
+
+    public BotonEditor getBotonEditor() {
+	return botonEditor;
     }
 
     /**
@@ -34,10 +43,6 @@ public class ReporteGUI extends javax.swing.JDialog {
 	// Personalizar el renderizado y la edición de la última columna
 	tabla.getColumnModel().getColumn(5).setCellRenderer(new BotonRenderer());
 	tabla.getColumnModel().getColumn(5).setCellEditor(botonEditor);
-
-	// Agregar algunos datos de ejemplo
-	modeloTabla.addRow(new Object[]{"Dato 1", "Dato 2", "Dato 3", "Dato 4", "Dato 5", "Botón 1"});
-	modeloTabla.addRow(new Object[]{"Dato 6", "Dato 7", "Dato 8", "Dato 9", "Dato 10", "Botón 2"});
 
     }
 

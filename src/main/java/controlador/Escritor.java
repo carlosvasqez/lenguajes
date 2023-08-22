@@ -24,9 +24,6 @@ public class Escritor {
 	this.textPane = textPane;
     }
 
-    public void limpiar() {
-	textPane.setText("");
-    }
 
     public void escribirLinea(String linea) {
 	if (esPrimeraLinea) {
@@ -91,5 +88,4 @@ public class Escritor {
 	}
 
     }
-
 }

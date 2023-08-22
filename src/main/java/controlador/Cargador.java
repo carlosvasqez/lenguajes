@@ -10,7 +10,7 @@ import java.nio.charset.Charset;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFileChooser;
-import javax.swing.JTextPane;
+import vista.Gui;
 import vista.SelectorDeArchivo;
 
 /**
@@ -19,20 +19,26 @@ import vista.SelectorDeArchivo;
  */
 public class Cargador {
 
-    public void cargarArchivoEn(JTextPane textPane, SelectorDeArchivo selector) {
-	Escritor escritor = new Escritor(textPane);
-	
+    private final Gui gui;
+
+    public Cargador(Gui gui) {
+	this.gui = gui;
+    }
+
+    public void cargarArchivoEn(SelectorDeArchivo selector) {
+	Escritor escritor = new Escritor(gui.getTextPaneEditor());
+
 	int eleccion = selector.showOpenDialog(null);
-	
+
 	if (eleccion == JFileChooser.APPROVE_OPTION) {
-	    
+
 	    File file = selector.getSelectedFile();
-	    
+
 	    try (FileInputStream fis = new FileInputStream(file);
 		 InputStreamReader isr = new InputStreamReader(fis, Charset.forName("UTF-8"));
 		 BufferedReader br = new BufferedReader(isr)) {
 
-		escritor.limpiar();
+		gui.getLimpiador().limpiarTodo();
 
 		String linea;
 		while ((linea = br.readLine()) != null) {
@@ -46,6 +52,5 @@ public class Cargador {
 	}
 
     }
-    
 
 }

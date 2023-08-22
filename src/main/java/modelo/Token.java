@@ -10,6 +10,7 @@ public class Token {
     private final String lexena;
     protected final int fila;
     protected final int columna;
+    private final String patron="xd";
 
     public Token(TokenEnum tokenEnum, String lexena, int fila, int columna) {
 	this.tokenEnum = tokenEnum;
@@ -24,6 +25,18 @@ public class Token {
 
     public String getLexena() {
 	return lexena;
+    }
+
+    public int getFila() {
+	return fila;
+    }
+
+    public int getColumna() {
+	return columna;
+    }
+
+    public String getPatron() {
+	return patron;
     }
 
     @Override

@@ -13,6 +13,11 @@ public class ModeloTabla extends AbstractTableModel {
     private Object[][] dato = {};
 
     @Override
+    public String getColumnName(int column) {
+	return columnas[column];
+    }
+
+    @Override
     public int getRowCount() {
 	return dato.length;
     }
@@ -40,7 +45,7 @@ public class ModeloTabla extends AbstractTableModel {
 	return columnIndex == 5;
     }
 
-    public void addRow(Object[] filaDato) {
+    public void agregarFila(Object[] filaDato) {
 	int cantidadFilas = getRowCount();
 	Object[][] nuevoDato = new Object[cantidadFilas + 1][getColumnCount()];
 
@@ -50,6 +55,12 @@ public class ModeloTabla extends AbstractTableModel {
 
 	nuevoDato[cantidadFilas] = filaDato;
 	dato = nuevoDato;
+	fireTableDataChanged();
+    }
+
+    public void limpiarTabla() {
+	Object[][] datoLimpio = {};
+	dato = datoLimpio;
 	fireTableDataChanged();
     }
 

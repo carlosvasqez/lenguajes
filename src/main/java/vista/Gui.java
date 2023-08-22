@@ -3,13 +3,14 @@ package vista;
 import controlador.Analizador;
 import controlador.Cargador;
 import controlador.CursorListener;
-import controlador.Ejecutable;
 import controlador.GeneradorReporte;
+import controlador.Limpiador;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.JOptionPane;
+import javax.swing.JTextPane;
 import javax.swing.KeyStroke;
 import javax.swing.text.MutableAttributeSet;
 
@@ -19,11 +20,20 @@ import javax.swing.text.MutableAttributeSet;
  */
 public class Gui extends javax.swing.JFrame {
 
+    private final Analizador analizador;
+    private final GeneradorReporte generadorReporte;
+    private final ReporteGUI reporteGUI;
+    private final Limpiador limpiador;
+
     /**
      * Creates new form Gui
      */
     public Gui() {
 	initComponents();
+	limpiador = new Limpiador(this);
+	reporteGUI = new ReporteGUI(this, false);
+	generadorReporte = new GeneradorReporte(this);
+	analizador = new Analizador(textPaneEditor, textPaneOutput, generadorReporte, limpiador);
 	textPaneEditor.addCaretListener(new CursorListener(textPaneEditor, labelFila, labelColumna));
 	//textPaneEditor.addKeyListener(new TabuladorListener(textPaneEditor, 8));
 	usarEspacio();
@@ -140,7 +150,7 @@ public class Gui extends javax.swing.JFrame {
         jToolBar2.add(botonLimpiar);
         jToolBar2.add(jSeparator7);
 
-        botonGenerarReporte.setText("Generar Reporte");
+        botonGenerarReporte.setText("Abrir Ventana de Reportes");
         botonGenerarReporte.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         botonGenerarReporte.setFocusable(false);
         botonGenerarReporte.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -245,25 +255,32 @@ public class Gui extends javax.swing.JFrame {
 
     private void botonAnalizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonAnalizarActionPerformed
 	// TODO add your handling code here:
-	Analizador analizador = new Analizador(textPaneEditor, textPaneOutput);
-	presionar(analizador, "el editor esta vacio. abra un archivo o ingrese texto");
+	if (!textPaneEditor.getText().isBlank()) {
+	    analizador.realizar();
+	} else {
+	    JOptionPane.showMessageDialog(this, "el editor esta vacio, abra un archivo o escriba en el editor");
+	}
     }//GEN-LAST:event_botonAnalizarActionPerformed
 
 
     private void botonGenerarReporteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonGenerarReporteActionPerformed
 	// TODO add your handling code here:
-	GeneradorReporte generadorReporte = new GeneradorReporte(textPaneEditor, textPaneOutput);
-	presionar(generadorReporte, "el editor esta vacion. no se puede generar reporte");
+	if (!reporteGUI.isVisible()) {
+	    reporteGUI.setVisible(true);
+	} else {
+	    reporteGUI.setVisible(false);
+	}
     }//GEN-LAST:event_botonGenerarReporteActionPerformed
 
     private void botonArchivoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonArchivoActionPerformed
 	// TODO add your handling code here:
-	Cargador cargadorArchivo = new Cargador();
-	cargadorArchivo.cargarArchivoEn(textPaneEditor, new SelectorDeArchivo());
+	Cargador cargadorArchivo = new Cargador(this);
+	cargadorArchivo.cargarArchivoEn(new SelectorDeArchivo());
     }//GEN-LAST:event_botonArchivoActionPerformed
 
     private void botonAyudaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonAyudaActionPerformed
 	// TODO add your handling code here:
+
     }//GEN-LAST:event_botonAyudaActionPerformed
 
     private void botonAcerdaDeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonAcerdaDeActionPerformed
@@ -273,10 +290,7 @@ public class Gui extends javax.swing.JFrame {
 
     private void botonLimpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonLimpiarActionPerformed
 	// TODO add your handling code here:
-	textPaneEditor.setText("");
-	textPaneOutput.setText("");
-	MutableAttributeSet mas = textPaneEditor.getInputAttributes();
-	mas.removeAttributes(mas);
+	limpiador.limpiarTodo();
     }//GEN-LAST:event_botonLimpiarActionPerformed
 
     /**
@@ -337,14 +351,24 @@ public class Gui extends javax.swing.JFrame {
     private javax.swing.JTextPane textPaneOutput;
     // End of variables declaration//GEN-END:variables
 
-    private void presionar(Ejecutable ejecutable, String msg) {
-	if (!textPaneEditor.getText().isBlank()) {
-	    ejecutable.realizar();
-	} else {
-	    textPaneEditor.setText("");
-	    textPaneOutput.setText("");
-	    JOptionPane.showMessageDialog(this, msg);
-	}
+    public ReporteGUI getReporteGUI() {
+	return reporteGUI;
+    }
+
+    public Analizador getAnalizador() {
+	return analizador;
+    }
+
+    public JTextPane getTextPaneEditor() {
+	return textPaneEditor;
+    }
+
+    public JTextPane getTextPaneOutput() {
+	return textPaneOutput;
+    }
+
+    public Limpiador getLimpiador() {
+	return limpiador;
     }
 
     private void usarEspacio() {
