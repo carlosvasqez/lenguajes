@@ -7,7 +7,7 @@ import java.awt.Color;
  * @author usuario
  */
 public enum Identificador implements Tkn {
-    IDENTIFICADOR(" ", Color.BLACK);
+    IDENTIFICADOR("([\\w]|_)+(\\w|\\d)*", Color.BLACK);
 
     private final String patron;
     private final Color color;

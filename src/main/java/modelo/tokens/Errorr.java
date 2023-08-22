@@ -7,7 +7,7 @@ import java.awt.Color;
  * @author usuario
  */
 public enum Errorr implements Tkn {
-    ERROR(" ", Color.RED);
+    ERROR("error", Color.RED);
 
     private final String patron;
     private final Color color;
@@ -25,5 +25,9 @@ public enum Errorr implements Tkn {
     @Override
     public Color getColor() {
 	return color;
+    }
+        @Override
+    public String toString() {
+	return this.getClass().getSimpleName() + " [ " + super.toString() + " ]";
     }
 }

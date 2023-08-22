@@ -7,11 +7,11 @@ import java.awt.Color;
  * @author usuario
  */
 public enum Constante implements Tkn {
-    ENTERO(" ", Color.ORANGE),
-    DECIMAL(" ", Color.ORANGE),
-    CADENA(" ", Color.ORANGE),
-    TRUE(" ", Color.ORANGE),
-    FALSE(" ", Color.ORANGE);
+    ENTERO("-?\\d+", Color.ORANGE),
+    DECIMAL("-?\\d+(\\.\\d+)?", Color.ORANGE),
+    CADENA("['\"]([^'\"]*)['\"]", Color.ORANGE),
+    TRUE("True", Color.ORANGE),
+    FALSE("False", Color.ORANGE);
 
     private final String patron;
     private final Color color;
@@ -30,5 +30,8 @@ public enum Constante implements Tkn {
     public String getPatron() {
 	return patron;
     }
-
+    @Override
+    public String toString() {
+	return this.getClass().getSimpleName() + " [ " + super.toString() + " ]";
+    }
 }

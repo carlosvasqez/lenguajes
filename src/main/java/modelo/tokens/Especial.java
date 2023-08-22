@@ -8,8 +8,8 @@ import java.awt.Color;
  */
 public enum Especial implements Tkn {
     ESPACIO(" ", Color.PINK),
-    TABULACION(" ", Color.PINK),
-    SALTO_LINEA(" ", Color.PINK);
+    TABULACION("\\t", Color.PINK),
+    SALTO_LINEA("\\n", Color.PINK);
 
     private final String patron;
     private final Color color;
@@ -27,5 +27,10 @@ public enum Especial implements Tkn {
     @Override
     public Color getColor() {
 	return color;
+    }
+
+    @Override
+    public String toString() {
+	return this.getClass().getSimpleName() + " [ " + super.toString() + " ]";
     }
 }

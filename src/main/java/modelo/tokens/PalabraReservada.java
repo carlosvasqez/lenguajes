@@ -8,39 +8,39 @@ import java.awt.Color;
  */
 public enum PalabraReservada implements Tkn {
     //AND("AND PATRON", new Color(128, 0, 128)),
-    AS(" ", new Color(128, 0, 128)),
-    ASSET(" ", new Color(128, 0, 128)),
-    BREAK(" ", new Color(128, 0, 128)),
-    CLASS(" ", new Color(128, 0, 128)),
-    CONTINUE(" ", new Color(128, 0, 128)),
-    DEF(" ", new Color(128, 0, 128)),
-    DEL(" ", new Color(128, 0, 128)),
-    ELIF(" ", new Color(128, 0, 128)),
-    ELSE(" ", new Color(128, 0, 128)),
-    EXCEPT(" ", new Color(128, 0, 128)),
+    AS("as", new Color(128, 0, 128)),
+    ASSET("asset", new Color(128, 0, 128)),
+    BREAK("break", new Color(128, 0, 128)),
+    CLASS("class", new Color(128, 0, 128)),
+    CONTINUE("continue", new Color(128, 0, 128)),
+    DEF("def", new Color(128, 0, 128)),
+    DEL("del", new Color(128, 0, 128)),
+    ELIF("elif", new Color(128, 0, 128)),
+    ELSE("else", new Color(128, 0, 128)),
+    EXCEPT("except", new Color(128, 0, 128)),
     //FALSE("AND PATRON", new Color(128, 0, 128)),
-    FINALLY(" ", new Color(128, 0, 128)),
-    FOR(" ", new Color(128, 0, 128)),
-    FROM(" ", new Color(128, 0, 128)),
-    GLOBAL(" ", new Color(128, 0, 128)),
-    IF(" ", new Color(128, 0, 128)),
-    IMPORT(" ", new Color(128, 0, 128)),
-    IN(" ", new Color(128, 0, 128)),
-    IS(" ", new Color(128, 0, 128)),
-    LAMBDA(" ", new Color(128, 0, 128)),
-    NONE(" ", new Color(128, 0, 128)),
-    NONLOCAL(" ", new Color(128, 0, 128)),
+    FINALLY("finally", new Color(128, 0, 128)),
+    FOR("for", new Color(128, 0, 128)),
+    FROM("from", new Color(128, 0, 128)),
+    GLOBAL("global", new Color(128, 0, 128)),
+    IF("if", new Color(128, 0, 128)),
+    IMPORT("import", new Color(128, 0, 128)),
+    IN("in", new Color(128, 0, 128)),
+    IS("is", new Color(128, 0, 128)),
+    LAMBDA("lambda", new Color(128, 0, 128)),
+    NONE("none", new Color(128, 0, 128)),
+    NONLOCAL("nonlocal", new Color(128, 0, 128)),
     //NOT("AND PATRON", new Color(128, 0, 128)),
     //OR("AND PATRON", new Color(128, 0, 128)),
-    PASS(" ", new Color(128, 0, 128)),
-    RAISE(" ", new Color(128, 0, 128)),
-    RETURN(" ", new Color(128, 0, 128)),
+    PASS("pass", new Color(128, 0, 128)),
+    RAISE("raise", new Color(128, 0, 128)),
+    RETURN("return", new Color(128, 0, 128)),
     //TRUE("AND PATRON", new Color(128, 0, 128)),
-    TRY(" ", new Color(128, 0, 128)),
-    WHILE(" ", new Color(128, 0, 128)),
-    WITH(" ", new Color(128, 0, 128)),
-    YIELD(" ", new Color(128, 0, 128));
-    
+    TRY("try", new Color(128, 0, 128)),
+    WHILE("while", new Color(128, 0, 128)),
+    WITH("with", new Color(128, 0, 128)),
+    YIELD("yield", new Color(128, 0, 128));
+
     private final String patron;
     private final Color color;
 
@@ -59,4 +59,8 @@ public enum PalabraReservada implements Tkn {
 	return patron;
     }
 
+    @Override
+    public String toString() {
+	return this.getClass().getSimpleName() + " [ " + super.toString() + " ]";
+    }
 }

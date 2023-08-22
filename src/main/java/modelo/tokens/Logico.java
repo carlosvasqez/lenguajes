@@ -7,9 +7,9 @@ import java.awt.Color;
  * @author usuario
  */
 public enum Logico implements Tkn {
-    Y(" ", new Color(135, 206, 235)),
-    O(" ", new Color(135, 206, 235)),
-    NEGACION(" ", new Color(135, 206, 235));
+    Y("and", new Color(135, 206, 235)),
+    O("or", new Color(135, 206, 235)),
+    NEGACION("not", new Color(135, 206, 235));
     private final String patron;
     private final Color color;
 
@@ -27,5 +27,8 @@ public enum Logico implements Tkn {
     public String getPatron() {
 	return patron;
     }
-
+    @Override
+    public String toString() {
+	return this.getClass().getSimpleName() + " [ " + super.toString() + " ]";
+    }
 }

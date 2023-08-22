@@ -7,7 +7,7 @@ import java.awt.Color;
  * @author usuario
  */
 public enum Comentario implements Tkn {
-    COMENTARIO(" ",Color.GRAY);
+    COMENTARIO("#(.*)", Color.GRAY);
 
     private final String patron;
     private final Color color;
@@ -27,4 +27,8 @@ public enum Comentario implements Tkn {
 	return patron;
     }
 
+    @Override
+    public String toString() {
+	return this.getClass().getSimpleName() + " [ " + super.toString() + " ]";
+    }
 }
