@@ -119,7 +119,7 @@ public class Analizador {
 	diccionario.put("#", Comentario.COMENTARIO);
 
 	
-	diccionario.put(".", Otros.PUNTO);
+	//diccionario.put(".", Otros.PUNTO);
 	diccionario.put("(", Otros.PARENTESIS_A);
 	diccionario.put(")", Otros.PARENTESIS_C);
 	diccionario.put("{", Otros.LLAVE_A);

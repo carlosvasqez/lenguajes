@@ -23,6 +23,7 @@ public class BotonEditor extends DefaultCellEditor {
 	    @Override
 	    public void actionPerformed(ActionEvent e) {
 		fireEditingStopped();
+		//acion para mostrar diagrrama
 		
 	    }
 	});
