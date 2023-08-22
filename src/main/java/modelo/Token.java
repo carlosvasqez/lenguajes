@@ -12,13 +12,14 @@ public class Token {
     private final String lexena;
     protected final int fila;
     protected final int columna;
-    private final String patron="xd";
+    private final String patron;
 
     public Token(Tkn tokenEnum, String lexena, int fila, int columna) {
 	this.tokenEnum = tokenEnum;
 	this.lexena = lexena;
 	this.fila = fila;
 	this.columna = columna;
+	this.patron = tokenEnum.getPatron();
     }
 
     public Tkn getTokenEnum() {

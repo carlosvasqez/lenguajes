@@ -18,8 +18,8 @@ public class Limpiador {
     public void limpiarTodo() {
 	//limpiar editor
 	gui.getTextPaneEditor().setText("");
-	
 	MutableAttributeSet mas = gui.getTextPaneEditor().getInputAttributes();
+	mas.removeAttributes(mas);
 	//limpiar output
 	gui.getTextPaneOutput().setText("");
 	//limpiar reporte

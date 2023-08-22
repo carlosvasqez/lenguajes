@@ -12,7 +12,6 @@ import javax.swing.text.BadLocationException;
 import javax.swing.text.Element;
 import javax.swing.text.StyledDocument;
 import modelo.Token;
-import modelo.TokenEnum;
 import modelo.TokenError;
 import modelo.tokens.Aritmetico;
 import modelo.tokens.Asignacion;
@@ -492,6 +491,44 @@ public class Analizador {
     }
 
     private boolean esIdentificador() {
-	return Character.isAlphabetic(str.charAt(0)) || str.charAt(0) == '_';
+	return cumpleComIdentificador();
+    }
+
+    private boolean cumpleComIdentificador() {
+	// Verificar si la cadena tiene al menos una letra o guión bajo
+	boolean contieneLetraOGuionBajo = false;
+
+	for (int i = 0; i < str.length(); i++) {
+	    char c = str.charAt(i);
+	    if (Character.isLetter(c) || c == '_') {
+		contieneLetraOGuionBajo = true;
+		break;
+	    }
+	}
+
+	// Verificar si no hay números al inicio
+	boolean noNumerosAlInicio = true;
+	for (int i = 0; i < str.length(); i++) {
+	    char c = str.charAt(i);
+	    if (Character.isDigit(c)) {
+		noNumerosAlInicio = false;
+		break;
+	    } else if (!Character.isWhitespace(c)) {
+		break;
+	    }
+	}
+
+	// Verificar si no contiene caracteres especiales
+	boolean noContieneCaracteresEspeciales = true;
+	for (int i = 0; i < str.length(); i++) {
+	    char c = str.charAt(i);
+	    if (!(Character.isLetterOrDigit(c) || c == '_')) {
+		noContieneCaracteresEspeciales = false;
+		break;
+	    }
+	}
+
+	// Retornar true si cumple todas las condiciones
+	return contieneLetraOGuionBajo && noNumerosAlInicio && noContieneCaracteresEspeciales;
     }
 }

@@ -7,7 +7,7 @@ import java.awt.Color;
  * @author usuario
  */
 public enum Aritmetico implements Tkn {
-    SUMA(" ", new Color(135, 206, 235)),
+    SUMA("+", new Color(135, 206, 235)),
     RESTA(" ", new Color(135, 206, 235)),
     EXPONENTE(" ", new Color(135, 206, 235)),
     DIVISON(" ", new Color(135, 206, 235)),
