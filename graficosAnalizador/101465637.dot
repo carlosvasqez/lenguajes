@@ -1,0 +1,8 @@
+digraph grafico {
+rankdir=LR;
+label="Comparacion [ MAYOR_IGUAL_QUE ]";
+node0 [label=">"];
+node0 -> node1;
+node1 [label="="];
+node1 [shape=doublecircle];
+}

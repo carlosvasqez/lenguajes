@@ -7,6 +7,7 @@ import java.io.PrintWriter;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import javax.swing.JOptionPane;
 import modelo.Token;
 
 /**
@@ -14,9 +15,9 @@ import modelo.Token;
  * @author usuario
  */
 public class GeneradorGrafico {
-    
+
     public static final String PATH_CARPETA_ARCHIVOS = "./graficosAnalizador/";
-    
+
     public void ejecutar(Token token) {
 	String lexema = token.getLexena();
 	String tipoToken = token.getTokenEnum().toString();
@@ -56,9 +57,9 @@ public class GeneradorGrafico {
 	try (FileWriter fileWriter = new FileWriter(archivo);
 	     PrintWriter printWriter = new PrintWriter(fileWriter);) {
 	    printWriter.print(stringGrapgviz);
-	    
+
 	} catch (Exception e) {
-	    e.printStackTrace();
+	    //e.printStackTrace();
 	}
 
 	//
@@ -76,10 +77,10 @@ public class GeneradorGrafico {
 	    //
 	    //
 	} catch (IOException e) {
-	    e.printStackTrace();
+	    //e.printStackTrace();
 	}
     }
-    
+
     private String convertirTokenAGrafico(String lexema, String tipoToken) {
 	StringBuilder digraph = new StringBuilder();
 
@@ -91,9 +92,9 @@ public class GeneradorGrafico {
 	if (tipoToken != null && !tipoToken.isEmpty()) {
 	    digraph.append("label=\"" + tipoToken + "\";\n");
 	}
-	
+
 	char[] characters = lexema.toCharArray();
-	
+
 	for (int i = 0; i < characters.length; i++) {
 	    String nodeName = "node" + i;
 	    digraph.append(nodeName + " [label=\"" + characters[i] + "\"];\n");
@@ -110,10 +111,10 @@ public class GeneradorGrafico {
 	    String lastNodeName = "node" + (characters.length - 1);
 	    digraph.append(lastNodeName + " [shape=doublecircle];\n");
 	}
-	
+
 	digraph.append("}\n");
-	
+
 	return digraph.toString();
     }
-    
+
 }

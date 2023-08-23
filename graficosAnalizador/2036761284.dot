@@ -1,0 +1,10 @@
+digraph grafico {
+rankdir=LR;
+label="PalabraReservada [ FOR ]";
+node0 [label="f"];
+node0 -> node1;
+node1 [label="o"];
+node1 -> node2;
+node2 [label="r"];
+node2 [shape=doublecircle];
+}
