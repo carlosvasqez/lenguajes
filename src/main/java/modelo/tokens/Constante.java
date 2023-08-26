@@ -11,7 +11,10 @@ public enum Constante implements Tkn {
     DECIMAL("-?\\d+(\\.\\d+)?", Color.ORANGE),
     CADENA("['\"]([^'\"]*)['\"]", Color.ORANGE),
     TRUE("True", Color.ORANGE),
-    FALSE("False", Color.ORANGE);
+    FALSE("False", Color.ORANGE),
+    //
+    COMILLA("\\'", Color.ORANGE),
+    COMILLA_DOBLE("\\\"", Color.ORANGE);
 
     private final String patron;
     private final Color color;
@@ -30,6 +33,7 @@ public enum Constante implements Tkn {
     public String getPatron() {
 	return patron;
     }
+
     @Override
     public String toString() {
 	return this.getClass().getSimpleName() + " [ " + super.toString() + " ]";

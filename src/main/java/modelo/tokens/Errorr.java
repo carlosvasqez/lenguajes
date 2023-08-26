@@ -7,7 +7,7 @@ import java.awt.Color;
  * @author usuario
  */
 public enum Errorr implements Tkn {
-    ERROR("error", Color.RED);
+    ERROR("errrrror", Color.RED);
 
     private final String patron;
     private final Color color;

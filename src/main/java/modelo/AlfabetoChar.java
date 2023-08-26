@@ -7,30 +7,35 @@ package modelo;
 public enum AlfabetoChar {
 
     GUION_BAJO('_'),
-    SUMA('+'),
-    RESTA('-'),
-    DIVISION('/'),
-    MODULO('%'),
-    MULTIPLICACION('*'),
-    IGUAL('='),
+    //
+    CRUZ('+'),
+    GUION('-'),
+    ASTERISCO('*'),
+    DIAGONAL('/'),
+    PORCENTAJE('%'),
     MAYOR_QUE('>'),
     MENOR_QUE('<'),
-    ADMIRACION('!'),
+    IGUAL('='),
+    EXCLAMACION('!'),
+    //
     PARENTESIS_A('('),
     PARENTESIS_C(')'),
     LLAVE_A('{'),
     LLAVE_C('}'),
     CORCHETE_A('['),
     CORCHETE_C(']'),
+    //
     COMA(','),
+    PUNTO('.'),
     PUNTO_COMA(';'),
     DOS_PUNTOS(':'),
-    PUNTO('.'),
+    //
     ESPACIO(' '),
     TABULACION('\t'),
     SALTO_LINEA('\n'),
+    //
     COMILLA('\''),
-    DOBLE_COMILLA('\"'),
+    COMILLA_DOBLE('\"'),
     NUMERAL('#');
 
     private final char simbolo;
@@ -41,5 +46,9 @@ public enum AlfabetoChar {
 
     public char getSimbolo() {
 	return simbolo;
+    }
+
+    public String getSimboloString() {
+	return String.valueOf(simbolo);
     }
 }

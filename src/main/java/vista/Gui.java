@@ -29,7 +29,7 @@ import javax.swing.text.MutableAttributeSet;
  */
 public class Gui extends javax.swing.JFrame {
 
-    private final Analizador analizador;
+    private final Analizador2 analizador;
     private final GeneradorReporte generadorReporte;
     private final ReporteGUI reporteGUI;
     private final Limpiador limpiador;
@@ -43,7 +43,7 @@ public class Gui extends javax.swing.JFrame {
 	reporteGUI = new ReporteGUI(this, false);
 	generadorReporte = new GeneradorReporte(this);
 
-	analizador = new Analizador(textPaneEditor, textPaneOutput, generadorReporte, limpiador);
+	analizador = new Analizador2(textPaneEditor, textPaneOutput, generadorReporte, limpiador);
 	textPaneEditor.addCaretListener(new CursorListener(textPaneEditor, labelFila, labelColumna));
 	//textPaneEditor.addKeyListener(new TabuladorListener(textPaneEditor, 8));
 	usarEspacio();
@@ -365,7 +365,7 @@ public class Gui extends javax.swing.JFrame {
 	return reporteGUI;
     }
 
-    public Analizador getAnalizador() {
+    public Analizador2 getAnalizador() {
 	return analizador;
     }
 

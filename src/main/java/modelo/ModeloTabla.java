@@ -11,7 +11,10 @@ import javax.swing.table.AbstractTableModel;
  */
 public class ModeloTabla extends AbstractTableModel {
 
-    private String[] columnas = {"TOKEN", "PATRON", "LEXEMA", "FILAS", "COLUMNA", "GRAFICO"};
+    private String[] columnas =
+    {
+	"TOKEN", "PATRON", "LEXEMA", "FILAS", "COLUMNA", "GRAFICO"
+    };
     private List<Token> listaTokens = new ArrayList<>();
 
     @Override
@@ -31,11 +34,12 @@ public class ModeloTabla extends AbstractTableModel {
 
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
-	switch (columnIndex) {
+	switch (columnIndex)
+	{
 	    case 0:
 		return listaTokens.get(rowIndex).getTokenEnum().toString();
 	    case 1:
-		return listaTokens.get(rowIndex).getPatron();
+		return listaTokens.get(rowIndex).getTokenEnum().getPatron();
 	    case 2:
 		return listaTokens.get(rowIndex).getLexena();
 	    case 3:
@@ -51,7 +55,8 @@ public class ModeloTabla extends AbstractTableModel {
 
     @Override
     public Class<?> getColumnClass(int columnIndex) {
-	if (columnIndex == 5) {
+	if (columnIndex == 5)
+	{
 	    return JButton.class;
 	}
 	return String.class;

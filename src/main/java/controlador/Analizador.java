@@ -371,7 +371,7 @@ public class Analizador {
 
     private boolean esSimboloCadena(char caracter) {
 	return caracter == AlfabetoChar.COMILLA.getSimbolo()
-		|| caracter == AlfabetoChar.DOBLE_COMILLA.getSimbolo();
+		|| caracter == AlfabetoChar.COMILLA_DOBLE.getSimbolo();
     }
 
     private boolean esSimboloNumeral(char caracter) {

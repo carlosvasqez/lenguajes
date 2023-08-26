@@ -8,13 +8,13 @@ import java.awt.Color;
  */
 public enum Asignacion implements Tkn {
     IGUAL("=", new Color(135, 206, 235)),
-    MAS_IGUAL(" ", new Color(135, 206, 235)),
-    MENOS_IGUAL(" ", new Color(135, 206, 235)),
-    POR_IGUAL(" ", new Color(135, 206, 235)),
-    MODULO_IGUAL(" ", new Color(135, 206, 235)),
-    POTENCIA_IGUAL(" ", new Color(135, 206, 235)),
-    DIVISION_IGUAL(" ", new Color(135, 206, 235)),
-    DOBLE_DIVISION_IGUAL(" ", new Color(135, 206, 235));
+    MAS_IGUAL("+=", new Color(135, 206, 235)),
+    MENOS_IGUAL("-=", new Color(135, 206, 235)),
+    POR_IGUAL("*=", new Color(135, 206, 235)),
+    MODULO_IGUAL("%=", new Color(135, 206, 235)),
+    POTENCIA_IGUAL("**=", new Color(135, 206, 235)),
+    DIVISION_IGUAL("/=", new Color(135, 206, 235)),
+    DOBLE_DIVISION_IGUAL("//=", new Color(135, 206, 235));
 
     private final String patron;
     private final Color color;

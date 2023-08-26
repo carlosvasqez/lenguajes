@@ -1,6 +1,0 @@
-digraph grafico {
-rankdir=LR;
-label="Comparacion [ MENOR_QUE ]";
-node0 [label="<"];
-node0 [shape=doublecircle];
-}
