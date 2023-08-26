@@ -118,7 +118,6 @@ public class Analizador {
 
 	diccionario.put("#", Comentario.COMENTARIO);
 
-	
 	//diccionario.put(".", Otros.PUNTO);
 	diccionario.put("(", Otros.PARENTESIS_A);
 	diccionario.put(")", Otros.PARENTESIS_C);
@@ -133,8 +132,6 @@ public class Analizador {
 	diccionario.put(" ", Especial.ESPACIO);
 	diccionario.put("\n", Especial.SALTO_LINEA);
 	diccionario.put("\t", Especial.TABULACION);
-
-
 
     }
 
@@ -352,9 +349,8 @@ public class Analizador {
     }
 
     private void generarError(String mensaje, int fila, int columna) {
-	Token tokenError = new TokenError(Errorr.ERROR, str, fila, columna - str.length());
+	Token tokenError = new TokenError(Errorr.ERROR, str, fila, columna - str.length(), mensaje);
 	listaTokens.add(tokenError);
-	((TokenError) tokenError).setMensaje(mensaje);
     }
 
     private boolean esEspacio(char caracter) {

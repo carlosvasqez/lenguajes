@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 import javax.swing.JTextPane;
 import modelo.Token;
+import modelo.TokenError;
 import modelo.tokens.Aritmetico;
 import modelo.tokens.Asignacion;
 import modelo.tokens.Comentario;
@@ -128,7 +129,6 @@ public class Analizador2 {
 	diccionarioPalabraReservada.put("False", Constante.FALSE);
 
 	//diccionarioSimboloComentario.put("#", Comentario.COMENTARIO);
-
 	//diccionario.put(".", Otros.PUNTO);
 	diccionarioSimboloAgrupacion.put("(", Otros.PARENTESIS_A);
 	diccionarioSimboloAgrupacion.put(")", Otros.PARENTESIS_C);
@@ -144,19 +144,17 @@ public class Analizador2 {
 
 	//diccionarioSimboloCadena.put("\'", Constante.COMILLA);
 	//diccionarioSimboloCadena.put("\"", Constante.COMILLA_DOBLE);
-
 	//diccionarioEspecial.put(" ", Especial.ESPACIO);
 	//diccionarioEspecial.put("\n", Especial.SALTO_LINEA);
 	//diccionarioEspecial.put("\t", Especial.TABULACION);
-
     }
 
     public void realizar() {
 	//reiniciar los tokens porque al ser el mismo objeto analizador para
 	//todo el programa entonces los tokens solo se acumulan aunque se limpie la pantalla
 	listaTokens = new ArrayList<>();
-	fila = 0;
-	columna = 0;
+	fila = 1;
+	columna = 1;
 	input = textPaneEditor.getText();
 	generarAnalisis();
 	//antes de colorear se debe limpiar ya que al colorear se escribe basado en los tokens
@@ -239,7 +237,7 @@ public class Analizador2 {
 		} else {
 		    if (identifier.length() == 1 && identifier.charAt(0) == '_') {
 			//es solo un guion bajo _
-			addToken(Errorr.ERROR, identifierStr);
+			addTokenError(Errorr.ERROR, identifierStr, "es solo un gion bajo");
 		    } else {
 			//es identificador
 			addToken(Identificador.IDENTIFICADOR, identifierStr);
@@ -251,9 +249,13 @@ public class Analizador2 {
 		currentPos++;
 		if (currentChar == '\n') {
 		    addToken(Especial.SALTO_LINEA, "\n");
+		    fila++;
 		}
 		if (currentChar == '\t') {
 		    addToken(Especial.TABULACION, "\t");
+		}
+		if (currentChar == ' ') {
+		    addToken(Especial.ESPACIO, " ");
 		}
 		//</editor-fold>
 	    } else if (currentChar == '"') {
@@ -271,7 +273,10 @@ public class Analizador2 {
 		} else if (currentPos < input.length() && input.charAt(currentPos) == '\n') {
 		    //es error de cadena no cerrada
 		    currentPos++;
-		    addToken(Constante.CADENA, "\"" + string.toString());
+		    addTokenError(Errorr.ERROR, "\"" + string.toString(), "cadena no cerrada");
+		} else if (currentPos == input.length()) {
+		    //error de cadena no cerrada al final del documento
+		    addTokenError(Errorr.ERROR, "\"" + string.toString(), "cadena no cerrada al final del archivo");
 		}
 		//</editor-fold>
 	    } else if (currentChar == '\'') {
@@ -289,7 +294,10 @@ public class Analizador2 {
 		} else if (currentPos < input.length() && input.charAt(currentPos) == '\n') {
 		    //es error de cadena no cerrada
 		    currentPos++;
-		    addToken(Constante.CADENA, "\'" + string.toString());
+		    addTokenError(Errorr.ERROR, "\'" + string.toString(), "cadena no cerrada");
+		} else if (currentPos == input.length()) {
+		    //error de cadena no cerrada al final del documento
+		    addTokenError(Errorr.ERROR, "\'" + string.toString(), "cadena no cerrada al final del archivo");
 		}
 		//</editor-fold>
 	    } else if (currentChar == '+') {
@@ -414,7 +422,7 @@ public class Analizador2 {
 		    currentPos += 2;
 		} else {
 		    //es signo de admiracion ! o error
-		    addToken(Errorr.ERROR, String.valueOf(currentChar));
+		    addTokenError(Errorr.ERROR, String.valueOf(currentChar), "es solo un signo de exclamacion");
 		    currentPos++;
 		}
 		//</editor-fold>
@@ -435,17 +443,24 @@ public class Analizador2 {
 		if (diccionarioSimboloAgrupacion.containsKey(caracterActualString)) {
 		    addToken(diccionarioSimboloAgrupacion.get(caracterActualString), caracterActualString);
 		} else if (diccionarioSimboloPuntuacion.containsKey(caracterActualString)) {
-		    addToken(diccionarioSimboloAgrupacion.get(caracterActualString), caracterActualString);
+		    addToken(diccionarioSimboloPuntuacion.get(caracterActualString), caracterActualString);
 		} else {
-		    addToken(Errorr.ERROR, caracterActualString);
+		    addTokenError(Errorr.ERROR, caracterActualString, "simbolo fuera del alfabeto " + caracterActualString);
 		}
 		currentPos++;
 	    }
 	}
     }
 
-    private void addToken(Tkn tkn, String value) {
-	Token token = new Token(tkn, value, fila, columna);
+    private void addToken(Tkn tkn, String lexema) {
+	Token token = new Token(tkn, lexema, fila, columna - lexema.length());
+	System.out.println(token);
+	listaTokens.add(token);
+    }
+
+    private void addTokenError(Tkn tkn, String lexema, String mensaje) {
+	Token token = new TokenError(tkn, lexema, fila, columna - lexema.length(), mensaje);
+	System.out.println(token);
 	listaTokens.add(token);
     }
 

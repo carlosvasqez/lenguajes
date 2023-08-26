@@ -8,14 +8,11 @@ import modelo.tokens.Tkn;
  */
 public class TokenError extends Token {
 
-    private String mensaje;
+    private final String mensaje;
 
-    public TokenError(Tkn tokenEnum, String lexena, int fila, int columna) {
+    public TokenError(Tkn tokenEnum, String lexena, int fila, int columna,String mensaje) {
 	super(tokenEnum, lexena, fila, columna);
-    }
-
-    public void setMensaje(String mensaje) {
-	this.mensaje = mensaje;
+	this.mensaje=mensaje;
     }
 
     @Override
