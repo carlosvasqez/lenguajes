@@ -1,0 +1,14 @@
+digraph grafico {
+rankdir=LR;
+label="PalabraReservada [ WHILE ]";
+node0 [label="w"];
+node0 -> node1;
+node1 [label="h"];
+node1 -> node2;
+node2 [label="i"];
+node2 -> node3;
+node3 [label="l"];
+node3 -> node4;
+node4 [label="e"];
+node4 [shape=doublecircle];
+}

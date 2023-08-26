@@ -156,6 +156,7 @@ public class Analizador2 {
 	fila = 1;
 	columna = 1;
 	currentPos = 0;
+	textPaneEditor.setContentType("text/plain;charset=UTF-8");
 	input = textPaneEditor.getText();
 	generarAnalisis();
 	//antes de colorear se debe limpiar ya que al colorear se escribe basado en los tokens
@@ -252,6 +253,7 @@ public class Analizador2 {
 		currentPos++;
 		if (currentChar == '\n') {
 		    //es salto de linea
+		    columna++;
 		    addToken(Especial.SALTO_LINEA, "\n");
 		    columna = 1;
 		}
@@ -278,13 +280,13 @@ public class Analizador2 {
 		}
 		if (currentPos < input.length() && input.charAt(currentPos) == '"') {
 		    //es cadena completa
-		    columna++;
 		    currentPos++;
+		    columna++;
 		    addToken(Constante.CADENA, "\"" + string.toString() + "\"");
 		} else if (currentPos < input.length() && input.charAt(currentPos) == '\n') {
 		    //es error de cadena no cerrada
-		    columna++;
 		    currentPos++;
+		    columna++;
 		    addTokenError(Errorr.ERROR, "\"" + string.toString(), "cadena no cerrada");
 		} else if (currentPos == input.length()) {
 		    //error de cadena no cerrada al final del documento
@@ -301,14 +303,15 @@ public class Analizador2 {
 		    currentPos++;
 		    columna++;
 		}
-		columna++;
 		if (currentPos < input.length() && input.charAt(currentPos) == '\'') {
 		    //es cadena completa
 		    currentPos++;
+		    columna++;
 		    addToken(Constante.CADENA, "\'" + string.toString() + "\'");
 		} else if (currentPos < input.length() && input.charAt(currentPos) == '\n') {
 		    //es error de cadena no cerrada
 		    currentPos++;
+		    columna++;
 		    addTokenError(Errorr.ERROR, "\'" + string.toString(), "cadena no cerrada");
 		} else if (currentPos == input.length()) {
 		    //error de cadena no cerrada al final del documento
@@ -461,13 +464,14 @@ public class Analizador2 {
 		//<editor-fold defaultstate="collapsed" desc="comentario #">
 		StringBuilder comentario = new StringBuilder();
 		currentPos++;
-		while (currentPos < input.length() && input.charAt(currentPos) != '\n') {
+		columna++;
+		while (currentPos < input.length() && input.charAt(currentPos) != '\n' && input.charAt(currentPos) != '\r') {
 		    comentario.append(input.charAt(currentPos));
-		    currentPos++;
+		    System.out.println((int)input.charAt(currentPos));
 		    columna++;
+		    currentPos++;
 		}
 		//es comentario
-		columna++;
 		addToken(Comentario.COMENTARIO, "#" + comentario.toString());
 		//</editor-fold>
 	    } else {

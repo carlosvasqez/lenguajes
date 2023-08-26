@@ -1,0 +1,6 @@
+digraph grafico {
+rankdir=LR;
+label="Otros [ PARENTESIS_C ]";
+node0 [label=")"];
+node0 [shape=doublecircle];
+}
