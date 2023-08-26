@@ -1,6 +1,7 @@
 package vista;
 
-import controlador.Analizador;
+import com.formdev.flatlaf.FlatLightLaf;
+import com.formdev.flatlaf.themes.FlatMacLightLaf;
 import controlador.Cargador;
 import controlador.CursorListener;
 import controlador.GeneradorReporte;
@@ -21,6 +22,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextPane;
 import javax.swing.KeyStroke;
+import javax.swing.UIManager;
 import javax.swing.text.MutableAttributeSet;
 
 /**
@@ -335,6 +337,11 @@ public class Gui extends javax.swing.JFrame {
 //	} catch (javax.swing.UnsupportedLookAndFeelException ex) {
 //	    java.util.logging.Logger.getLogger(Gui.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
 //	}
+	try {
+	    UIManager.setLookAndFeel(new FlatMacLightLaf());
+	} catch (Exception ex) {
+	    System.err.println("Failed to initialize LaF");
+	}
 	//</editor-fold>
 
 	/* Create and display the form */

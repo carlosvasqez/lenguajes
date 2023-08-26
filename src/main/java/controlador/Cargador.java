@@ -7,9 +7,8 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.Charset;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 import vista.Gui;
 import vista.SelectorDeArchivo;
 
@@ -45,9 +44,11 @@ public class Cargador {
 		    escritor.escribirLinea(linea);
 		}
 	    } catch (FileNotFoundException ex) {
-		Logger.getLogger(Cargador.class.getName()).log(Level.SEVERE, null, ex);
+		//Logger.getLogger(Cargador.class.getName()).log(Level.SEVERE, null, ex);
+		JOptionPane.showMessageDialog(gui, "archivo no seleccionado correctamente, vuelva a intentar");
 	    } catch (IOException ex) {
-		Logger.getLogger(Cargador.class.getName()).log(Level.SEVERE, null, ex);
+		//Logger.getLogger(Cargador.class.getName()).log(Level.SEVERE, null, ex);
+		JOptionPane.showMessageDialog(gui, "error al cargar el archivo, vuelva a intentar");
 	    }
 	}
 

@@ -28,10 +28,10 @@ import modelo.tokens.Tkn;
 public class Analizador2 {
 
     private List<Token> listaTokens;
-    private String input;
-    private int currentPos;
     private int fila;
     private int columna;
+    private int currentPos;
+    private String input;
 
     private final Map<String, Tkn> diccionarioPalabraReservada;
     private final Map<String, Tkn> diccionarioSimboloOperador;
@@ -155,6 +155,7 @@ public class Analizador2 {
 	listaTokens = new ArrayList<>();
 	fila = 1;
 	columna = 1;
+	currentPos = 0;
 	input = textPaneEditor.getText();
 	generarAnalisis();
 	//antes de colorear se debe limpiar ya que al colorear se escribe basado en los tokens
@@ -210,6 +211,7 @@ public class Analizador2 {
 		    }
 		    number.append(nextChar);
 		    currentPos++;
+		    columna++;
 		}
 		if (isDecimal) {
 		    //es decimal
@@ -227,6 +229,7 @@ public class Analizador2 {
 			|| input.charAt(currentPos) == '_')) {
 		    identifier.append(input.charAt(currentPos));
 		    currentPos++;
+		    columna++;
 		}
 		// Verificar si es una palabra reservada o identificador
 		String identifierStr = identifier.toString();
@@ -248,13 +251,18 @@ public class Analizador2 {
 		//<editor-fold defaultstate="collapsed" desc="espacio, tab o next line">
 		currentPos++;
 		if (currentChar == '\n') {
+		    //es salto de linea
 		    addToken(Especial.SALTO_LINEA, "\n");
-		    fila++;
+		    columna = 1;
 		}
 		if (currentChar == '\t') {
+		    //es tabulacion
 		    addToken(Especial.TABULACION, "\t");
+		    ///////////////////////////////////////////////////pendiente por definir el tab
 		}
 		if (currentChar == ' ') {
+		    //es espacio
+		    columna++;
 		    addToken(Especial.ESPACIO, " ");
 		}
 		//</editor-fold>
@@ -262,16 +270,20 @@ public class Analizador2 {
 		//<editor-fold defaultstate="collapsed" desc=" cadena " ">
 		StringBuilder string = new StringBuilder();
 		currentPos++;
+		columna++;
 		while (currentPos < input.length() && input.charAt(currentPos) != '"' && input.charAt(currentPos) != '\n') {
 		    string.append(input.charAt(currentPos));
 		    currentPos++;
+		    columna++;
 		}
 		if (currentPos < input.length() && input.charAt(currentPos) == '"') {
 		    //es cadena completa
+		    columna++;
 		    currentPos++;
 		    addToken(Constante.CADENA, "\"" + string.toString() + "\"");
 		} else if (currentPos < input.length() && input.charAt(currentPos) == '\n') {
 		    //es error de cadena no cerrada
+		    columna++;
 		    currentPos++;
 		    addTokenError(Errorr.ERROR, "\"" + string.toString(), "cadena no cerrada");
 		} else if (currentPos == input.length()) {
@@ -283,10 +295,13 @@ public class Analizador2 {
 		//<editor-fold defaultstate="collapsed" desc="cadena ' ">
 		StringBuilder string = new StringBuilder();
 		currentPos++;
+		columna++;
 		while (currentPos < input.length() && input.charAt(currentPos) != '\'' && input.charAt(currentPos) != '\n') {
 		    string.append(input.charAt(currentPos));
 		    currentPos++;
+		    columna++;
 		}
+		columna++;
 		if (currentPos < input.length() && input.charAt(currentPos) == '\'') {
 		    //es cadena completa
 		    currentPos++;
@@ -305,10 +320,13 @@ public class Analizador2 {
 		int nextPos = currentPos + 1;
 		if (nextPos < input.length() && input.charAt(nextPos) == '=') {
 		    //es una asignacion de suma +=
+		    columna++;
+		    columna++;
 		    addToken(Asignacion.MAS_IGUAL, String.valueOf(currentChar) + "=");
 		    currentPos += 2;
 		} else {
 		    //es una suma +
+		    columna++;
 		    addToken(Aritmetico.SUMA, String.valueOf(currentChar));
 		    currentPos += 1;
 		}
@@ -318,10 +336,13 @@ public class Analizador2 {
 		int nextPos = currentPos + 1;
 		if (nextPos < input.length() && input.charAt(nextPos) == '=') {
 		    //es una asignacion de resta -=
+		    columna++;
+		    columna++;
 		    addToken(Asignacion.MENOS_IGUAL, String.valueOf(currentChar) + "=");
 		    currentPos += 2;
 		} else {
 		    //es una resta -
+		    columna++;
 		    addToken(Aritmetico.RESTA, String.valueOf(currentChar));
 		    currentPos += 1;
 		}
@@ -381,6 +402,7 @@ public class Analizador2 {
 	    } else if (currentChar == '%') {
 		//<editor-fold defaultstate="collapsed" desc="%">
 		// Es modulo
+		columna++;
 		addToken(Aritmetico.MODULO, "%");
 		currentPos++;
 		//</editor-fold>
@@ -389,11 +411,14 @@ public class Analizador2 {
 		int nextPos = currentPos + 1;
 		if (nextPos < input.length() && input.charAt(nextPos) == '=') {
 		    //es menor igual <= o  mayor igual >=
+		    columna++;
+		    columna++;
 		    String caracterActualString = String.valueOf(currentChar);
 		    addToken(diccionarioSimboloOperador.get(caracterActualString + "="), caracterActualString + "=");
 		    currentPos += 2;
 		} else {
 		    //es menor < o mayor >
+		    columna++;
 		    String caracterActualString = String.valueOf(currentChar);
 		    addToken(diccionarioSimboloOperador.get(caracterActualString), caracterActualString);
 		    currentPos++;
@@ -404,10 +429,13 @@ public class Analizador2 {
 		int nextPos = currentPos + 1;
 		if (nextPos < input.length() && input.charAt(nextPos) == '=') {
 		    // es igual comparacion == 
+		    columna++;
+		    columna++;
 		    addToken(Comparacion.DOBLE_IGUAL, "==");
 		    currentPos += 2;
 		} else {
 		    //es igual asignacion =
+		    columna++;
 		    addToken(Asignacion.IGUAL, "=");
 		    currentPos++;
 		}
@@ -418,10 +446,13 @@ public class Analizador2 {
 		int nextPos = currentPos + 1;
 		if (nextPos < input.length() && input.charAt(nextPos) == '=') {
 		    //es diferente !=
+		    columna++;
+		    columna++;
 		    addToken(Comparacion.DIFERENTE, "!=");
 		    currentPos += 2;
 		} else {
 		    //es signo de admiracion ! o error
+		    columna++;
 		    addTokenError(Errorr.ERROR, String.valueOf(currentChar), "es solo un signo de exclamacion");
 		    currentPos++;
 		}
@@ -433,12 +464,16 @@ public class Analizador2 {
 		while (currentPos < input.length() && input.charAt(currentPos) != '\n') {
 		    comentario.append(input.charAt(currentPos));
 		    currentPos++;
+		    columna++;
 		}
 		//es comentario
+		columna++;
 		addToken(Comentario.COMENTARIO, "#" + comentario.toString());
 		//</editor-fold>
 	    } else {
+		//<editor-fold defaultstate="collapsed" desc="simbolo fuera del alfabeto">
 		//otro simbolo fuera del alfabeto
+		columna++;
 		String caracterActualString = String.valueOf(currentChar);
 		if (diccionarioSimboloAgrupacion.containsKey(caracterActualString)) {
 		    addToken(diccionarioSimboloAgrupacion.get(caracterActualString), caracterActualString);
@@ -448,6 +483,7 @@ public class Analizador2 {
 		    addTokenError(Errorr.ERROR, caracterActualString, "simbolo fuera del alfabeto " + caracterActualString);
 		}
 		currentPos++;
+		//</editor-fold>
 	    }
 	}
     }
