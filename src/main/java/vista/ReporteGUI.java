@@ -16,15 +16,15 @@ public class ReporteGUI extends javax.swing.JDialog {
     private final BotonEditor botonEditor;
 
     public JTable getTabla() {
-	return tabla;
+        return tabla;
     }
 
     public ModeloTabla getModeloTabla() {
-	return modeloTabla;
+        return modeloTabla;
     }
 
     public BotonEditor getBotonEditor() {
-	return botonEditor;
+        return botonEditor;
     }
 
     /**
@@ -34,15 +34,15 @@ public class ReporteGUI extends javax.swing.JDialog {
      * @param modal
      */
     public ReporteGUI(java.awt.Frame parent, boolean modal) {
-	super(parent, modal);
-	initComponents();
-	modeloTabla = new ModeloTabla();
-	botonEditor = new BotonEditor(new JCheckBox(), tabla);
-	tabla.setModel(modeloTabla);
+        super(parent, modal);
+        initComponents();
+        modeloTabla = new ModeloTabla();
+        botonEditor = new BotonEditor(new JCheckBox(), tabla);
+        tabla.setModel(modeloTabla);
 
-	// Personalizar el renderizado y la edición de la última columna
-	tabla.getColumnModel().getColumn(5).setCellRenderer(new BotonRenderer());
-	tabla.getColumnModel().getColumn(5).setCellEditor(botonEditor);
+        // Personalizar el renderizado y la edición de la última columna
+        tabla.getColumnModel().getColumn(5).setCellRenderer(new BotonRenderer());
+        tabla.getColumnModel().getColumn(5).setCellEditor(botonEditor);
 
     }
 

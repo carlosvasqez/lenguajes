@@ -1,6 +1,6 @@
 package modelo;
 
-import controlador.GeneradorGrafico;
+import modelo.tokens.Errorr;
 import modelo.tokens.Tkn;
 
 /**
@@ -16,76 +16,47 @@ public class Token {
     private String pathGrafico;
 
     public Token(Tkn tokenEnum, String lexena, int fila, int columna) {
-	this.tokenEnum = tokenEnum;
-	this.lexena = lexena;
-	this.fila = fila;
-	this.columna = columna;
-	if (" ".equalsIgnoreCase(lexena))
-	{
-
-	}
-	else if ("\t".equalsIgnoreCase(lexena))
-	{
-
-	}
-	else if ("\n".equalsIgnoreCase(lexena))
-	{
-
-	}
-	else
-	{
-	    crearGrafico();
-	}
-    }
-
-    private void crearGrafico() {
-	GeneradorGrafico generadorGrafico = new GeneradorGrafico();
-	generadorGrafico.ejecutar(this);
+        this.tokenEnum = tokenEnum;
+        this.lexena = lexena;
+        this.fila = fila;
+        this.columna = columna;
     }
 
     public Tkn getTokenEnum() {
-	return tokenEnum;
+        return tokenEnum;
     }
 
     public String getLexena() {
-	return lexena;
+        return lexena;
     }
 
     public int getFila() {
-	return fila;
+        return fila;
     }
 
     public int getColumna() {
-	return columna;
+        return columna;
     }
 
-
     public void setPathGrafico(String pathGrafico) {
-	this.pathGrafico = pathGrafico;
+        this.pathGrafico = pathGrafico;
     }
 
     public String getPathGrafico() {
-	return pathGrafico;
+        return pathGrafico;
     }
 
     @Override
     public String toString() {
-	if (" ".equalsIgnoreCase(lexena))
-	{
-	    return "ESPACIO {" + " fila= " + fila + " , columna= " + columna + '}';
-	}
-	else if ("\t".equalsIgnoreCase(lexena))
-	{
-	    return "TABULACION {" + " fila= " + fila + " , columna= " + columna + '}';
-	}
-	else if ("\n".equalsIgnoreCase(lexena))
-	{
-	    return "SALTO_LINEA {" + " fila= " + fila + " , columna= " + columna + '}';
-	}
-	else
-	{
-	    return "TOKEN {" + " tipo= " + tokenEnum + " , lexema= " + lexena + " , fila= " + fila + " , columna= " + columna + '}';
-	}
+        if (" ".equalsIgnoreCase(lexena)) {
+            return "ESPACIO {" + " fila= " + fila + " , columna= " + columna + '}';
+        } else if ("\t".equalsIgnoreCase(lexena)) {
+            return "TABULACION {" + " fila= " + fila + " , columna= " + columna + '}';
+        } else if ("\n".equalsIgnoreCase(lexena)) {
+            return "SALTO_LINEA {" + " fila= " + fila + " , columna= " + columna + '}';
+        } else {
+            return "TOKEN {" + " tipo= " + tokenEnum + " , lexema= " + lexena + " , fila= " + fila + " , columna= " + columna + '}';
+        }
     }
 
 }

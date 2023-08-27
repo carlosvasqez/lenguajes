@@ -20,18 +20,23 @@ public enum Asignacion implements Tkn {
     private final Color color;
 
     private Asignacion(String patron, Color color) {
-	this.patron = patron;
-	this.color = color;
+        this.patron = patron;
+        this.color = color;
     }
 
     @Override
     public String getPatron() {
-	return patron;
+        return patron;
     }
 
     @Override
     public Color getColor() {
-	return color;
+        return color;
+    }
+
+    @Override
+    public String toString() {
+        return this.getClass().getSimpleName() + " [ " + super.toString() + " ]";
     }
 
 }

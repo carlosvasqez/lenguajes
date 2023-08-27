@@ -24,49 +24,49 @@ public class BotonEditor extends DefaultCellEditor {
     private JDialog dialog = new JDialog();
 
     public BotonEditor(JCheckBox checkBox, JTable tabla) {
-	super(checkBox);
-	button = new JButton();
-	this.tabla = tabla;
-	button.addActionListener(new ActionListener() {
-	    @Override
-	    public void actionPerformed(ActionEvent e) {
-		fireEditingStopped();
-		int filaClic = tabla.getSelectedRow();
+        super(checkBox);
+        button = new JButton();
+        this.tabla = tabla;
+        button.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                fireEditingStopped();
+                int filaClic = tabla.getSelectedRow();
 
-		if (filaClic != -1) {
-		    Object valor = tabla.getValueAt(filaClic, tabla.getColumnCount() - 1);
+                if (filaClic != -1) {
+                    Object valor = tabla.getValueAt(filaClic, tabla.getColumnCount() - 1);
 
-		    Token token = (Token) valor;
-		    
-		    dialog.setSize(400, 400);
-		    dialog.setLayout(new BorderLayout());
+                    Token token = (Token) valor;
+                    
+                    dialog.setSize(400, 400);
+                    dialog.setLayout(new BorderLayout());
 
-		    ImageIcon icon = new ImageIcon(token.getPathGrafico());
-		    JLabel label = new JLabel(icon);
+                    ImageIcon icon = new ImageIcon(token.getPathGrafico());
+                    JLabel label = new JLabel(icon);
 
-		    JScrollPane scrollPane = new JScrollPane(label);
-		    scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
-		    scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+                    JScrollPane scrollPane = new JScrollPane(label);
+                    scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+                    scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 
-		    dialog.getContentPane().removeAll();
-		    dialog.add(scrollPane, BorderLayout.CENTER);
-		    dialog.revalidate();
-		    dialog.repaint();
+                    dialog.getContentPane().removeAll();
+                    dialog.add(scrollPane, BorderLayout.CENTER);
+                    dialog.revalidate();
+                    dialog.repaint();
 
-		    dialog.setVisible(true);
-		}
-	    }
-	});
+                    dialog.setVisible(true);
+                }
+            }
+        });
     }
 
     @Override
     public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
-	button.setText((value == null) ? "" : value.toString());
-	return button;
+        button.setText((value == null) ? "" : value.toString());
+        return button;
     }
 
     @Override
     public Object getCellEditorValue() {
-	return button.getText();
+        return button.getText();
     }
 }
