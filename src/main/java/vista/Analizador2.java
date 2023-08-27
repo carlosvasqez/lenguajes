@@ -290,10 +290,9 @@ public class Analizador2 {
 		    currentPos++;
 		    columna++;
 		    addToken(Constante.CADENA, "\"" + string.toString() + "\"");
-		}  else if (currentPos < input.length() && input.charAt(currentPos) != '"') {
+		} else {
 		    //error de cadena no cerrada al final del documento
-		    System.out.println("ssssssssssss");
-		    addTokenError(Errorr.ERROR, "\"" + string.toString(), "cadena no cerrada al final del archivo");
+		    addTokenError(Errorr.ERROR, "\"" + string.toString(), "cadena no cerrada");
 		}
 		//</editor-fold>
 	    } else if (currentChar == '\'') {
@@ -303,6 +302,10 @@ public class Analizador2 {
 		columna++;
 		while (currentPos < input.length() && input.charAt(currentPos) != '\'' && input.charAt(currentPos) != '\n') {
 		    string.append(input.charAt(currentPos));
+		    if (input.charAt(currentPos) == '\n') {
+			currentPos++;
+			break;
+		    }
 		    currentPos++;
 		    columna++;
 		}
@@ -311,14 +314,9 @@ public class Analizador2 {
 		    currentPos++;
 		    columna++;
 		    addToken(Constante.CADENA, "\'" + string.toString() + "\'");
-		} else if (currentPos < input.length() && input.charAt(currentPos) == '\n') {
-		    //es error de cadena no cerrada
-		    currentPos++;
-		    columna++;
-		    addTokenError(Errorr.ERROR, "\'" + string.toString(), "cadena no cerrada");
-		} else if (currentPos == input.length()) {
+		} else {
 		    //error de cadena no cerrada al final del documento
-		    addTokenError(Errorr.ERROR, "\'" + string.toString(), "cadena no cerrada al final del archivo");
+		    addTokenError(Errorr.ERROR, "\'" + string.toString(), "cadena no cerrada");
 		}
 		//</editor-fold>
 	    } else if (currentChar == '+') {
