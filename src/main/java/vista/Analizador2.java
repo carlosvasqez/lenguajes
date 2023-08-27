@@ -156,8 +156,11 @@ public class Analizador2 {
 	fila = 1;
 	columna = 1;
 	currentPos = 0;
-	textPaneEditor.setContentType("text/plain;charset=UTF-8");
+	//textPaneEditor.setContentType("text/plain;charset=UTF-8");
 	input = textPaneEditor.getText();
+//	for (char c : input.toCharArray()) {
+//	    System.out.println((int) c);
+//	}
 	generarAnalisis();
 	//antes de colorear se debe limpiar ya que al colorear se escribe basado en los tokens
 	limpiador.limpiarTodo();
@@ -273,8 +276,12 @@ public class Analizador2 {
 		StringBuilder string = new StringBuilder();
 		currentPos++;
 		columna++;
-		while (currentPos < input.length() && input.charAt(currentPos) != '"' && input.charAt(currentPos) != '\n') {
+		while (currentPos < input.length() && input.charAt(currentPos) != '"') {
 		    string.append(input.charAt(currentPos));
+		    if (input.charAt(currentPos) == '\n') {
+			currentPos++;
+			break;
+		    }
 		    currentPos++;
 		    columna++;
 		}
@@ -283,13 +290,9 @@ public class Analizador2 {
 		    currentPos++;
 		    columna++;
 		    addToken(Constante.CADENA, "\"" + string.toString() + "\"");
-		} else if (currentPos < input.length() && input.charAt(currentPos) == '\n') {
-		    //es error de cadena no cerrada
-		    currentPos++;
-		    columna++;
-		    addTokenError(Errorr.ERROR, "\"" + string.toString(), "cadena no cerrada");
-		} else if (currentPos == input.length()) {
+		}  else if (currentPos < input.length() && input.charAt(currentPos) != '"') {
 		    //error de cadena no cerrada al final del documento
+		    System.out.println("ssssssssssss");
 		    addTokenError(Errorr.ERROR, "\"" + string.toString(), "cadena no cerrada al final del archivo");
 		}
 		//</editor-fold>
@@ -467,7 +470,7 @@ public class Analizador2 {
 		columna++;
 		while (currentPos < input.length() && input.charAt(currentPos) != '\n' && input.charAt(currentPos) != '\r') {
 		    comentario.append(input.charAt(currentPos));
-		    System.out.println((int)input.charAt(currentPos));
+		    System.out.println((int) input.charAt(currentPos));
 		    columna++;
 		    currentPos++;
 		}
@@ -494,13 +497,11 @@ public class Analizador2 {
 
     private void addToken(Tkn tkn, String lexema) {
 	Token token = new Token(tkn, lexema, fila, columna - lexema.length());
-	System.out.println(token);
 	listaTokens.add(token);
     }
 
     private void addTokenError(Tkn tkn, String lexema, String mensaje) {
 	Token token = new TokenError(tkn, lexema, fila, columna - lexema.length(), mensaje);
-	System.out.println(token);
 	listaTokens.add(token);
     }
 

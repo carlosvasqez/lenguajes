@@ -1,6 +1,0 @@
-digraph grafico {
-rankdir=LR;
-label="Constante [ ENTERO ]";
-node0 [label="4"];
-node0 [shape=doublecircle];
-}

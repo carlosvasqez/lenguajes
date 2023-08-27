@@ -1,8 +1,0 @@
-digraph grafico {
-rankdir=LR;
-label="Comentario [ COMENTARIO ]";
-node0 [label="#"];
-node0 -> node1;
-node1 [label="a"];
-node1 [shape=doublecircle];
-}

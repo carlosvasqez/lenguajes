@@ -1,6 +1,0 @@
-digraph grafico {
-rankdir=LR;
-label="Aritmetico [ SUMA ]";
-node0 [label="+"];
-node0 [shape=doublecircle];
-}
