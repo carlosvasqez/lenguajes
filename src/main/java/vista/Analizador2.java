@@ -32,8 +32,8 @@ public class Analizador2 {
     private List<Token> listaTokens;
     private int fila;
     private int columna;
-    private int currentPos;
-    private String input;
+    private int posicionActual;
+    private String texto;
     String carpeta;
 
     private final Map<String, Tkn> diccionarioPalabraReservada;
@@ -159,9 +159,9 @@ public class Analizador2 {
         crearCarpetaGraficos();
         fila = 1;
         columna = 1;
-        currentPos = 0;
+        posicionActual = 0;
         //textPaneEditor.setContentType("text/plain;charset=UTF-8");
-        input = textPaneEditor.getText();
+        texto = textPaneEditor.getText();
         generarAnalisis();
         //antes de colorear se debe limpiar ya que al colorear se escribe basado en los tokens
         limpiador.limpiarTodo();
@@ -206,283 +206,302 @@ public class Analizador2 {
     }
 
     public void buscarTokens() {
-        while (currentPos < input.length()) {
-            char currentChar = input.charAt(currentPos);
+        while (posicionActual < texto.length()) {
+            char caracterActual = texto.charAt(posicionActual);
 
-            if (Character.isDigit(currentChar)) {
+            if (Character.isDigit(caracterActual)) {
                 //<editor-fold defaultstate="collapsed" desc="entero o decimal">
-                StringBuilder number = new StringBuilder();
-                boolean isDecimal = false;
-                while (currentPos < input.length() && (Character.isDigit(input.charAt(currentPos)) || input.charAt(currentPos) == '.')) {
-                    char nextChar = input.charAt(currentPos);
-                    if (nextChar == '.') {
-                        if (isDecimal) {
+                StringBuilder numero = new StringBuilder();
+                boolean esDecimal = false;
+                while (posicionActual < texto.length() && (Character.isDigit(texto.charAt(posicionActual)) || texto.charAt(posicionActual) == '.')) {
+                    char caracterSiguiente = texto.charAt(posicionActual);
+                    if (caracterSiguiente == '.') {
+                        if (esDecimal) {
                             break;
                         }
-                        isDecimal = true;
+                        esDecimal = true;
                     }
-                    number.append(nextChar);
-                    currentPos++;
+                    numero.append(caracterSiguiente);
+                    posicionActual++;
                     columna++;
                 }
-                if (isDecimal) {
+                if (esDecimal) {
                     //es decimal
-                    crearToken(Constante.DECIMAL, number.toString());
+                    crearToken(Constante.DECIMAL, numero.toString());
                 } else {
                     //es entero
-                    crearToken(Constante.ENTERO, number.toString());
+                    crearToken(Constante.ENTERO, numero.toString());
                 }
                 //</editor-fold>
-            } else if (Character.isLetter(currentChar) || currentChar == '_') {
+            } else if (Character.isLetter(caracterActual) || caracterActual == '_') {
                 //<editor-fold defaultstate="collapsed" desc="identificador o palabra reservada">
-                StringBuilder identifier = new StringBuilder();
-                while (currentPos < input.length()
-                        && (Character.isLetterOrDigit(input.charAt(currentPos))
-                        || input.charAt(currentPos) == '_')) {
-                    identifier.append(input.charAt(currentPos));
-                    currentPos++;
+                StringBuilder identificador = new StringBuilder();
+                while (posicionActual < texto.length()
+                        && (Character.isLetterOrDigit(texto.charAt(posicionActual))
+                        || texto.charAt(posicionActual) == '_')) {
+                    identificador.append(texto.charAt(posicionActual));
+                    posicionActual++;
                     columna++;
                 }
                 // Verificar si es una palabra reservada o identificador
-                String identifierStr = identifier.toString();
-                Tkn tkn = diccionarioPalabraReservada.get(identifierStr);
+                String identificadorString = identificador.toString();
+                Tkn tkn = diccionarioPalabraReservada.get(identificadorString);
                 if (tkn != null) {
                     //es palabra reservada
-                    crearToken(tkn, identifierStr);
+                    crearToken(tkn, identificadorString);
                 } else {
-                    if (identifier.length() == 1 && identifier.charAt(0) == '_') {
+                    if (identificador.length() == 1 && identificador.charAt(0) == '_') {
                         //es solo un guion bajo _
-                        crearTokenError(Errorr.ERROR, identifierStr, "es solo un gion bajo");
+                        crearTokenError(Errorr.ERROR, identificadorString, "es solo un gion bajo");
                     } else {
                         //es identificador
-                        crearToken(Identificador.IDENTIFICADOR, identifierStr);
+                        crearToken(Identificador.IDENTIFICADOR, identificadorString);
                     }
                 }
                 //</editor-fold>
-            } else if (Character.isWhitespace(currentChar)) {
+            } else if (Character.isWhitespace(caracterActual)) {
                 //<editor-fold defaultstate="collapsed" desc="espacio, tab o next line">
-                currentPos++;
-                if (currentChar == '\n') {
+                posicionActual++;
+                if (caracterActual == '\n') {
                     //es salto de linea
                     columna++;
                     crearToken(Especial.SALTO_LINEA, "\n");
                     columna = 1;
                     fila++;
                 }
-                if (currentChar == '\t') {
+                if (caracterActual == '\t') {
                     //es tabulacion
                     crearToken(Especial.TABULACION, "\t");
                     ///////////////////////////////////////////////////pendiente por definir el tab
                 }
-                if (currentChar == ' ') {
+                if (caracterActual == ' ') {
                     //es espacio
                     columna++;
                     crearToken(Especial.ESPACIO, " ");
                 }
                 //</editor-fold>
-            } else if (currentChar == '"') {
+            } else if (caracterActual == '"') {
                 //<editor-fold defaultstate="collapsed" desc=" cadena " ">
-                StringBuilder string = new StringBuilder();
-                currentPos++;
+                StringBuilder cadenaDobleComilla = new StringBuilder();
+                posicionActual++;
                 columna++;
-                while (currentPos < input.length() && input.charAt(currentPos) != '"') {
-                    string.append(input.charAt(currentPos));
-                    if (input.charAt(currentPos) == '\n') {
-                        currentPos++;
+                while (posicionActual < texto.length() && texto.charAt(posicionActual) != '"') {
+                    cadenaDobleComilla.append(texto.charAt(posicionActual));
+                    if (texto.charAt(posicionActual) == '\r') {
+                        posicionActual++;
+                        columna++;
                         break;
                     }
-                    currentPos++;
+                    posicionActual++;
                     columna++;
                 }
-                if (currentPos < input.length() && input.charAt(currentPos) == '"') {
+                if (posicionActual < texto.length() && texto.charAt(posicionActual) == '"') {
                     //es cadena completa
-                    currentPos++;
+                    posicionActual++;
                     columna++;
-                    crearToken(Constante.CADENA, "\"" + string.toString() + "\"");
+                    crearToken(Constante.CADENA, "\"" + cadenaDobleComilla.toString() + "\"");
                 } else {
                     //error de cadena no cerrada al final del documento
-                    crearTokenError(Errorr.ERROR, "\"" + string.toString(), "cadena no cerrada");
-                    fila++;
+                    crearTokenError(Errorr.ERROR, "\"" + cadenaDobleComilla.toString(), "cadena no cerrada");
+                    //fila++;
                     columna = 1;
                 }
                 //</editor-fold>
-            } else if (currentChar == '\'') {
+            } else if (caracterActual == '\'') {
                 //<editor-fold defaultstate="collapsed" desc="cadena ' ">
-                StringBuilder string = new StringBuilder();
-                currentPos++;
+                StringBuilder cadenaComilla = new StringBuilder();
+                posicionActual++;
                 columna++;
-                while (currentPos < input.length() && input.charAt(currentPos) != '\'' && input.charAt(currentPos) != '\n') {
-                    string.append(input.charAt(currentPos));
-                    if (input.charAt(currentPos) == '\n') {
-                        currentPos++;
+                while (posicionActual < texto.length() && texto.charAt(posicionActual) != '\''
+                        && texto.charAt(posicionActual) != '\r') {
+                    cadenaComilla.append(texto.charAt(posicionActual));
+                    if (texto.charAt(posicionActual) == '\n') {
+                        posicionActual++;
+                        columna++;
                         break;
                     }
-                    currentPos++;
+                    posicionActual++;
                     columna++;
                 }
-                if (currentPos < input.length() && input.charAt(currentPos) == '\'') {
+                if (posicionActual < texto.length() && texto.charAt(posicionActual) == '\'') {
                     //es cadena completa
-                    currentPos++;
+                    posicionActual++;
                     columna++;
-                    crearToken(Constante.CADENA, "\'" + string.toString() + "\'");
+                    crearToken(Constante.CADENA, "\'" + cadenaComilla.toString() + "\'");
                 } else {
-                    //error de cadena no cerrada al final del documento
-                    crearTokenError(Errorr.ERROR, "\'" + string.toString(), "cadena no cerrada");
-                    fila++;
-                    columna=1;
+                    //error de cadena no cerrada
+                    crearTokenError(Errorr.ERROR, "\'" + cadenaComilla.toString(), "cadena no cerrada");
+                    //fila++;
+                    columna = 1;
                 }
                 //</editor-fold>
-            } else if (currentChar == '+') {
+            } else if (caracterActual == '+') {
                 //<editor-fold defaultstate="collapsed" desc="+ y +=">
-                int nextPos = currentPos + 1;
-                if (nextPos < input.length() && input.charAt(nextPos) == '=') {
+                int siguientePosicion = posicionActual + 1;
+                if (siguientePosicion < texto.length() && texto.charAt(siguientePosicion) == '=') {
                     //es una asignacion de suma +=
                     columna++;
                     columna++;
-                    crearToken(Asignacion.MAS_IGUAL, String.valueOf(currentChar) + "=");
-                    currentPos += 2;
+                    crearToken(Asignacion.MAS_IGUAL, String.valueOf(caracterActual) + "=");
+                    posicionActual += 2;
                 } else {
                     //es una suma +
                     columna++;
-                    crearToken(Aritmetico.SUMA, String.valueOf(currentChar));
-                    currentPos += 1;
+                    crearToken(Aritmetico.SUMA, String.valueOf(caracterActual));
+                    posicionActual += 1;
                 }
                 //</editor-fold>
-            } else if (currentChar == '-') {
+            } else if (caracterActual == '-') {
                 //<editor-fold defaultstate="collapsed" desc="- -=">
-                int nextPos = currentPos + 1;
-                if (nextPos < input.length() && input.charAt(nextPos) == '=') {
+                int siguientePosicion = posicionActual + 1;
+                if (siguientePosicion < texto.length() && texto.charAt(siguientePosicion) == '=') {
                     //es una asignacion de resta -=
                     columna++;
                     columna++;
-                    crearToken(Asignacion.MENOS_IGUAL, String.valueOf(currentChar) + "=");
-                    currentPos += 2;
+                    crearToken(Asignacion.MENOS_IGUAL, String.valueOf(caracterActual) + "=");
+                    posicionActual += 2;
                 } else {
                     //es una resta -
                     columna++;
-                    crearToken(Aritmetico.RESTA, String.valueOf(currentChar));
-                    currentPos += 1;
+                    crearToken(Aritmetico.RESTA, String.valueOf(caracterActual));
+                    posicionActual += 1;
                 }
                 //</editor-fold>
-            } else if (currentChar == '*') {
+            } else if (caracterActual == '*') {
                 //<editor-fold defaultstate="collapsed" desc="* *= ** **= ">
-                int nextPos = currentPos + 1;
-                if (nextPos < input.length() && input.charAt(nextPos) == '*') {
-                    int nextPos2 = currentPos + 2;
-                    if (nextPos2 < input.length() && input.charAt(nextPos2) == '=') {
+                int siguientePosicion = posicionActual + 1;
+                if (siguientePosicion < texto.length() && texto.charAt(siguientePosicion) == '*') {
+                    int nextPos2 = posicionActual + 2;
+                    if (nextPos2 < texto.length() && texto.charAt(nextPos2) == '=') {
                         //es una asignacion de potencia **=
-                        char nextChar = input.charAt(nextPos);
-                        crearToken(Asignacion.POTENCIA_IGUAL, String.valueOf(currentChar) + String.valueOf(nextChar) + "=");
-                        currentPos += 3;
+                        columna++;
+                        columna++;
+                        columna++;
+                        char nextChar = texto.charAt(siguientePosicion);
+                        crearToken(Asignacion.POTENCIA_IGUAL, String.valueOf(caracterActual) + String.valueOf(nextChar) + "=");
+                        posicionActual += 3;
                     } else {
                         //es una potencia **
+                        columna++;
+                        columna++;
                         crearToken(Aritmetico.EXPONENTE, "**");
-                        currentPos += 2;
+                        posicionActual += 2;
                     }
-                } else if (nextPos < input.length() && input.charAt(nextPos) == '=') {
+                } else if (siguientePosicion < texto.length() && texto.charAt(siguientePosicion) == '=') {
                     //es una asignacion de multiplicacion *=
-                    char nextChar = input.charAt(nextPos);
-                    crearToken(Asignacion.POR_IGUAL, String.valueOf(currentChar) + String.valueOf(nextChar));
-                    currentPos += 2;
+                    columna++;
+                    columna++;
+                    char nextChar = texto.charAt(siguientePosicion);
+                    crearToken(Asignacion.POR_IGUAL, String.valueOf(caracterActual) + String.valueOf(nextChar));
+                    posicionActual += 2;
                 } else {
                     // Es una multiplicación simple *
+                    columna++;
                     crearToken(Aritmetico.MULTIPLICACION, "*");
-                    currentPos += 1;
+                    posicionActual += 1;
                 }
                 //</editor-fold>
-            } else if (currentChar == '/') {
+            } else if (caracterActual == '/') {
                 //<editor-fold defaultstate="collapsed" desc="/ /= // //=">
-                int nextPos = currentPos + 1;
-                if (nextPos < input.length() && input.charAt(nextPos) == '/') {
-                    int nextPos2 = currentPos + 2;
-                    if (nextPos2 < input.length() && input.charAt(nextPos2) == '=') {
+                int siguientePosicion = posicionActual + 1;
+                if (siguientePosicion < texto.length() && texto.charAt(siguientePosicion) == '/') {
+                    int nextPos2 = posicionActual + 2;
+                    if (nextPos2 < texto.length() && texto.charAt(nextPos2) == '=') {
                         //es una asignacion de divison //=
-                        char nextChar = input.charAt(nextPos);
-                        crearToken(Asignacion.DOBLE_DIVISION_IGUAL, String.valueOf(currentChar) + String.valueOf(nextChar) + "=");
-                        currentPos += 3;
+                        columna++;
+                        columna++;
+                        columna++;
+                        char nextChar = texto.charAt(siguientePosicion);
+                        crearToken(Asignacion.DOBLE_DIVISION_IGUAL, String.valueOf(caracterActual) + String.valueOf(nextChar) + "=");
+                        posicionActual += 3;
                     } else {
                         //es una division simple //
+                        columna++;
+                        columna++;
                         crearToken(Aritmetico.DIVISON, "//");
-                        currentPos += 2;
+                        posicionActual += 2;
                     }
-                } else if (nextPos < input.length() && input.charAt(nextPos) == '=') {
+                } else if (siguientePosicion < texto.length() && texto.charAt(siguientePosicion) == '=') {
                     //es una asignacion de de divison  /=
-                    char nextChar = input.charAt(nextPos);
-                    crearToken(Asignacion.DIVISION_IGUAL, String.valueOf(currentChar) + String.valueOf(nextChar));
-                    currentPos += 2;
+                    columna++;
+                    columna++;
+                    char caracterSiguiente = texto.charAt(siguientePosicion);
+                    crearToken(Asignacion.DIVISION_IGUAL, String.valueOf(caracterActual) + String.valueOf(caracterSiguiente));
+                    posicionActual += 2;
                 } else {
                     // Es una division simple /
+                    columna++;
                     crearToken(Aritmetico.DIVISON, "/");
-                    currentPos += 1;
+                    posicionActual += 1;
                 }
                 //</editor-fold>
-            } else if (currentChar == '%') {
+            } else if (caracterActual == '%') {
                 //<editor-fold defaultstate="collapsed" desc="%">
                 // Es modulo
                 columna++;
                 crearToken(Aritmetico.MODULO, "%");
-                currentPos++;
+                posicionActual++;
                 //</editor-fold>
-            } else if (currentChar == '<' || currentChar == '>') {
+            } else if (caracterActual == '<' || caracterActual == '>') {
                 //<editor-fold defaultstate="collapsed" desc="< > <= >=">
-                int nextPos = currentPos + 1;
-                if (nextPos < input.length() && input.charAt(nextPos) == '=') {
+                int siguientePosicion = posicionActual + 1;
+                if (siguientePosicion < texto.length() && texto.charAt(siguientePosicion) == '=') {
                     //es menor igual <= o  mayor igual >=
                     columna++;
                     columna++;
-                    String caracterActualString = String.valueOf(currentChar);
+                    String caracterActualString = String.valueOf(caracterActual);
                     crearToken(diccionarioSimboloOperador.get(caracterActualString + "="), caracterActualString + "=");
-                    currentPos += 2;
+                    posicionActual += 2;
                 } else {
                     //es menor < o mayor >
                     columna++;
-                    String caracterActualString = String.valueOf(currentChar);
+                    String caracterActualString = String.valueOf(caracterActual);
                     crearToken(diccionarioSimboloOperador.get(caracterActualString), caracterActualString);
-                    currentPos++;
+                    posicionActual++;
                 }
                 //</editor-fold>
-            } else if (currentChar == '=') {
+            } else if (caracterActual == '=') {
                 //<editor-fold defaultstate="collapsed" desc="= ==">
-                int nextPos = currentPos + 1;
-                if (nextPos < input.length() && input.charAt(nextPos) == '=') {
+                int siguientePosicion = posicionActual + 1;
+                if (siguientePosicion < texto.length() && texto.charAt(siguientePosicion) == '=') {
                     // es igual comparacion == 
                     columna++;
                     columna++;
                     crearToken(Comparacion.DOBLE_IGUAL, "==");
-                    currentPos += 2;
+                    posicionActual += 2;
                 } else {
                     //es igual asignacion =
                     columna++;
                     crearToken(Asignacion.IGUAL, "=");
-                    currentPos++;
+                    posicionActual++;
                 }
                 //</editor-fold>
-            } else if (currentChar == '!') {
+            } else if (caracterActual == '!') {
                 //<editor-fold defaultstate="collapsed" desc="! !=">
                 // Verificar operador de desigualdad (!=)
-                int nextPos = currentPos + 1;
-                if (nextPos < input.length() && input.charAt(nextPos) == '=') {
+                int siguientePosicion = posicionActual + 1;
+                if (siguientePosicion < texto.length() && texto.charAt(siguientePosicion) == '=') {
                     //es diferente !=
                     columna++;
                     columna++;
                     crearToken(Comparacion.DIFERENTE, "!=");
-                    currentPos += 2;
+                    posicionActual += 2;
                 } else {
                     //es signo de admiracion ! o error
                     columna++;
-                    crearTokenError(Errorr.ERROR, String.valueOf(currentChar), "es solo un signo de exclamacion");
-                    currentPos++;
+                    crearTokenError(Errorr.ERROR, String.valueOf(caracterActual), "es solo un signo de exclamacion");
+                    posicionActual++;
                 }
                 //</editor-fold>
-            } else if (currentChar == '#') {
+            } else if (caracterActual == '#') {
                 //<editor-fold defaultstate="collapsed" desc="comentario #">
                 StringBuilder comentario = new StringBuilder();
-                currentPos++;
+                posicionActual++;
                 columna++;
-                while (currentPos < input.length() && input.charAt(currentPos) != '\n' && input.charAt(currentPos) != '\r') {
-                    comentario.append(input.charAt(currentPos));
+                while (posicionActual < texto.length() && texto.charAt(posicionActual) != '\n' && texto.charAt(posicionActual) != '\r') {
+                    comentario.append(texto.charAt(posicionActual));
                     columna++;
-                    currentPos++;
+                    posicionActual++;
                 }
                 //es comentario
                 crearToken(Comentario.COMENTARIO, "#" + comentario.toString());
@@ -491,7 +510,7 @@ public class Analizador2 {
                 //<editor-fold defaultstate="collapsed" desc="simbolo fuera del alfabeto">
                 //otro simbolo fuera del alfabeto
                 columna++;
-                String caracterActualString = String.valueOf(currentChar);
+                String caracterActualString = String.valueOf(caracterActual);
                 if (diccionarioSimboloAgrupacion.containsKey(caracterActualString)) {
                     crearToken(diccionarioSimboloAgrupacion.get(caracterActualString), caracterActualString);
                 } else if (diccionarioSimboloPuntuacion.containsKey(caracterActualString)) {
@@ -499,7 +518,7 @@ public class Analizador2 {
                 } else {
                     crearTokenError(Errorr.ERROR, caracterActualString, "simbolo fuera del alfabeto " + caracterActualString);
                 }
-                currentPos++;
+                posicionActual++;
                 //</editor-fold>
             }
         }
