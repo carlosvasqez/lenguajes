@@ -1,6 +1,5 @@
-package vista;
+package controlador;
 
-import controlador.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -530,13 +529,13 @@ public class Analizador2 {
             GeneradorGrafico generadorGrafico = new GeneradorGrafico(carpeta);
             generadorGrafico.ejecutar(token);
         }
-        System.out.println(token);
+        //System.out.println(token);
         listaTokens.add(token);
     }
 
     private void crearTokenError(Tkn tkn, String lexema, String mensaje) {
         Token token = new TokenError(tkn, lexema, fila, columna - lexema.length(), mensaje);
-        System.out.println(token);
+        //System.out.println(token);
         listaTokens.add(token);
     }
 

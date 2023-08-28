@@ -1,5 +1,6 @@
 package vista;
 
+import controlador.Analizador2;
 import controlador.Cargador;
 import controlador.CursorListener;
 import controlador.GeneradorReporte;
@@ -37,15 +38,15 @@ public class Gui extends javax.swing.JFrame {
      * Creates new form Gui
      */
     public Gui() {
-	initComponents();
-	limpiador = new Limpiador(this);
-	reporteGUI = new ReporteGUI(this, false);
-	generadorReporte = new GeneradorReporte(this);
+        initComponents();
+        limpiador = new Limpiador(this);
+        reporteGUI = new ReporteGUI(this, false);
+        generadorReporte = new GeneradorReporte(this);
 
-	analizador = new Analizador2(textPaneEditor, textPaneOutput, generadorReporte, limpiador);
-	textPaneEditor.addCaretListener(new CursorListener(textPaneEditor, labelFila, labelColumna));
-	//textPaneEditor.addKeyListener(new TabuladorListener(textPaneEditor, 8));
-	usarEspacio();
+        analizador = new Analizador2(textPaneEditor, textPaneOutput, generadorReporte, limpiador);
+        textPaneEditor.addCaretListener(new CursorListener(textPaneEditor, labelFila, labelColumna));
+        //textPaneEditor.addKeyListener(new TabuladorListener(textPaneEditor, 8));
+        usarEspacio();
     }
 
     /**
@@ -263,55 +264,55 @@ public class Gui extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void botonAnalizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonAnalizarActionPerformed
-	// TODO add your handling code here:
-	if (!textPaneEditor.getText().isBlank()) {
-	    analizador.realizar();
-	} else {
-	    JOptionPane.showMessageDialog(this, "el editor esta vacio, abra un archivo o escriba en el editor");
-	}
+        // TODO add your handling code here:
+        if (!textPaneEditor.getText().isBlank()) {
+            analizador.realizar();
+        } else {
+            JOptionPane.showMessageDialog(this, "el editor esta vacio, abra un archivo o escriba en el editor");
+        }
     }//GEN-LAST:event_botonAnalizarActionPerformed
 
 
     private void botonGenerarReporteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonGenerarReporteActionPerformed
-	// TODO add your handling code here:
-	if (!reporteGUI.isVisible()) {
-	    reporteGUI.setVisible(true);
-	} else {
-	    reporteGUI.setVisible(false);
-	}
+        // TODO add your handling code here:
+        if (!reporteGUI.isVisible()) {
+            reporteGUI.setVisible(true);
+        } else {
+            reporteGUI.setVisible(false);
+        }
     }//GEN-LAST:event_botonGenerarReporteActionPerformed
 
     private void botonArchivoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonArchivoActionPerformed
-	// TODO add your handling code here:
-	Cargador cargadorArchivo = new Cargador(this);
-	cargadorArchivo.cargarArchivoEn(new SelectorDeArchivo());
+        // TODO add your handling code here:
+        Cargador cargadorArchivo = new Cargador(this);
+        cargadorArchivo.cargarArchivoEn(new SelectorDeArchivo());
     }//GEN-LAST:event_botonArchivoActionPerformed
 
     private void botonAyudaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonAyudaActionPerformed
-	// TODO add your handling code here:
-	mostrarAyuda();
+        // TODO add your handling code here:
+        mostrarAyuda();
     }//GEN-LAST:event_botonAyudaActionPerformed
 
     private void botonAcerdaDeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonAcerdaDeActionPerformed
-	// TODO add your handling code here:
-	JOptionPane.showMessageDialog(this, "Practica 1 Lab. Lenguajes Formales y de Programacion\n Analizador Lexico.\n Elaborado por Carlos Vasquez");
+        // TODO add your handling code here:
+        JOptionPane.showMessageDialog(this, "Practica 1 Lab. Lenguajes Formales y de Programacion\n Analizador Lexico.\n Elaborado por Carlos Vasquez");
     }//GEN-LAST:event_botonAcerdaDeActionPerformed
 
     private void botonLimpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonLimpiarActionPerformed
-	// TODO add your handling code here:
-	limpiador.limpiarTodo();
+        // TODO add your handling code here:
+        limpiador.limpiarTodo();
     }//GEN-LAST:event_botonLimpiarActionPerformed
 
     /**
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-	/* Set the Nimbus look and feel */
-	//<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-	/* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+        /* Set the Nimbus look and feel */
+        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
          * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
 	
-	 */
+         */
 //	try {
 //	    UIManager.setLookAndFeel(new NimbusLookAndFeel());
 //	} catch (Exception ex) {
@@ -334,19 +335,19 @@ public class Gui extends javax.swing.JFrame {
 //	} catch (javax.swing.UnsupportedLookAndFeelException ex) {
 //	    java.util.logging.Logger.getLogger(Gui.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
 //	}
-//	try {
-//	    UIManager.setLookAndFeel(new FlatMacLightLaf());
-//	} catch (Exception ex) {
-//	    System.err.println("Failed to initialize LaF");
-//	}
-	//</editor-fold>
+//        try {
+//            UIManager.setLookAndFeel(new FlatMacLightLaf());
+//        } catch (UnsupportedLookAndFeelException ex) {
+//            System.err.println("Failed to initialize LaF");
+//        }
+        //</editor-fold>
 
-	/* Create and display the form */
-	java.awt.EventQueue.invokeLater(new Runnable() {
-	    public void run() {
-		new Gui().setVisible(true);
-	    }
-	});
+        /* Create and display the form */
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                new Gui().setVisible(true);
+            }
+        });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -366,64 +367,64 @@ public class Gui extends javax.swing.JFrame {
     // End of variables declaration//GEN-END:variables
 
     public ReporteGUI getReporteGUI() {
-	return reporteGUI;
+        return reporteGUI;
     }
 
     public Analizador2 getAnalizador() {
-	return analizador;
+        return analizador;
     }
 
     public JTextPane getTextPaneEditor() {
-	return textPaneEditor;
+        return textPaneEditor;
     }
 
     public JTextPane getTextPaneOutput() {
-	return textPaneOutput;
+        return textPaneOutput;
     }
 
     public Limpiador getLimpiador() {
-	return limpiador;
+        return limpiador;
     }
 
     private void usarEspacio() {
-	Action spaceAction = new AbstractAction() {
-	    @Override
-	    public void actionPerformed(ActionEvent e) {
-		MutableAttributeSet mas = textPaneEditor.getInputAttributes();
-		mas.removeAttributes(mas);
-	    }
-	};
+        Action spaceAction = new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                MutableAttributeSet mas = textPaneEditor.getInputAttributes();
+                mas.removeAttributes(mas);
+            }
+        };
 
-	KeyStroke spaceKeyStroke = KeyStroke.getKeyStroke(KeyEvent.VK_SPACE, 0);
-	textPaneEditor.getInputMap().put(spaceKeyStroke, "doSpaceAction");
-	textPaneEditor.getActionMap().put("doSpaceAction", spaceAction);
+        KeyStroke spaceKeyStroke = KeyStroke.getKeyStroke(KeyEvent.VK_SPACE, 0);
+        textPaneEditor.getInputMap().put(spaceKeyStroke, "doSpaceAction");
+        textPaneEditor.getActionMap().put("doSpaceAction", spaceAction);
     }
 
     private void mostrarAyuda() {
-	String mensaje = "Manual de usuario en el siguiente enlace: ";
-	String linkTexto = "Visitar el sitio web";
-	String url = "https://docs.google.com/document/d/11UL6opZ3IwReX9KJ-TsVGoUbUgC24Pz9aFqEe9ePhcI/edit?usp=sharing";
+        String mensaje = "Manual de usuario en el siguiente enlace: ";
+        String linkTexto = "Visitar el sitio web";
+        String url = "https://docs.google.com/document/d/11UL6opZ3IwReX9KJ-TsVGoUbUgC24Pz9aFqEe9ePhcI/edit?usp=sharing";
 
-	JLabel label = new JLabel(mensaje);
-	JLabel linkLabel = new JLabel(linkTexto);
-	linkLabel.setForeground(Color.BLUE.darker());
+        JLabel label = new JLabel(mensaje);
+        JLabel linkLabel = new JLabel(linkTexto);
+        linkLabel.setForeground(Color.BLUE.darker());
 
-	linkLabel.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-	linkLabel.addMouseListener(new java.awt.event.MouseAdapter() {
-	    public void mouseClicked(java.awt.event.MouseEvent evt) {
-		try {
-		    Desktop.getDesktop().browse(new URI(url));
-		} catch (IOException | URISyntaxException e) {
-		    e.printStackTrace();
-		}
-	    }
-	});
+        linkLabel.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        linkLabel.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                try {
+                    Desktop.getDesktop().browse(new URI(url));
+                } catch (IOException | URISyntaxException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
 
-	JPanel panel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-	panel.add(label);
-	panel.add(linkLabel);
+        JPanel panel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        panel.add(label);
+        panel.add(linkLabel);
 
-	JOptionPane.showMessageDialog(null, panel, "Enlace Web", JOptionPane.PLAIN_MESSAGE);
+        JOptionPane.showMessageDialog(null, panel, "Enlace Web", JOptionPane.PLAIN_MESSAGE);
 
     }
 
